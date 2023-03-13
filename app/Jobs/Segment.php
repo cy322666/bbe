@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Account;
 use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
 use Illuminate\Bus\Queueable;
@@ -16,16 +17,19 @@ class Segment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public Segment $segment) {}
+    private Client $amoApi;
+
+    public function __construct(public \App\Models\Segment $segment) {}
 
     //главная воронка
     private static int $pipleineId = 3342043;
 
+    /**
+     * @throws \Exception
+     */
     public function handle()
     {
-        $this->amoApi = '';
-
-        $isDouble = false;
+        $this->amoApi = (new Client(Account::query()->first()))->init();
 
         $lead = $this->amoApi
             ->service
@@ -34,69 +38,60 @@ class Segment implements ShouldQueue
 
         if ($lead->contact !== null) {
 
-            $leadsArray = [
-                'count_active'  => 0,
-                'count_lost'    => 0,
-                'count_success' => 0,
-                'sale' => 0,
-            ];
-
             $contact = $lead->contact;
 
-            foreach ($contact->leads->toArray() as $lead) {
+            $leads = $contact->leads->toArray();
 
-                $leadsArray[$lead['pipeline_id']]['count_active']  += $lead['status_id'] != 142 && $lead['status_id'] != 143 ? 1 : 0;
-                $leadsArray[$lead['pipeline_id']]['count_lost']    += $lead['status_id'] == 143 ? 1 : 0;
-                $leadsArray[$lead['pipeline_id']]['count_success'] += $lead['status_id'] == 142 ? 1 : 0;
+            $leadsArray = [
+                'sale_pipeline' => ['leads' => [], 'sale' => 0],
+                'other'         => ['leads' => [], 'sale' => 0],
+                'count_leads'   => count($leads),
+            ];
 
-                $leadsArray['sale'] += $lead['status_id'] == 142 ? $lead['sale'] : 0;
+            foreach ($leads as $leadArray) {
+
+                $key = $leadArray['pipeline_id'] == static::$pipleineId ? 'sale_pipeline' : 'other';
+
+                $leadsArray[$key]['leads'][] = $leadArray['id'];
+
+                $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
+                $leadsArray['count_leads']++;
             }
+
+            $text = implode("\n", static::buildText($this->segment, $leadsArray['sale_pipeline']['leads']));
+//                $leadsArray[$lead['pipeline_id']] = $body;
+//                $leadsArray[$lead['pipeline_id']]['ids'] = array_merge($leadsArray[$lead['pipeline_id']]['ids'], [$lead['id']]);
         }
 
-        dd($leadsArray);
-
         $this->segment->fill([
-            'contact_id'  => $contact->id ?? null,
-            'count_leads' => !empty($contact) ? count($contact->leads->toArray()) : 1,
-            'sale'        => $leadsArray[static::$investPipelineId]['sale'] + $leadsArray[static::$apartPipelineId]['sale'],
+            'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
+            'sale'   => !empty($leadsArray) ? $leadsArray['sale_pipeline']['sale'] : 0,
+            'status' => 1,
+            'count_leads' => !empty($leads) ? count($leads) : 1,
         ]);
         $this->segment->save();
 
-//        $note = $lead->createNote(4);
-//        $note->text = $doubleText;
-//        $note->element_type = 2;
-//        $note->element_id = $lead->id;
-//        $note->save();
+        $note = $lead->createNote(4);
+        $note->text = $text ?? null;
+        $note->element_type = 2;
+        $note->element_id = $lead->id;
+        $note->save();
     }
 
-    private static function buildTextApart(Segment $segment) : array
+    private static function buildText(\App\Models\Segment $segment, $leadIds) : array
     {
-        return [
-            '',
-            'Апартаменты : ',
-            '---------------------------',
-            'Куплено на сумму : '.$segment->sale_apart,
-            'Количество сделок : '.$segment->count_leads_apart,
-            'Сделок в работе : '.$segment->count_active_apart,
-            'Сделок реализовано : '.$segment->count_success_apart,
-            'Сделок не реализовано : '.$segment->count_lost_apart,
-        ];
-    }
+        foreach ($leadIds as $key => $leadId) {
 
-    private static function getCountSuccess(array $arrayLeads, $pipelineId): int
-    {
-        $countSuccess = 0;
-
-        if (!empty($arrayLeads[$pipelineId])) {
-
-            foreach ($arrayLeads[$pipelineId] as $leadArray) {
-                try {
-                    $countSuccess =+ $leadArray['status_id'] == 142 ? 1 : 0;
-
-                } catch (\Throwable $exception) {}
-            }
+            $leadsArray[] = 'https://bbeducation.amocrm.ru/leads/detail/'.$leadId;
         }
 
-        return $countSuccess;
+        return array_merge([
+            'Сделки клиента',
+            '---------------------------',
+            'Всего сделок : '.$segment->count_leads,
+            'Куплено на сумму : '.number_format($segment->sale),
+            '---------------------------',
+            'Сделки Основной воронки :',
+        ], $leadsArray);
     }
 }

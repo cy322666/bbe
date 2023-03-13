@@ -19,10 +19,10 @@ class Client
     public function __construct($account)
     {
         $this->storage = new EloquentStorage([
-            'domain'    => $account->subdomain ?? null,
-            'client_id' => $account->client_id ?? null,
-            'client_secret' => $account->client_secret ?? null,
-            'redirect_uri'  => \config('services.amocrm.redirect_uri'),
+            'domain'    => $account->subdomain,
+            'client_id' => $account->client_id,
+            'client_secret' => $account->client_secret,
+            'redirect_uri'  => $account->redirect_uri,
         ], $account);
 
         \Ufee\Amo\Services\Account::setCacheTime(1);
@@ -44,7 +44,7 @@ class Client
             'domain'        => $this->storage->model->subdomain,
             'client_id'     => $this->storage->model->client_id,
             'client_secret' => $this->storage->model->client_secret,
-            'redirect_uri'  => \config('services.amocrm.redirect_uri'),
+            'redirect_uri'  => $this->storage->model->redirect_uri,
         ]);
 
         try {
