@@ -10,7 +10,7 @@ class SegmentController extends Controller
     public function hook(Request $request)
     {
         $segment = Segment::query()->create([
-            'lead_id'    => $request->leads[0]['add']['id'],
+            'lead_id' => $request->leads[0]['add']['id'],
         ]);
 
         \App\Jobs\Segment::dispatch($segment);

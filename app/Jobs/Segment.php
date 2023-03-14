@@ -17,8 +17,6 @@ class Segment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private Client $amoApi;
-
     public function __construct(public \App\Models\Segment $segment) {}
 
     //главная воронка
@@ -29,9 +27,9 @@ class Segment implements ShouldQueue
      */
     public function handle()
     {
-        $this->amoApi = (new Client(Account::query()->first()))->init();
+        $amoApi = (new Client(Account::query()->first()))->init();
 
-        $lead = $this->amoApi
+        $lead = $amoApi
             ->service
             ->leads()
             ->find($this->segment->lead_id);
@@ -92,6 +90,6 @@ class Segment implements ShouldQueue
             'Куплено на сумму : '.number_format($segment->sale),
             '---------------------------',
             'Сделки Основной воронки :',
-        ], $leadsArray);
+        ], $leadsArray ?? []);
     }
 }
