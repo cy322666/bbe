@@ -13,7 +13,7 @@ class SegmentController extends Controller
         Log::info(__METHOD__, $request->toArray());
 
         $segment = Segment::query()->create([
-            'lead_id' => $request->leads[0]['add']['id'],
+            'lead_id' => $request->toArray()['leads'][0]['add']['id'],
         ]);
 
         \App\Jobs\Segment::dispatch($segment);
