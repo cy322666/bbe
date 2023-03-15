@@ -16,6 +16,7 @@ class SegmentController extends Controller
 
             $segment = Segment::query()->create([
                 'lead_id' => $request->toArray()['leads']['add'][0]['id'],
+                'status'  => 0,
             ]);
 
             \App\Jobs\Segment::dispatch($segment);
