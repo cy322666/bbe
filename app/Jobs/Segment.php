@@ -65,7 +65,8 @@ class Segment implements ShouldQueue
         $this->segment->fill([
             'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
             'sale'   => !empty($leadsArray) ? $leadsArray['sale_pipeline']['sale'] : 0,
-            'status' => 1,
+            'contact_id'  => !empty($contact) ? $contact->id : null,
+            'status'      => 1,
             'count_leads' => !empty($leads) ? count($leads) : 1,
         ]);
         $this->segment->save();
