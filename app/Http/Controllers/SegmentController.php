@@ -10,12 +10,18 @@ class SegmentController extends Controller
 {
     public function hook(Request $request)
     {
-        Log::info(__METHOD__, $request->toArray());
+        try {
+            Log::info(__METHOD__, $request->toArray());
 
-        $segment = Segment::query()->create([
-            'lead_id' => $request->toArray()['leads'][0]['add']['id'],
-        ]);
+            $segment = Segment::query()->create([
+                'lead_id' => $request->toArray()['leads'][0]['add']['id'],
+            ]);
 
-        \App\Jobs\Segment::dispatch($segment);
+            \App\Jobs\Segment::dispatch($segment);
+
+        } catch (\Throwable $exception) {
+
+            Log::error(__METHOD__,[$exception->getMessage().' '.$exception->getFile().' '.$exception->getLine()]);
+        }
     }
 }
