@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Account;
 use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,7 +24,7 @@ class Segment implements ShouldQueue
     private static int $pipleineId = 3342043;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function handle()
     {
