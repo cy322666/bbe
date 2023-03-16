@@ -79,6 +79,11 @@ class Segment implements ShouldQueue
         $note->save();
     }
 
+    public function backoff(): array
+    {
+        return [1, 5, 10];
+    }
+
     private static function buildText(\App\Models\Segment $segment, $leadIds) : array
     {
         foreach ($leadIds as $key => $leadId) {
