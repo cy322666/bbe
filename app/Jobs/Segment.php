@@ -23,6 +23,7 @@ class Segment implements ShouldQueue
     //главная воронка
     private static int $pipleineId = 3342043;
 
+    public int $tries = 3;
     /**
      * @throws Exception
      */
