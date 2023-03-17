@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OneCController;
 use App\Http\Controllers\SegmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('segment', [SegmentController::class, 'hook']);
+
+Route::post('pays/hook', [OneCController::class, 'hook']);
