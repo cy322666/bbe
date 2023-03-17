@@ -23,4 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('segment', [SegmentController::class, 'hook']);
 
-Route::post('pays/hook', [OneCController::class, 'hook']);
+Route::post('pays/hook', [OneCController::class, 'pay']);
