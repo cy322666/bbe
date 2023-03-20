@@ -19,7 +19,7 @@ class SegmentController extends Controller
                 'status'  => 0,
             ]);
 
-            \App\Jobs\Segment::dispatch($segment);
+            \App\Jobs\Segment::dispatch($segment)->delay(5);
 
         } catch (Throwable $exception) {
 

@@ -57,8 +57,6 @@ class Segment implements ShouldQueue
                 $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
                 $leadsArray['count_leads']++;
             }
-
-            $text = implode("\n", static::buildText($this->segment, $leadsArray['sale_pipeline']['leads']));
 //                $leadsArray[$lead['pipeline_id']] = $body;
 //                $leadsArray[$lead['pipeline_id']]['ids'] = array_merge($leadsArray[$lead['pipeline_id']]['ids'], [$lead['id']]);
         }
@@ -71,6 +69,8 @@ class Segment implements ShouldQueue
             'count_leads' => !empty($leads) ? count($leads) : 1,
         ]);
         $this->segment->save();
+
+        $text = implode("\n", static::buildText($this->segment, $leadsArray['sale_pipeline']['leads']));
 
         $note = $lead->createNote(4);
         $note->text = $text ?? null;
