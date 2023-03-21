@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\TgProxy;
 use App\Services\amoCRM\Client;
-use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
 {
-    /**
-     * @throws Exception
-     */
     public function datePay(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
