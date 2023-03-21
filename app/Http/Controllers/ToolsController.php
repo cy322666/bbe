@@ -27,7 +27,7 @@ class ToolsController extends Controller
             ->leads()
             ->find($leadId);
 
-        $lead->cf('Дата оплаты')->setValue(Carbon::now()->format('Y-m-d'));
+        $lead->cf('Дата оплаты')->setDate('Y-m-d');
         $lead->save();
     }
 }
