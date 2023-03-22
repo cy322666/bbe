@@ -20,10 +20,10 @@ class Segment implements ShouldQueue
 
     public function __construct(public \App\Models\Segment $segment) {}
 
-    //главная воронка
-    private static int $pipleineId = 3342043;
+    private static int $pipelineId1 = 3342043; //главная
+    private static int $pipelineId2 = 6540894; //теплая
 
-    public int $tries = 3;
+    public int $tries = 1;
     /**
      * @throws Exception
      */
@@ -43,18 +43,25 @@ class Segment implements ShouldQueue
             $leads = $contact->leads->toArray();
 
             $leadsArray = [
-                'sale_pipeline' => ['leads' => [], 'sale' => 0],
-                'other'         => ['leads' => [], 'sale' => 0],
-                'count_leads'   => count($leads),
+                'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'count_leads'    => count($leads),
             ];
 
             foreach ($leads as $leadArray) {
 
-                $key = $leadArray['pipeline_id'] == static::$pipleineId ? 'sale_pipeline' : 'other';
+                $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
+
+                if (!$key) {
+
+                    $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
+                }
 
                 $leadsArray[$key]['leads'][] = $leadArray['id'];
 
                 $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
+                $leadsArray[$key]['active'] += $leadArray['status_id'] == 142 ? 1 : 0;
                 $leadsArray['count_leads']++;
             }
 //                $leadsArray[$lead['pipeline_id']] = $body;
@@ -79,25 +86,56 @@ class Segment implements ShouldQueue
         $note->save();
     }
 
-    public function backoff(): array
-    {
-        return [1, 5, 10];
-    }
+//    public function backoff(): array
+//    {
+//        return [1, 5, 10];
+//    }
 
-    private static function buildText(\App\Models\Segment $segment, $leadIds) : array
+    private static function buildText(array $leadsArray): array
     {
-        foreach ($leadIds as $key => $leadId) {
+        $sale1 = []; $sale2 = [];
 
-            $leadsArray[] = 'https://bbeducation.amocrm.ru/leads/detail/'.$leadId;
+        if (count($leadsArray['sale_pipeline1']['leads']) > 0) {
+
+            $sale1 = [
+                    'Сделки Основной воронки :',
+                    'Активных : '.$leadsArray['sale_pipeline1']['active'],
+                    'Куплено на сумму : '.number_format($leadsArray['sale_pipeline1']['sale']),
+                    'Всего : '.count($leadsArray['sale_pipeline1']['leads']),
+                    '---------------------------',
+                ] + static::buildLinks($leadsArray['sale_pipeline1']['leads']);
+        }
+
+        if (count($leadsArray['sale_pipeline2']['leads']) > 0) {
+
+            $sale2 = [
+                    'Сделки Теплой воронки :',
+                    'Активных : '.$leadsArray['sale_pipeline2']['active'],
+                    'Куплено на сумму : '.number_format($leadsArray['sale_pipeline2']['sale']),
+                    'Всего : '.count($leadsArray['sale_pipeline2']['leads']),
+                    '---------------------------',
+                ] + static::buildLinks($leadsArray['sale_pipeline2']['leads']);
         }
 
         return array_merge([
             'Сделки клиента',
             '---------------------------',
-            'Всего сделок : '.$segment->count_leads,
-            'Куплено на сумму : '.number_format($segment->sale),
+        ], $sale1, $sale2, [
             '---------------------------',
-            'Сделки Основной воронки :',
-        ], $leadsArray ?? []);
+            'Всего сделок : '.$leadsArray['count_leads']
+        ]);
+    }
+
+
+    private static function buildLinks($leadIds) : array
+    {
+        $leadsArray = [];
+
+        foreach ($leadIds as $key => $leadId) {
+
+            $leadsArray[] = 'https://bbeducation.amocrm.ru/leads/detail/'.$leadId;
+        }
+
+        return $leadsArray;
     }
 }
