@@ -14,12 +14,17 @@ class SegmentController extends Controller
         try {
             Log::info(__METHOD__, $request->toArray());
 
-            $segment = Segment::query()->create([
-                'lead_id' => $request->toArray()['leads']['add'][0]['id'],
-                'status'  => 0,
+            $leadId = $request->toArray()['leads']['add'][0]['id'];
+
+            if (!Segment::query()->where('lead_id', $leadId)->exists()) {
+
+                $segment = Segment::query()->create([
+                    'lead_id' => $leadId,
+                    'status'  => 0,
             ]);
 
-            \App\Jobs\Segment::dispatch($segment)->delay(10);
+                \App\Jobs\Segment::dispatch($segment)->delay(10);
+            }
 
         } catch (Throwable $exception) {
 
