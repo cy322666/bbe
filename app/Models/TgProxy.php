@@ -9,6 +9,8 @@ class TgProxy extends Model
 {
     use HasFactory;
 
+    protected $table = 'telegram_proxies';
+
     protected $fillable = [
         'status',
         'body',
