@@ -19,6 +19,8 @@ class TelegramController extends Controller
 
     public function create(Request $request)
     {
+        Log::info(__METHOD__, $request->toArray());
+
         $proxy = TgProxy::query()
             ->where('created_at', '>', Carbon::now()->subMinutes(5))
             ->where('status', 0)
