@@ -21,6 +21,7 @@ class TelegramController extends Controller
     {
         $proxy = TgProxy::query()
             ->where('created_at', '>', Carbon::now()->subMinutes(5))
+            ->where('status', 0)
             ->first();
 
         if ($proxy) {

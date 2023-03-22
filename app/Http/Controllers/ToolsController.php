@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\TgProxy;
 use App\Services\amoCRM\Client;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +24,7 @@ class ToolsController extends Controller
             ->leads()
             ->find($leadId);
 
-        $lead->cf('Дата оплаты')->setDate('Y-m-d');
+        $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
         $lead->save();
     }
 }
