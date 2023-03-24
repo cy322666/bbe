@@ -31,6 +31,12 @@ class Segment implements ShouldQueue
     {
         $amoApi = (new Client(Account::query()->first()))->init();
 
+        $leadsArray = [
+            'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
+            'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
+            'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
+        ];
+
         $lead = $amoApi
             ->service
             ->leads()
@@ -43,9 +49,6 @@ class Segment implements ShouldQueue
             $leads = $contact->leads->toArray();
 
             $leadsArray = [
-                'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
                 'count_leads'    => count($leads),
             ];
 
@@ -70,7 +73,7 @@ class Segment implements ShouldQueue
 
         $this->segment->fill([
             'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
-            'sale'   => !empty($leadsArray) ? $leadsArray['sale_pipeline']['sale'] : 0,
+            'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
             'contact_id'  => !empty($contact) ? $contact->id : null,
             'status'      => 1,
             'count_leads' => !empty($leads) ? count($leads) : 1,
