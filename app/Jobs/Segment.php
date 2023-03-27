@@ -29,70 +29,67 @@ class Segment implements ShouldQueue
      */
     public function handle()
     {
-        $amoApi = (new Client(Account::query()->first()))->init();
+        try {
+            $amoApi = (new Client(Account::query()->first()))->init();
 
-        $leadsArray = [
-            'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
-            'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
-            'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
-        ];
+            $lead = $amoApi
+                ->service
+                ->leads()
+                ->find($this->segment->lead_id);
 
-        $lead = $amoApi
-            ->service
-            ->leads()
-            ->find($this->segment->lead_id);
+            if ($lead->contact !== null) {
 
-        if ($lead->contact !== null) {
+                $contact = $lead->contact;
 
-            $contact = $lead->contact;
+                $leads = $contact->leads->toArray();
 
-            $leads = $contact->leads->toArray();
+                $leadsArray = [
+                    'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                    'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                    'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
+                    'count_leads'    => count($leads),
+                ];
 
-            $leadsArray = [
-                'count_leads'    => count($leads),
-            ];
+                foreach ($leads as $leadArray) {
 
-            foreach ($leads as $leadArray) {
+                    $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
 
-                $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
+                    if (!$key) {
 
-                if (!$key) {
+                        $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
+                    }
 
-                    $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
+                    $leadsArray[$key]['leads'][] = $leadArray['id'];
+
+                    $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
+                    $leadsArray[$key]['active'] += $leadArray['status_id'] !== 142 ? 1 : 0;
                 }
-
-                $leadsArray[$key]['leads'][] = $leadArray['id'];
-
-                $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
-                $leadsArray[$key]['active'] += $leadArray['status_id'] == 142 ? 1 : 0;
-                $leadsArray['count_leads']++;
             }
-//                $leadsArray[$lead['pipeline_id']] = $body;
-//                $leadsArray[$lead['pipeline_id']]['ids'] = array_merge($leadsArray[$lead['pipeline_id']]['ids'], [$lead['id']]);
+
+            $this->segment->fill([
+                'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
+                'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
+                'contact_id'  => !empty($contact) ? $contact->id : null,
+                'status'      => 1,
+                'count_leads' => !empty($leads) ? count($leads) : 1,
+            ]);
+
+            $text = implode("\n", static::buildText($leadsArray));
+
+            $note = $lead->createNote(4);
+            $note->text = $text ?? null;
+            $note->element_type = 2;
+            $note->element_id = $lead->id;
+            $note->save();
+
+        } catch (\Throwable $exception) {
+
+            $this->segment->error = $exception->getMessage().' '.$exception->getFile().' '.$exception->getLine();
+
+        } finally {
+            $this->segment->save();
         }
-
-        $this->segment->fill([
-            'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
-            'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
-            'contact_id'  => !empty($contact) ? $contact->id : null,
-            'status'      => 1,
-            'count_leads' => !empty($leads) ? count($leads) : 1,
-        ]);
-        $this->segment->save();
-
-        $text = implode("\n", static::buildText($this->segment, $leadsArray['sale_pipeline']['leads']));
-
-        $note = $lead->createNote(4);
-        $note->text = $text ?? null;
-        $note->element_type = 2;
-        $note->element_id = $lead->id;
-        $note->save();
     }
-
-//    public function backoff(): array
-//    {
-//        return [1, 5, 10];
-//    }
 
     private static function buildText(array $leadsArray): array
     {
@@ -100,24 +97,24 @@ class Segment implements ShouldQueue
 
         if (count($leadsArray['sale_pipeline1']['leads']) > 0) {
 
-            $sale1 = [
-                    'Сделки Основной воронки :',
-                    'Активных : '.$leadsArray['sale_pipeline1']['active'],
-                    'Куплено на сумму : '.number_format($leadsArray['sale_pipeline1']['sale']),
-                    'Всего : '.count($leadsArray['sale_pipeline1']['leads']),
-                    '---------------------------',
-                ] + static::buildLinks($leadsArray['sale_pipeline1']['leads']);
+            $sale1 = array_merge([
+                'Основная воронка :',
+                'Активных : '.$leadsArray['sale_pipeline1']['active'],
+                'Куплено на сумму : '.number_format($leadsArray['sale_pipeline1']['sale']),
+                'Всего : '.count($leadsArray['sale_pipeline1']['leads']),
+                '---------------------------',
+            ], static::buildLinks($leadsArray['sale_pipeline1']['leads']));
         }
 
         if (count($leadsArray['sale_pipeline2']['leads']) > 0) {
 
-            $sale2 = [
-                    'Сделки Теплой воронки :',
-                    'Активных : '.$leadsArray['sale_pipeline2']['active'],
-                    'Куплено на сумму : '.number_format($leadsArray['sale_pipeline2']['sale']),
-                    'Всего : '.count($leadsArray['sale_pipeline2']['leads']),
-                    '---------------------------',
-                ] + static::buildLinks($leadsArray['sale_pipeline2']['leads']);
+            $sale2 = array_merge([
+                'Теплая воронка :',
+                'Активных : '.$leadsArray['sale_pipeline2']['active'],
+                'Куплено на сумму : '.number_format($leadsArray['sale_pipeline2']['sale']),
+                'Всего : '.count($leadsArray['sale_pipeline2']['leads']),
+                '---------------------------',
+            ], static::buildLinks($leadsArray['sale_pipeline2']['leads']));
         }
 
         return array_merge([
