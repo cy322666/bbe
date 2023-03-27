@@ -21,16 +21,6 @@ class TelegramController extends Controller
     {
         Log::info(__METHOD__, $request->toArray());
 
-        $proxy = TgProxy::query()
-            ->where('created_at', '>', Carbon::now()->subMinutes(5))
-            ->where('status', 0)
-            ->first();
-
-        if ($proxy) {
-
-            //TODO
-
-        } else
-            Log::warning(__METHOD__.' : PROXY NOT FOUND');
+        \App\Jobs\TgProxy::dispatch($request);
     }
 }
