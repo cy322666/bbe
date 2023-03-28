@@ -12,7 +12,7 @@ class TelegramController extends Controller
     public function proxy(Request $request)
     {
         TgProxy::query()->create([
-            'referrer' => $request->server('HTTP_REFERER'),
+            'referrer' => json_encode($request->server('HTTP_REFERER')),
             'body'     => json_encode($request->toArray()),
         ]);
     }
