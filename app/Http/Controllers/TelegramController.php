@@ -6,6 +6,7 @@ use App\Models\TgProxy;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class TelegramController extends Controller
 {
@@ -15,12 +16,14 @@ class TelegramController extends Controller
             'referrer' => json_encode($request->server('HTTP_REFERER')),
             'body'     => json_encode($request->toArray()),
         ]);
+
+        return Redirect::to('https://t.me/bbe_help_bot');
     }
 
     public function create(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
 
-        \App\Jobs\TgProxy::dispatch($request);
+        \App\Jobs\TgProxy::dispatch($request->toArray()['leads']['add'][0]['id']);
     }
 }

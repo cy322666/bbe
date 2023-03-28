@@ -23,7 +23,7 @@ class TgProxy implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public Request $request) {}
+    public function __construct(public int $leadId) {}
 
     public function handle()
     {
@@ -31,8 +31,6 @@ class TgProxy implements ShouldQueue
             $amoApi = (new Client(Account::query()->first()))->init();
 
             $amoApi->service->queries->setDelay(0.5);
-
-            $leadId = $this->request->toArray()['leads']['add'][0]['id'];
 
             $proxy = \App\Models\TgProxy::query()
                 ->where('created_at', '>', Carbon::now()->subMinutes(10))
@@ -43,7 +41,7 @@ class TgProxy implements ShouldQueue
 
                 $lead = $amoApi->service
                     ->leads()
-                    ->find($leadId);
+                    ->find($this->leadId);
 
                 $body = json_decode($proxy->body);
 
@@ -54,7 +52,7 @@ class TgProxy implements ShouldQueue
                 $lead->cf('utm_campaign')->setValue($body->utm_campaign ?? null);
                 $lead->save();
 
-                $proxy->lead_id = $leadId;
+                $proxy->lead_id = $this->leadId;
                 $proxy->contact_id = $lead->contact->id ?? null;
                 $proxy->status = 1;
 
