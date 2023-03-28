@@ -32,6 +32,8 @@ class Segment implements ShouldQueue
         try {
             $amoApi = (new Client(Account::query()->first()))->init();
 
+            $amoApi->service->queries->setDelay(0.5);
+
             $lead = $amoApi
                 ->service
                 ->leads()

@@ -30,6 +30,8 @@ class TgProxy implements ShouldQueue
         try {
             $amoApi = (new Client(Account::query()->first()))->init();
 
+            $amoApi->service->queries->setDelay(0.5);
+
             $leadId = $this->request->toArray()['leads']['add'][0]['id'];
 
             $proxy = \App\Models\TgProxy::query()
