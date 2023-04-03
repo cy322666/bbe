@@ -64,7 +64,10 @@ class TgProxy implements ShouldQueue
             $proxy->error = $exception->getMessage().' '.$exception->getFile().' '.$exception->getLine();
 
         } finally {
-            $proxy->save();
+            if (!empty($proxy)) {
+
+                $proxy->save();
+            }
         }
     }
 }

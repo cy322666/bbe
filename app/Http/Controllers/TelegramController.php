@@ -12,6 +12,8 @@ class TelegramController extends Controller
 {
     public function proxy(Request $request)
     {
+        Log::info(__METHOD__, [$request->server(), $request->all()]);
+
         TgProxy::query()->create([
             'referrer' => json_encode($request->server('HTTP_REFERER')),
             'body'     => json_encode($request->toArray()),
