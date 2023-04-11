@@ -33,7 +33,7 @@ class TgProxy implements ShouldQueue
             $amoApi->service->queries->setDelay(0.5);
 
             $proxy = \App\Models\TgProxy::query()
-                ->where('created_at', '>', Carbon::now()->subMinutes(10))
+                ->where('created_at', '>', Carbon::now()->subMinutes(15))
                 ->where('status', 0)
                 ->first();
 
