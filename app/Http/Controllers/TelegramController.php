@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\TgProxy;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class TelegramController extends Controller
 {
-    public function proxy(Request $request)
+    public function proxy(Request $request): RedirectResponse
     {
         Log::info(__METHOD__, [$request->server(), $request->all()]);
 
