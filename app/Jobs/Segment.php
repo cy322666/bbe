@@ -65,25 +65,26 @@ class Segment implements ShouldQueue
                     $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
                     $leadsArray[$key]['active'] += $leadArray['status_id'] !== 142 ? 1 : 0;
                 }
+
+                $this->segment->fill([
+                    'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
+                    'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
+                    'contact_id'  => !empty($contact) ? $contact->id : null,
+                    'status'      => 1,
+                    'count_leads' => !empty($leads) ? count($leads) : 1,
+                ]);
+
+                $text = implode("\n", static::buildText($leadsArray));
+
+                $note = $lead->createNote(4);
+                $note->text = $text ?? null;
+                $note->element_type = 2;
+                $note->element_id = $lead->id;
+                $note->save();
+
+
+                $this->segment->save();
             }
-
-            $this->segment->fill([
-                'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
-                'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
-                'contact_id'  => !empty($contact) ? $contact->id : null,
-                'status'      => 1,
-                'count_leads' => !empty($leads) ? count($leads) : 1,
-            ]);
-
-            $text = implode("\n", static::buildText($leadsArray));
-
-            $note = $lead->createNote(4);
-            $note->text = $text ?? null;
-            $note->element_type = 2;
-            $note->element_id = $lead->id;
-            $note->save();
-
-            $this->segment->save();
     }
 
     private static function buildText(array $leadsArray): array
