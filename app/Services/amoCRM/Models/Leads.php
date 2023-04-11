@@ -6,6 +6,7 @@ namespace App\Services\amoCRM\Models;
 
 use App\Services\amoCRM\Client;
 use Illuminate\Support\Facades\Log;
+use Ufee\Amo\Models\Lead;
 
 abstract class Leads
 {
@@ -106,7 +107,7 @@ abstract class Leads
         }
     }
 
-    public static function get($client, $id)
+    public static function get($client, $id) : ?Lead
     {
         try {
 
