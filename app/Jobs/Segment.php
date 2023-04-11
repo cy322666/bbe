@@ -29,7 +29,6 @@ class Segment implements ShouldQueue
      */
     public function handle()
     {
-        try {
             $amoApi = (new Client(Account::query()->first()))->init();
 
             $amoApi->service->queries->setDelay(0.5);
@@ -84,13 +83,7 @@ class Segment implements ShouldQueue
             $note->element_id = $lead->id;
             $note->save();
 
-        } catch (\Throwable $exception) {
-
-            $this->segment->error = $exception->getMessage().' '.$exception->getFile().' '.$exception->getLine();
-
-        } finally {
             $this->segment->save();
-        }
     }
 
     private static function buildText(array $leadsArray): array
