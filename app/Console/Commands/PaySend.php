@@ -133,6 +133,9 @@ class PaySend extends Command
                 ], [
                     "field_id" => 692295,
                     "values"   => [["value"   => 1]],
+                ], [
+                    "field_id" => 694821,
+                    "values"   => [["value"   => $pay->payment_type]],
                 ],
                 [
                     "field_id" => 694885,
