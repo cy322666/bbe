@@ -54,6 +54,7 @@ class Client
 
         } catch (Exception $exception) {
 
+            Log::error(__METHOD__, [$exception->getMessage().' '.$exception->getFile().' '.$exception->getLine()]);
             if ($this->storage->model->refresh_token) {
 
                 $oauth = $this->service->refreshAccessToken($this->storage->model->refresh_token);
