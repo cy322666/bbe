@@ -32,7 +32,7 @@ class PaySend extends Command
      * @return int
      * @throws \Exception
      */
-    public function handle()
+    public function handle(): int
     {
         $pay = Pay::query()->find($this->argument('pay'));
 
@@ -102,8 +102,6 @@ class PaySend extends Command
         if ($check) {
 
             $checkId = $check->_embedded->elements[0]->id;
-
-            Log::info(__METHOD__.' '.$checkId);
 
             $pay->check_id = $checkId;
             $pay->save();

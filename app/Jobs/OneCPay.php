@@ -25,7 +25,7 @@ class OneCPay implements ShouldQueue
     {
         $amoApi = (new Client(Account::query()->first()))->init();
 
-        $amoApi->service->queries->setDelay(0.5);
+        $amoApi->service->queries->setDelay(1);
 
         $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
