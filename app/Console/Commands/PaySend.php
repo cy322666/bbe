@@ -38,56 +38,6 @@ class PaySend extends Command
 
         $amoApi = (new Client(Account::query()->first()))->init();
 
-        Log::info(__METHOD__, [
-            [
-                "field_id" => 692281,
-                "values"   => [[
-                    "value"   => 'Оплачен',
-                    "enum_id" => 788455,
-                    "enum_code" => "paid",
-                ]],
-            ], [
-                "field_id" => 692285,
-                "values"   => [[
-                    "value"   => [
-                        "entity_id"   => $pay->contact_id,
-                        "entity_type" => "contacts",
-                    ]
-                ]],
-            ], [
-                "field_id" => 692289,
-                "values"   => [[
-                    "value"   => Carbon::parse($pay->datetime)->timestamp,
-                ]],
-            ], [
-                "field_id" => 692291,
-                "values"   => [[
-                    "value"   => [
-                        'sku' => $pay->code,
-                        'description'    => $pay->title,
-                        'unit_price'     => $pay->sum,
-                        "quantity"       => 1,
-                        "unit_type"      => "шт.",
-                        'vat_rate_value' => 20,
-                        "vat_rate_id"    => 0,
-                        "external_uid"   => $pay->order_id,
-                    ],
-                ]],
-            ], [
-                "field_id" => 692293,
-                "values"   => [[
-                    "value"   => $pay->email,
-                ]],
-            ], [
-                "field_id" => 692295,
-                "values"   => [["value"   => 1]],
-            ],
-            [
-                "field_id" => 694885,
-                "values"   => [["value"   => $pay->return == true ? 'Да' : 'Нет']],
-            ],
-        ]);
-
         $data = [[
             "name" => 'Оплата №'.$pay->number,
             "custom_fields_values" => [
@@ -102,7 +52,7 @@ class PaySend extends Command
                     "field_id" => 692285,
                     "values"   => [[
                         "value"   => [
-                            "entity_id"   => $pay->contact_id,
+                            "entity_id"   => (int)$pay->contact_id,
                             "entity_type" => "contacts",
                         ]
                     ]],
@@ -122,7 +72,7 @@ class PaySend extends Command
                             "unit_type"      => "шт.",
                             'vat_rate_value' => 20,
                             "vat_rate_id"    => 0,
-                            "external_uid"   => $pay->order_id,
+                            "external_uid"   => (string)$pay->order_id,
                         ],
                     ]],
                 ], [
@@ -133,7 +83,8 @@ class PaySend extends Command
                 ], [
                     "field_id" => 692295,
                     "values"   => [["value"   => 1]],
-                ], [
+                ],
+                [
                     "field_id" => 694821,
                     "values"   => [["value"   => $pay->payment_type]],
                 ],
