@@ -16,20 +16,27 @@ class OneCController extends Controller
 
         foreach ($request->Payments as $payment) {
 
-            $pay = Pay::query()->create([
-                'order_id'  => $payment['Order_ID'],
-                'number'    => $payment['Number'],
-                'datetime'  => Carbon::parse($payment['Date'])->format('Y-m-d H:i:s'),
-                'title'     => $payment['Сontract'],
-                'email'     => $payment['Mail'],
-                'code'      => $payment['Code'],
-                'sum'       => $payment['Sum'],
-                'return'    => $payment['Return'],
-                'status'    => 0,
-                'payment_type' => $payment['Payment_type'],
-            ]);
+            try {
+                $pay = Pay::query()->create([
+                    'order_id'  => $payment['Order_ID'],
+                    'number'    => $payment['Number'],
+                    'datetime'  => Carbon::parse($payment['Date'])->format('Y-m-d H:i:s'),
+                    'title'     => $payment['Сontract'],
+                    'email'     => $payment['Mail'],
+                    'code'      => $payment['Code'],
+                    'sum'       => $payment['Sum'],
+                    'return'    => $payment['Return'],
+                    'status'    => 0,
+                    'payment_type' => $payment['Payment_type'],
+                ]);
 
-            OneCPay::dispatch($pay)->delay(5);
+                OneCPay::dispatch($pay)->delay(5);
+
+            } catch (\Throwable $e) {
+
+                continue;
+            }
+
         }
     }
 }
