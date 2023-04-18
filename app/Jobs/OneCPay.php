@@ -36,18 +36,19 @@ class OneCPay implements ShouldQueue
                 return $lead->status_id == 142 && $lead->pipeline_id == 3342043;
         });
 
-        $lead = $leads->count() > 0 ? $leads->first() : Leads::create($contact, [
-            'status_id'   => 142,
-            'pipeline_id' => 3342043,
-        ], 'Новая сделка из 1С');
+        $lead = $leads->count() > 0 ? $leads->first() : null;
 
-        $this->pay->lead_id = $lead->id;
-        $this->pay->contact_id = $contact->id;
-        $this->pay->save();
+        if ($lead) {
 
-        $result = Artisan::call('1c:pay-send '.$this->pay->id);
 
-        $this->pay->status = $result;
-        $this->pay->save();
+            $this->pay->lead_id = $lead->id;
+            $this->pay->contact_id = $contact->id;
+            $this->pay->save();
+
+            $result = Artisan::call('1c:pay-send '.$this->pay->id);
+
+            $this->pay->status = $result;
+            $this->pay->save();
+        }
     }
 }
