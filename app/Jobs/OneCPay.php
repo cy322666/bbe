@@ -29,26 +29,31 @@ class OneCPay implements ShouldQueue
 
         $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
-        $leads = $contact
-            ->leads
-            ->filter(function($lead) {
+        if ($contact) {
 
-                return $lead->status_id == 142 && $lead->pipeline_id == 3342043;
-        });
+            $leads = $contact
+                ->leads
+                ->filter(function($lead) {
 
-        $lead = $leads->count() > 0 ? $leads->first() : null;
+                    return $lead->status_id == 142 && $lead->pipeline_id == 3342043;
+                });
 
-        if ($lead) {
+            $lead = $leads->count() > 0 ? $leads->first() : null;
 
+            if ($lead) {
 
-            $this->pay->lead_id = $lead->id;
-            $this->pay->contact_id = $contact->id;
-            $this->pay->save();
+                $this->pay->lead_id = $lead->id;
+                $this->pay->contact_id = $contact->id;
+                $this->pay->save();
 
-            $result = Artisan::call('1c:pay-send '.$this->pay->id);
+                $result = Artisan::call('1c:pay-send '.$this->pay->id);
 
-            $this->pay->status = $result;
-            $this->pay->save();
-        }
+                $this->pay->status = $result;
+            } else
+                $this->pay->status = 4;
+        } else
+            $this->pay->status = 3;
+
+        $this->pay->save();
     }
 }
