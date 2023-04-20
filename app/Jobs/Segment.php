@@ -29,62 +29,61 @@ class Segment implements ShouldQueue
      */
     public function handle()
     {
-            $amoApi = (new Client(Account::query()->first()))->init();
+        $amoApi = (new Client(Account::query()->first()))->init();
 
-            $amoApi->service->queries->setDelay(0.5);
+        $amoApi->service->queries->setDelay(1);
 
-            $lead = $amoApi
-                ->service
-                ->leads()
-                ->find($this->segment->lead_id);
+        $lead = $amoApi
+            ->service
+            ->leads()
+            ->find($this->segment->lead_id);
 
-            if ($lead->contact !== null) {
+        if ($lead->contact !== null) {
 
-                $contact = $lead->contact;
+            $contact = $lead->contact;
 
-                $leads = $contact->leads->toArray();
+            $leads = $contact->leads->toArray();
 
-                $leadsArray = [
-                    'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                    'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                    'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
-                    'count_leads'    => count($leads),
-                ];
+            $leadsArray = [
+                'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
+                'count_leads'    => count($leads),
+            ];
 
-                foreach ($leads as $leadArray) {
+            foreach ($leads as $leadArray) {
 
-                    $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
+                $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
 
-                    if (!$key) {
+                if (!$key) {
 
-                        $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
-                    }
-
-                    $leadsArray[$key]['leads'][] = $leadArray['id'];
-
-                    $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
-                    $leadsArray[$key]['active'] += $leadArray['status_id'] !== 142 ? 1 : 0;
+                    $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
                 }
 
-                $this->segment->fill([
-                    'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
-                    'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
-                    'contact_id'  => !empty($contact) ? $contact->id : null,
-                    'status'      => 1,
-                    'count_leads' => !empty($leads) ? count($leads) : 1,
-                ]);
+                $leadsArray[$key]['leads'][] = $leadArray['id'];
 
-                $text = implode("\n", static::buildText($leadsArray));
-
-                $note = $lead->createNote(4);
-                $note->text = $text ?? null;
-                $note->element_type = 2;
-                $note->element_id = $lead->id;
-                $note->save();
-
-
-                $this->segment->save();
+                $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
+                $leadsArray[$key]['active'] += $leadArray['status_id'] !== 142 ? 1 : 0;
             }
+
+            $this->segment->fill([
+                'body'   => !empty($leadsArray) ? json_encode($leadsArray) : null,
+                'sale'   => $leadsArray['sale_pipeline1']['sale'] + $leadsArray['sale_pipeline2']['sale'],
+                'contact_id'  => !empty($contact) ? $contact->id : null,
+                'status'      => 1,
+                'count_leads' => !empty($leads) ? count($leads) : 1,
+            ]);
+
+            $text = implode("\n", static::buildText($leadsArray));
+
+            $note = $lead->createNote(4);
+            $note->text = $text ?? null;
+            $note->element_type = 2;
+            $note->element_id = $lead->id;
+            $note->save();
+
+            $this->segment->save();
+        }
     }
 
     private static function buildText(array $leadsArray): array
