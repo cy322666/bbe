@@ -21,7 +21,7 @@ class SegmentController extends Controller
                 $segment = Segment::query()->create([
                     'lead_id' => $leadId,
                     'status'  => 0,
-            ]);
+                ]);
 
                 \App\Jobs\Segment::dispatch($segment)->delay(10);
             }

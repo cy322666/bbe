@@ -136,9 +136,8 @@ class PaySend extends Command
             $lead->cf('Долг')->setValue($duty);
             $lead->cf('Оплачено полностью')->setValue($full);
             $lead->save();
+        }
 
-            return 1;
-        } else
-            return 2;
+        return 1;
     }
 }
