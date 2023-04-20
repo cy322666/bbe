@@ -82,15 +82,15 @@ class PaySend extends Command
                     ]],
                 ], [
                     "field_id" => 692295,
-                    "values"   => [["value"   => 1]],
+                    "values"   => [["value" => $pay->sum]],
                 ],
                 [
                     "field_id" => 694821,
-                    "values"   => [["value"   => $pay->payment_type]],
+                    "values"   => [["value" => $pay->payment_type]],
                 ],
                 [
                     "field_id" => 694885,
-                    "values"   => [["value"   => $pay->return == true ? 'Да' : 'Нет']],
+                    "values"   => [["value" => $pay->return == true ? 'Да' : 'Нет']],
                 ],
             ]
         ]];
@@ -106,8 +106,7 @@ class PaySend extends Command
             $pay->check_id = $checkId;
             $pay->save();
 
-            $amoApi
-                ->service
+            $amoApi->service
                 ->ajax()->post('/api/v4/leads/'.$pay->lead_id.'/link', [[
                     "to_entity_id"   => $checkId,
                     "to_entity_type" => "catalog_elements",
@@ -117,8 +116,29 @@ class PaySend extends Command
                     ]
                 ]], [], 'json');
 
-            return CommandAlias::SUCCESS;
+            $sum = Pay::query()
+                ->where('lead_id', $pay->lead_id)
+                ->sum('sum');
+
+            $lead = $amoApi->service
+                ->leads()
+                ->find($pay->lead_id);
+
+            if ($lead->sale == $sum) {
+
+                $duty = 0;
+                $full = 'Да';
+            } else {
+                $duty = $lead->sale - $sum;
+                $full = 'Нет';
+            }
+
+            $lead->cf('Долг')->setValue($duty);
+            $lead->cf('Оплачено полностью')->setValue($full);
+            $lead->save();
+
+            return 1;
         } else
-            return CommandAlias::FAILURE;
+            return 2;
     }
 }
