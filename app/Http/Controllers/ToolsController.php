@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ReturnLead;
 use App\Models\Account;
 use App\Models\TgProxy;
 use App\Services\amoCRM\Client;
@@ -26,5 +27,14 @@ class ToolsController extends Controller
 
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
         $lead->save();
+    }
+
+    public function return(Request $request)
+    {
+        Log::info(__METHOD__, $request->toArray());
+
+        $leadId = $request->toArray()['leads']['add'][0]['id'];
+
+        ReturnLead::dispatch($leadId);
     }
 }

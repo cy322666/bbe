@@ -29,6 +29,8 @@ Route::post('pays/hook', [OneCController::class, 'pay']);
 
 Route::post('tools/pay', [ToolsController::class, 'datePay']);
 
+Route::post('tools/return', [ToolsController::class, 'return']);
+
 Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
 
 Route::post('telegram/create', [TelegramController::class, 'create']);
