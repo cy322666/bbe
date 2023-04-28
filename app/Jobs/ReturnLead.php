@@ -75,6 +75,6 @@ class ReturnLead implements ShouldQueue, ShouldBeUnique
             $this->fail(new Exception('leads with no contacts'));
         //след попытка
 
-        Log::info(__METHOD__.' lead_id '.$this->leadId. 'success');
+        Log::info(__METHOD__.' lead_id '.$this->leadId. ' success');
     }
 }
