@@ -23,27 +23,28 @@ class ToolsController extends Controller
 
         $leadId = $request->toArray()['leads']['status'][0]['id'];
 
-//        $amoApi = (new Client(Account::query()->first()))->init();
-//
-//        $lead = $amoApi
-//            ->service
-//            ->leads()
-//            ->find($leadId);
-//
-//        $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
-//        $lead->save();
-//
-//        //отправка в чат с кураторами
-//        Telegram::send(implode("\n", [
-//                '*Успешная сделка!* ',
-//                '*Продукт:*',
-//                'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
-//                'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-//                '*Клиент:* ',
-//                'Имя : '.$lead->contact->name ?? '-',
-//                'Почта : '.$lead->contact->cf('Email')->getValue() ?? '-',
-//            ]), env('TG_CHAT_CURATOR'), env('TG_TOKEN_CURATOR')
-//        );
+        $amoApi = (new Client(Account::query()->first()))->init();
+
+        $lead = $amoApi
+            ->service
+            ->leads()
+            ->find($leadId);
+
+        $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
+        $lead->save();
+
+        //отправка в чат с кураторами
+        Telegram::send(implode("\n", [
+                '*Успешная сделка!* ',
+                '*Продукт:*',
+                'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
+                'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
+                'Дата начала : '.$lead->cf('Дата старта потока')->getValue() ?? '-',
+                '*Клиент:* ',
+                'Имя : '.$lead->contact->name ?? '-',
+                'Почта : '.$lead->contact->cf('Email')->getValue() ?? '-',
+            ]), env('TG_CHAT_CURATOR'), env('TG_TOKEN_CURATOR')
+        );
     }
 
     public function return(Request $request)
