@@ -39,7 +39,7 @@ class ToolsController extends Controller
                 '*Продукт:*',
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-                'Дата начала : '.$lead->cf('Дата старта потока')->getValue() ?? '-',
+                'Дата начала : '.$lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-',
                 '*Клиент:* ',
                 'Имя : '.$lead->contact->name ?? '-',
                 'Почта : '.$lead->contact->cf('Email')->getValue() ?? '-',
