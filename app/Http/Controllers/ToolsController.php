@@ -49,6 +49,7 @@ class ToolsController extends Controller
         //отправка в чат с кураторами
         Telegram::send(implode("\n", [
                 '*Успешная сделка!* ',
+                '-----------------------',
                 '*Продукт:*',
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
