@@ -57,7 +57,7 @@ class ToolsController extends Controller
                 'Способ оплаты : '.$method,
                 '*Клиент:* ',
                 'Имя : '.$lead->contact->name ?? '-',
-                'Почта : '.$lead->contact->cf('Email')->getValue() ?? '-',
+                'Почта : '.$lead->contact?->cf('Email')->getValue() ?? '-',
             ]), $chatId, $token
         );
     }
