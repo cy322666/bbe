@@ -41,8 +41,9 @@ class Handler extends ExceptionHandler
             Log::error(__METHOD__, [$e->getFile().' : '.$e->getLine(), $e->getMessage()]);
 
             $msg = substr($e->getMessage(), 0, 100);
+            $title = $e->getFile().' : '.$e->getLine();
 
-            Telegram::send('*Ошибка в коде!* '."\n".'*Где:* '.$e->getFile().' : '.$e->getLine()."\n".'*Текст:* '.$msg, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'));
+            Telegram::send('*Ошибка в коде!* '."\n"."*Где:* $title"."\n"."*Текст:* $msg", env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'));
         });
     }
 }
