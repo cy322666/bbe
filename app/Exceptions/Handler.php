@@ -40,7 +40,7 @@ class Handler extends ExceptionHandler
 
             Log::error(__METHOD__, [$e->getFile().' : '.$e->getLine(), $e->getMessage()]);
 
-            $msg = strlen($e->getMessage()) > 50 ? mb_substr($e->getMessage(), 0, 50) : $e->getMessage();
+            $msg = strlen($e->getMessage()) > 50 ? substr($e->getMessage(), 0, 50) : $e->getMessage();
 
             Telegram::send('*Ошибка в коде!* '."\n".'*Где:* '.$e->getFile().' : '.$e->getLine()."\n".'*Текст:* '.$msg, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'));
         });
