@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
 
             } catch (Throwable $e) {
 
-                Telegram::send('REPORT ERROR', env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'));
+                Telegram::send('REPORT ERROR : '.$title, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'));
             }
         });
     }
