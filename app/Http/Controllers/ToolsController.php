@@ -33,17 +33,29 @@ class ToolsController extends Controller
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
         $lead->save();
 
+        $method = $lead->cf('Способ оплаты')->getValue();
+
+        if ($method == 'Лерна') {
+
+            $chatId = env('TG_CHAT_LERNA');
+            $token  = env('TG_TOKEN_LERNA');
+        } else {
+            $chatId = env('TG_CHAT_CURATOR');
+            $token  = env('TG_TOKEN_CURATOR');
+        }
+
         //отправка в чат с кураторами
         Telegram::send(implode("\n", [
                 '*Успешная сделка!* ',
                 '*Продукт:*',
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-                'Дата начала : '.$lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-',
+                'Дата старта потока : '.$lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-',
+                'Способ оплаты : '.$method,
                 '*Клиент:* ',
                 'Имя : '.$lead->contact->name ?? '-',
                 'Почта : '.$lead->contact->cf('Email')->getValue() ?? '-',
-            ]), env('TG_CHAT_CURATOR'), env('TG_TOKEN_CURATOR')
+            ]), $chatId, $token
         );
     }
 
