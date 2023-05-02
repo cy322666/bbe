@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Jobs\Segment;
 use App\Models\Account;
+use App\Models\OneC\Pay;
 use App\Services\amoCRM\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class Test extends Command
@@ -37,46 +39,23 @@ class Test extends Command
     {
         $amoApi = (new Client(Account::query()->first()))->init();
 
-        $lead = $amoApi
-            ->service
-            ->leads()
-            ->find(26484973);
+        $pays = Pay::query()
+//            ->where('id', '>', 219)
+            ->where('id', '=', 228)
+            ->get();
 
-        if ($lead->contact !== null) {
+        foreach ($pays as $pay) {
+            try {
 
-            $contact = $lead->contact;
+                $result = Artisan::call('1c:pay-send '.$pay->id);
 
-            $leads = $contact->leads->toArray();
-
-            $leadsArray = [
-                'sale_pipeline1' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                'sale_pipeline2' => ['leads' => [], 'sale' => 0, 'active' => 0],
-                'other'          => ['leads' => [], 'sale' => 0, 'active' => 0],
-                'count_leads'    => count($leads),
-            ];
-
-            foreach ($leads as $leadArray) {
-
-                $key = $leadArray['pipeline_id'] == static::$pipelineId1 ? 'sale_pipeline1' : null;
-
-                if (!$key) {
-
-                    $key = $leadArray['pipeline_id'] == static::$pipelineId2 ? 'sale_pipeline2' : 'other';
-                }
-
-                $leadsArray[$key]['leads'][] = $leadArray['id'];
-
-                $leadsArray[$key]['sale'] += $leadArray['status_id'] == 142 ? $leadArray['sale'] : 0;
-                $leadsArray[$key]['active'] += $leadArray['status_id'] == 142 ? 1 : 0;
-                $leadsArray['count_leads']++;
+            } catch (\Throwable $e) {
+                continue;
             }
-//                $leadsArray[$lead['pipeline_id']] = $body;
-//                $leadsArray[$lead['pipeline_id']]['ids'] = array_merge($leadsArray[$lead['pipeline_id']]['ids'], [$lead['id']]);
+            sleep(2);
+
+            dump($pay->id);
         }
-
-        $text = implode("\n", static::buildText($leadsArray));
-
-        dd($text);
     }
 
 //    public function backoff(): array
