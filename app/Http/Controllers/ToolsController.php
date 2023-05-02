@@ -44,13 +44,15 @@ class ToolsController extends Controller
             $token  = env('TG_TOKEN_CURATOR');
         }
 
+        $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
+
         //отправка в чат с кураторами
         Telegram::send(implode("\n", [
                 '*Успешная сделка!* ',
                 '*Продукт:*',
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-                'Дата старта потока : '.$lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-',
+                'Дата старта потока : '.$start,
                 'Способ оплаты : '.$method,
                 '*Клиент:* ',
                 'Имя : '.$lead->contact->name ?? '-',
