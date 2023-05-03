@@ -60,7 +60,7 @@ class ReturnLead implements ShouldQueue, ShouldBeUnique
 
                 $leadPay = $leads->first();
 
-                if ($leadPay->cf('Название продукта')->getValue() !== '') {
+                if ($leadPay->cf('Название продукта')->getValue() !== '' && $leadPay->cf('Название продукта')->getValue() !== ' ') {
 
                     $lead->cf('Название продукта')->setValue($leadPay->cf('Название продукта')->getValue());
                 }
