@@ -28,11 +28,14 @@ class OneCController extends Controller
                     'return'    => $payment['Return'],
                     'status'    => 0,
                     'payment_type' => $payment['Payment_type'],
+                    'installment_number' => $payment['Installment_number'],
                 ]);
 
                 OneCPay::dispatch($pay)->delay(5);
 
             } catch (\Throwable $e) {
+
+                Log::error(__METHOD__, [$e->getMessage()]);
 
                 continue;
             }
