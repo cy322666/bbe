@@ -54,10 +54,14 @@ class ToolsController extends Controller
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
                 'Дата старта потока : '.$start,
+                'Гросс : '.$lead->sale,
+                'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
                 'Способ оплаты : '.$method,
-                '*Клиент:* ',
+                '*Клиент :* ',
                 'Имя : '.$lead->contact->name ?? '-',
-                'Почта : '.$lead->contact?->cf('Email')->getValue() ?? '-',
+                'Почта контакта : '.$lead->contact->cf('Email')->getValue(),
+                'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue(),
+                'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
             ]), $chatId, $token
         );
     }
