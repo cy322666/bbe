@@ -56,12 +56,19 @@ class PaySend extends Command
                             "entity_type" => "contacts",
                         ]
                     ]],
-                ], [
+                ],
+                [
                     "field_id" => 692289,
                     "values"   => [[
                         "value"   => Carbon::parse($pay->datetime)->timestamp,
                     ]],
                 ], [
+                    "field_id" => 695240,
+                    "values"   => [[
+                        "value"   => $pay->installment_number,
+                    ]],
+                ],
+                [
                     "field_id" => 692291,
                     "values"   => [[
                         "value"   => [
