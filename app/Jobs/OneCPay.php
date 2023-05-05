@@ -23,6 +23,9 @@ class OneCPay implements ShouldQueue
 
     public function __construct(public Pay $pay) {}
 
+    /**
+     * @throws \Exception
+     */
     public function handle()
     {
         $amoApi = (new Client(Account::query()->first()))->init();
@@ -30,6 +33,18 @@ class OneCPay implements ShouldQueue
         $amoApi->service->queries->setDelay(1);
 
         $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
+
+        if (!$contact) {
+
+            $contacts = $amoApi->service
+                ->contacts()
+                ->searchByCustomField($this->pay->email, 'Почта плательщика');
+
+            if ($contacts !== null && $contacts->first() !== null) {
+
+                $contact = $contacts->first();
+            }
+        }
 
         if ($contact) {
 
@@ -52,9 +67,9 @@ class OneCPay implements ShouldQueue
 
                 $this->pay->status = $result;
             } else
-                $this->pay->status = 4;
+                $this->pay->status = 4;//нет сделок
         } else
-            $this->pay->status = 3;
+            $this->pay->status = 3;//нет контакта
 
         $this->pay->save();
     }
