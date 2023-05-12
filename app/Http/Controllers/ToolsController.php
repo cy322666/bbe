@@ -16,6 +16,7 @@ class ToolsController extends Controller
 {
     /**
      * @throws GuzzleException
+     * @throws \Exception
      */
     public function datePay(Request $request)
     {
@@ -62,7 +63,10 @@ class ToolsController extends Controller
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue(),
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue(),
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
-            ]), $chatId, $token
+            ]), $chatId, $token, [
+                "text" => "Перейти в сделку",
+                "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$lead->id
+            ]
         );
     }
 

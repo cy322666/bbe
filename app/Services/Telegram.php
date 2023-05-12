@@ -10,7 +10,7 @@ class Telegram
     /**
      * @throws GuzzleException
      */
-    public static function send(string $msg, string $chatId, string $token)
+    public static function send(string $msg, string $chatId, string $token, ?array $keyboard)
     {
         if (strlen($msg) >= 4095) {
             $msg = substr($msg, 0, 50);
@@ -20,8 +20,8 @@ class Telegram
             'query' => [
                 "chat_id" => $chatId,
                 "text"    => $msg,
-                "parse_mode" => "markdown",
-//                'reply_markup' => json_encode(['inline_keyboard' => [[$keyboard]]]),
+                "parse_mode"   => "markdown",
+                'reply_markup' => json_encode(['inline_keyboard' => [[$keyboard]]]),
             ]
         ]);
     }
