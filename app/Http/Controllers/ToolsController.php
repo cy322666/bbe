@@ -47,7 +47,6 @@ class ToolsController extends Controller
 
         $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
 
-        //отправка в чат с кураторами
         Telegram::send(implode("\n", [
                 '*Успешная сделка!* ',
                 '-----------------------',
@@ -60,15 +59,20 @@ class ToolsController extends Controller
                 'Способ оплаты : '.$method,
                 '*Клиент* ',
                 'Имя : '.$lead->contact->name ?? '-',
-                ' Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue(),
-                'Почта контакта : '.$lead->contact->cf('Email')->getValue(),
-                'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue(),
+                'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
+                'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
+                'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
             ]), $chatId, $token, [
                 "text" => "Перейти в сделку",
-                "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$lead->id
+                "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
             ]
         );
+
+//        Telegram::send(implode("\n", [
+//            '@username_Rus'
+//            ]), $chatId, $token, []
+//        );
     }
 
     public function return(Request $request)
