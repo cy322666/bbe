@@ -60,6 +60,7 @@ class ToolsController extends Controller
                 'Способ оплаты : '.$method,
                 '*Клиент* ',
                 'Имя : '.$lead->contact->name ?? '-',
+                ' Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue(),
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue(),
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue(),
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
