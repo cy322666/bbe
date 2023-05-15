@@ -141,6 +141,7 @@ class PaySend extends Command
             }
 
             $lead->cf('Долг')->setValue($duty);
+            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
             $lead->cf('Оплачено полностью')->setValue($full);
             $lead->save();
         }
