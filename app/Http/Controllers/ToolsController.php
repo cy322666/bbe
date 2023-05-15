@@ -45,6 +45,18 @@ class ToolsController extends Controller
             $token  = env('TG_TOKEN_CURATOR');
         }
 
+        $users = $amoApi->service->account->users;
+
+        $responsibleName = '-';
+
+        foreach ($users as $user) {
+
+            if ($user->id == $lead->responsible_user_id) {
+
+                $responsibleName = $user->name;
+            }
+        }
+
         $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
 
         Telegram::send(implode("\n", [
@@ -54,6 +66,7 @@ class ToolsController extends Controller
                 'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
                 'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
                 'Дата старта потока : '.$start,
+                'Ответственный : '.$responsibleName,
                 'Гросс : '.$lead->sale,
                 'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
                 'Способ оплаты : '.$method,
@@ -63,6 +76,7 @@ class ToolsController extends Controller
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
+//                'Куратор : '.' @integrator',
             ]), $chatId, $token, [
                 "text" => "Перейти в сделку",
                 "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId

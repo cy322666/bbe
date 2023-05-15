@@ -16,13 +16,19 @@ class Telegram
             $msg = substr($msg, 0, 50);
         }
 
+        $body = [
+            "chat_id" => $chatId,
+            "text"    => $msg,
+            "parse_mode"   => "markdown",
+        ];
+
+        if (count($keyboard) > 0) {
+
+            $body = array_merge($body, ['reply_markup' => json_encode(['inline_keyboard' => [[$keyboard]]])]);
+        }
+
         (new Client())->get('https://api.telegram.org/bot' . $token . '/sendMessage', [
-            'query' => [
-                "chat_id" => $chatId,
-                "text"    => $msg,
-                "parse_mode"   => "markdown",
-                'reply_markup' => json_encode(['inline_keyboard' => [[$keyboard]]]),
-            ]
+            'query' => $body
         ]);
     }
 }
