@@ -34,6 +34,9 @@ class ToolsController extends Controller
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
         $lead->save();
 
+        //автооплаты от админа
+        if ($lead->responsible_user_id == 6103456) exit;
+
         $method = $lead->cf('Способ оплаты')->getValue();
 
         if ($method == 'Лерна') {
@@ -57,7 +60,81 @@ class ToolsController extends Controller
             }
         }
 
+        $arrayMatch = [
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-05-31',
+                'course'    => 'Иллюстрация: как приручить бумагу',
+            ],
+            [
+                'user'      => '@janevetl',
+                'dateStart' => '2023-05-26',
+                'course'    => 'Иллюстрация',
+            ], [
+                'user'      => '@anasyrova',
+                'dateStart' => '2023-05-22',
+                'course'    => '2D-анимация',
+            ], [
+                'user'      => '@nabrodova',
+                'dateStart' => '2023-07-04',
+                'course'    => 'UX/UI',
+            ], [
+                'user'      => null,
+                'dateStart' => '2023-05-22',
+                'course'    => 'Графический дизайн',
+            ], [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-06-05',
+                'course'    => 'Моушн-дизайн',
+            ], [
+                'user'      => '@dtxnv',
+                'dateStart' => '2023-06-07',
+                'course'    => 'Режиссура монтажа',
+            ], [
+                'user'      => '@shiningmithra',
+                'dateStart' => '2023-06-07',
+                'course'    => 'Дизайн жилых интерьеров',
+            ], [
+                'user'      => '@anasyrova',
+                'dateStart' => '2023-05-14',
+                'course'    => 'Основы Blender',
+            ], [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-05-29',
+                'course'    => 'Дизайн персонажей',
+            ], [
+                'user'      => '@garm_k',
+                'dateStart' => '2023-05-15',
+                'course'    => 'Арт-дирекшн цифрового продукта',
+            ], [
+                'user'      => '@garm_k',
+                'dateStart' => '2023-05-19',
+                'course'    => 'UX-исследования',
+            ], [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-05-22',
+                'course'    => 'Моушн-дизайн: от простого к сложному',
+            ], [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-05-23',
+                'course'    => 'Фотореалистичный рендер',
+            ]
+        ];
+
+        $curator = ' ';
+
         $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
+
+        foreach ($arrayMatch as $data) {
+
+            if (strripos($lead->cf('Название продукта')->getValue(), $data['course']) !== false) {
+
+                if ($start == $data['dateStart']) {
+
+                    $curator = $data['user'];
+                }
+            }
+        }
 
         Telegram::send(implode("\n", [
                 '*Успешная сделка!* ',
@@ -76,7 +153,7 @@ class ToolsController extends Controller
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
-//                'Куратор : '.' @integrator',
+                "Куратор : $curator",
             ]), $chatId, $token, [
                 "text" => "Перейти в сделку",
                 "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
