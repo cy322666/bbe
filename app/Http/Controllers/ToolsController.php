@@ -153,7 +153,7 @@ class ToolsController extends Controller
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
-                "Куратор : $curator",
+//                "Куратор : $curator",
             ]), $chatId, $token, [
                 "text" => "Перейти в сделку",
                 "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
