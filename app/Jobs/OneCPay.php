@@ -46,31 +46,52 @@ class OneCPay implements ShouldQueue
             }
         }
 
-        if ($contact) {
+        if (!$contact) {
 
-            $leads = $contact
-                ->leads
-                ->filter(function($lead) {
+            $contact = Contacts::create($amoApi, 'Неизвестно');
 
-                    return $lead->status_id == 142 && $lead->pipeline_id == 3342043;
-                });
+            $contact = Contacts::update($contact, ['Почта' => $this->pay->email]);
 
-            $lead = $leads->count() > 0 ? $leads->first() : null;
+            $this->pay->contact_id = $contact->id;
+            $this->pay->status = 15;
+            $this->pay->save();
 
-            if ($lead) {
+        } else {
+
+            $leads = $contact->leads->sortBy('created_at', 'DESC');
+
+            if ($leads->count() > 0) {
+
+                foreach ($leads as $lead) {
+
+                    if ($lead->status_id == 142 && $lead->pipeline_id == 3342043) {
+
+                        break;
+                    }
+
+                    if ($lead->status_id == 142 && $lead->pipeline_id == 6540894) {
+
+                        break;
+                    }
+
+                    unset($lead);
+                }
+            }
+
+            if (!empty($lead)) {
 
                 $this->pay->lead_id = $lead->id;
                 $this->pay->contact_id = $contact->id;
+                $this->pay->status = 13;
                 $this->pay->save();
+            } else {
 
-                $result = Artisan::call('1c:pay-send '.$this->pay->id);
+                $this->pay->contact_id = $contact->id;
+                $this->pay->status = 11;
+                $this->pay->save();
+            }
+        }
 
-                $this->pay->status = $result;
-            } else
-                $this->pay->status = 4;//нет сделок
-        } else
-            $this->pay->status = 3;//нет контакта
-
-        $this->pay->save();
+        Artisan::call('1c:pay-send '.$this->pay->id);
     }
 }
