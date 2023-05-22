@@ -37,6 +37,14 @@ class ToolsController extends Controller
         //автооплаты от админа
         if ($lead->responsible_user_id == 6103456) exit;
 
+        $product = $lead->cf('Тип продукта')->getValue();
+
+        //ненужные в чате продукты
+        if ($product !== 'Курс' && $product !== 'Годовая программа') {
+
+            exit;
+        }
+
         $method = $lead->cf('Способ оплаты')->getValue();
 
         if ($method == 'Лерна') {
@@ -161,11 +169,6 @@ class ToolsController extends Controller
                 "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
             ]
         );
-
-//        Telegram::send(implode("\n", [
-//            '@username_Rus'
-//            ]), $chatId, $token, []
-//        );
     }
 
     public function return(Request $request)
