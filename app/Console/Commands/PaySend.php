@@ -19,7 +19,7 @@ class PaySend extends Command
      *
      * @var string
      */
-    protected $signature = '1c:pay-send';
+    protected $signature = '1c:pay-send {pay}';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class PaySend extends Command
 
         $pay = Pay::query()->find($this->argument('pay'));
 
-        if ($pay->lead_id !== null) {
+        if ($pay->lead_id == null) {
 
             self::addPayWithoutLead($pay, $amoApi);
         } else {
@@ -60,10 +60,10 @@ class PaySend extends Command
                 $full = 'Нет';
             }
 
-            $lead->cf('Долг')->setValue($duty);
-            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
-            $lead->cf('Оплачено полностью')->setValue($full);
-            $lead->save();
+//            $lead->cf('Долг')->setValue($duty);
+//            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
+//            $lead->cf('Оплачено полностью')->setValue($full);
+//            $lead->save();
         }
 
         $note = $amoApi->service->notes()->create();
