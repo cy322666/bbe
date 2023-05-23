@@ -111,15 +111,15 @@ class ToolsController extends Controller
                 'dateStart' => '2023-05-29',
                 'course'    => 'Дизайн персонажей',
             ],
-//            [
-//                'user'      => '@garm_k',
-//                'dateStart' => '2023-05-15',
-//                'course'    => 'Арт-дирекшн цифрового продукта',
-//            ], [
-//                'user'      => '@garm_k',
-//                'dateStart' => '2023-05-19',
-//                'course'    => 'UX-исследования',
-//            ],
+            [
+                'user'      => '@garm_k',
+                'dateStart' => '2023-05-15',
+                'course'    => 'Арт-дирекшн цифрового продукта',
+            ], [
+                'user'      => '@garm_k',
+                'dateStart' => '2023-05-19',
+                'course'    => 'UX-исследования',
+            ],
             [
                 'user'      => '@afflaty',
                 'dateStart' => '2023-05-22',
@@ -167,7 +167,7 @@ class ToolsController extends Controller
             ]), $chatId, $token, [
                 "text" => "Перейти в сделку",
                 "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
-            ]
+            ], false
         );
     }
 
