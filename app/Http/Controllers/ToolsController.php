@@ -32,7 +32,22 @@ class ToolsController extends Controller
             ->find($leadId);
 
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
-        $lead->save();
+
+        try {
+            $lead->save();
+        } catch (\Throwable $exception) {
+
+            sleep(1);
+
+            $lead = $amoApi
+                ->service
+                ->leads()
+                ->find($leadId);
+
+            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
+            $lead->save();
+        }
+
 
         //автооплаты от админа
         if ($lead->responsible_user_id == 6103456) exit;
