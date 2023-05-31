@@ -85,6 +85,118 @@ class ToolsController extends Controller
 
         $arrayMatch = [
             [
+                'user'      => null,
+                'dateStart' => '2023-06-19',
+                'course'    => 'Иллюстрация',
+            ],
+            [
+                'user'      => '@anasyrova',
+                'dateStart' => '2023-06-13',
+                'course'    => '2d-анимация',
+            ],
+            [
+                'user'      => '@susan_sto_helit',
+                'dateStart' => '2023-06-20',
+                'course'    => 'UX/UI',
+            ],
+            [
+                'user'      => '@nabrodova',
+                'dateStart' => '2023-06-26',
+                'course'    => 'Графический дизайн',
+            ],
+            [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-06-05',
+                'course'    => 'Моушн-дизайн ',
+            ],
+            [
+                'user'      => '@dtxnv',
+                'dateStart' => '2023-06-07',
+                'course'    => 'Режиссура монтажа',
+            ],
+            [
+                'user'      => '@shiningmithra',
+                'dateStart' => '2023-06-19',
+                'course'    => 'Дизайн жилых интерьеров',
+            ],
+            [
+                'user'      => '@anasyrova',
+                'dateStart' => '2023-06-20',
+                'course'    => 'Иллюстрация: ищем стиль',
+            ],
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-05-31',
+                'course'    => 'Иллюстрация: как приручить бумагу',
+            ],
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-06-26',
+                'course'    => 'Дизайн персонажей',
+            ],
+            [
+                'user'      => '@asyamarchenko',
+                'dateStart' => null,
+                'course'    => 'Айдентика: от идеи к визуальному воплощению',
+            ],
+            [
+                'user'      => '@asyamarchenko',
+                'dateStart' => null,
+                'course'    => 'Типографика и верстка: все внимание к тексту',
+            ],
+            [
+                'user'      => '@janevetl',
+                'dateStart' => '2023-05-08',
+                'course'    => 'Коллаж и фотореалистичный рисунок',
+            ],
+            [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-06-05',
+                'course'    => 'Кинетическая типографика',
+            ],
+            [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-06-05',
+                'course'    => 'Моушн-дизайн: от основ до реальных проектов',
+            ],
+            [
+                'user'      => '@shiningmithra',
+                'dateStart' => '2023-06-15',
+                'course'    => 'Дизайн упаковки для реального мира',
+            ],
+            [
+                'user'      => null,
+                'dateStart' => '2023-06-19',
+                'course'    => 'Векторная графика в Adobe Illustrator',
+            ],
+            [
+                'user'      => null,
+                'dateStart' => '2023-06-20',
+                'course'    => 'Айдентика: пошаговая инструкция ',
+            ],
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-06-20',
+                'course'    => 'Иллюстрация: ищем стиль',
+            ],
+            [
+                'user'      => null,
+                'dateStart' => '2023-06-26',
+                'course'    => 'Моушн-дизайн: от простого к сложному',
+            ],
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-06-26',
+                'course'    => 'Дизайн персонажей',
+            ],
+            [
+                'user'      => null,
+                'dateStart' => '2023-06-26',
+                'course'    => 'Webflow: веб-дизайн без кода и границ',
+            ],
+
+            /*
+            [
                 'user'      => '@vickylich',
                 'dateStart' => '2023-05-31',
                 'course'    => 'Иллюстрация: как приручить бумагу',
@@ -144,6 +256,7 @@ class ToolsController extends Controller
                 'dateStart' => '2023-05-23',
                 'course'    => 'Фотореалистичный рендер',
             ]
+            */
         ];
 
         $curator = ' ';
