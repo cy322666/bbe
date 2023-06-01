@@ -36,17 +36,17 @@ class OneCPay implements ShouldQueue
 
         if (!$contact) {
 
-            $contacts = $amoApi->service
-                ->contacts()
+            $leads = $amoApi->service
+                ->leads()
                 ->searchByCustomField($this->pay->email, 'Почта плательщика');
 
-            if ($contacts !== null && $contacts->first() !== null) {
+            if ($leads->first()) {
 
-                $contact = $contacts->first();
+                $contact = $leads->first()?->contact;
             }
         }
 
-        if (!$contact) {
+        if (empty($contact)) {
 
             $contact = Contacts::create($amoApi, 'Неизвестно');
 
@@ -66,6 +66,7 @@ class OneCPay implements ShouldQueue
 
                     if ($lead->status_id == 142 && $lead->pipeline_id == 3342043) {
 
+                        //+ оплачивает
                         break;
                     }
 
