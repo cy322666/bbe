@@ -32,9 +32,10 @@ class OneCPay implements ShouldQueue
 
         $amoApi->service->queries->setDelay(1);
 
-        $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
+        if ($this->pay->email)
+            $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
-        if (!$contact) {
+        if (empty($contact)) {
 
             $leads = $amoApi->service
                 ->leads()
