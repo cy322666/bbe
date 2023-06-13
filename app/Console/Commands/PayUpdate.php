@@ -7,6 +7,7 @@ use App\Models\OneC\Pay;
 use App\Services\amoCRM\Client;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class PayUpdate extends Command
@@ -33,6 +34,8 @@ class PayUpdate extends Command
      */
     public function handle(): int
     {
+        Log::info(__METHOD__.' pay : '.$this->argument('pay'));
+
         $amoApi = (new Client(Account::query()->first()))->init();
 
         $pay = Pay::query()->find($this->argument('pay'));
