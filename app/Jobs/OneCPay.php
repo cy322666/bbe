@@ -32,6 +32,8 @@ class OneCPay implements ShouldQueue
 
         $amoApi->service->queries->setDelay(1);
 
+        $contactNoPayed = false;
+
         if ($this->pay->email)
             $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
@@ -44,17 +46,26 @@ class OneCPay implements ShouldQueue
             if ($leads->first()) {
 
                 $contact = $leads->first()?->contact;
+                $lead = $leads->first();
+
+                $contactNoPayed = true;
             }
         }
 
         if (empty($contact)) {
 
             $contact = Contacts::create($amoApi, 'Неизвестно');
-
             $contact = Contacts::update($contact, ['Почта' => $this->pay->email]);
 
             $this->pay->contact_id = $contact->id;
-            $this->pay->status = 15;
+            $this->pay->status = 15;//новый контакт
+            $this->pay->save();
+
+        } elseif ($contactNoPayed == true) {
+
+            $this->pay->lead_id = $lead->id;
+            $this->pay->contact_id = $contact->id;
+            $this->pay->status = 17;
             $this->pay->save();
 
         } else {

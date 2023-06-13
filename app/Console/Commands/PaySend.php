@@ -47,18 +47,18 @@ class PaySend extends Command
 
             self::addPayWithLead($pay, $amoApi);
 
-            $lead = $amoApi->service
-                ->leads()
-                ->find($pay->lead_id);
+//            $lead = $amoApi->service
+//                ->leads()
+//                ->find($pay->lead_id);
 
-            if ($lead->sale == $pay->sum) {
-
-                $duty = 0;
-                $full = 'Да';
-            } else {
-                $duty = $lead->sale - $pay->sum;
-                $full = 'Нет';
-            }
+//            if ($lead->sale == $pay->sum) {
+//
+//                $duty = 0;
+//                $full = 'Да';
+//            } else {
+//                $duty = $lead->sale - $pay->sum;
+//                $full = 'Нет';
+//            }
 
 //            $lead->cf('Долг')->setValue($duty);
 //            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
@@ -241,7 +241,7 @@ class PaySend extends Command
             ]
         ]];
 
-        $check = $amoApi
+        $amoApi
             ->service
             ->ajax()->postJson('/api/v4/catalogs/6945/elements', $data, []);
     }

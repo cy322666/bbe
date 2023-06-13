@@ -38,7 +38,7 @@ class Segment implements ShouldQueue
             ->leads()
             ->find($this->segment->lead_id);
 
-        if ($lead->contact !== null) {
+        if ($lead && $lead->contact !== null) {
 
             $contact = $lead->contact;
 

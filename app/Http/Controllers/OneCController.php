@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\OneCPay;
+use App\Jobs\OneCPayUpdate;
 use App\Models\OneC\Pay;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class OneCController extends Controller
 {
@@ -17,9 +19,13 @@ class OneCController extends Controller
         foreach ($request->Payments as $payment) {
 
             try {
-                $pay = Pay::query()->create([
-                    'order_id'  => $payment['Order_ID'],
-                    'number'    => $payment['Number'],
+
+                $pay = Pay::query()->where([
+                    'order_id' => $payment['Order_ID'],
+                    'code'     => $payment['Code']
+                ])->first();
+
+                $body = [
                     'datetime'  => Carbon::parse($payment['Date'])->format('Y-m-d H:i:s'),
                     'title'     => $payment['Сontract'],
                     'email'     => $payment['Mail'],
@@ -29,11 +35,27 @@ class OneCController extends Controller
                     'status'    => 0,
                     'payment_type' => $payment['Payment_type'],
                     'installment_number' => $payment['Installment_number'],
-                ]);
+                ];
 
-                OneCPay::dispatch($pay)->delay(5);
+                if (!$pay) {
+                    $body = array_merge($body, [
+                        'order_id'  => $payment['Order_ID'],
+                        'number'    => $payment['Number'],
+                    ]);
 
-            } catch (\Throwable $e) {
+                    $pay = Pay::query()->create($body);
+
+                    OneCPay::dispatch($pay)->delay(5);
+                } else {
+
+                    $pay = Pay::query()
+                        ->where(['id' => $pay->id])
+                        ->update($body);
+
+                    OneCPayUpdate::dispatch($pay)->delay(5);
+                }
+
+            } catch (Throwable $e) {
 
                 Log::error(__METHOD__, [$e->getMessage()]);
 

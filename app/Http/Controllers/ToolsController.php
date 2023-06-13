@@ -194,13 +194,12 @@ class ToolsController extends Controller
                 'dateStart' => '2023-06-26',
                 'course'    => 'Webflow: веб-дизайн без кода и границ',
             ],
-
-            /*
             [
                 'user'      => '@vickylich',
                 'dateStart' => '2023-05-31',
                 'course'    => 'Иллюстрация: как приручить бумагу',
             ],
+            /*
             [
                 'user'      => '@janevetl',
                 'dateStart' => '2023-05-26',
@@ -209,19 +208,25 @@ class ToolsController extends Controller
                 'user'      => '@anasyrova',
                 'dateStart' => '2023-05-22',
                 'course'    => '2D-анимация',
-            ], [
+            ], */
+            [
                 'user'      => '@nabrodova',
                 'dateStart' => '2023-07-04',
                 'course'    => 'UX/UI',
-            ], [
+            ],
+            /*
+            [
                 'user'      => null,
                 'dateStart' => '2023-05-22',
                 'course'    => 'Графический дизайн',
-            ], [
+            ],
+            */
+            [
                 'user'      => '@afflaty',
                 'dateStart' => '2023-06-05',
                 'course'    => 'Моушн-дизайн',
-            ], [
+            ],
+            [
                 'user'      => '@dtxnv',
                 'dateStart' => '2023-06-07',
                 'course'    => 'Режиссура монтажа',
@@ -229,7 +234,8 @@ class ToolsController extends Controller
                 'user'      => '@shiningmithra',
                 'dateStart' => '2023-06-07',
                 'course'    => 'Дизайн жилых интерьеров',
-            ], [
+            ],
+            /*[
                 'user'      => '@anasyrova',
                 'dateStart' => '2023-05-14',
                 'course'    => 'Основы Blender',
