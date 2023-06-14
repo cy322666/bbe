@@ -32,8 +32,6 @@ class OneCPay implements ShouldQueue
 
         $amoApi->service->queries->setDelay(1);
 
-        $contactNoPayed = false;
-
         if ($this->pay->email)
             $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
@@ -48,8 +46,6 @@ class OneCPay implements ShouldQueue
                 $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
 
                 $lead = $leads->first();
-
-                $contactNoPayed = true;
             }
         }
 
