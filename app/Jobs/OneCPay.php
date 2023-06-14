@@ -77,7 +77,7 @@ class OneCPay implements ShouldQueue
 
                 foreach ($leads as $lead) {
 
-                    if ($lead->status_id == 142 && $lead->pipeline_id == 3342043) {
+                    if (($lead->status_id == 142 || $lead->status_id == 33524491) && $lead->pipeline_id == 3342043) {
 
                         //+ оплачивает
                         break;
