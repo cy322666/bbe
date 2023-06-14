@@ -45,7 +45,8 @@ class OneCPay implements ShouldQueue
 
             if ($leads->first()) {
 
-                $contact = $leads->first()?->contact;
+                $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
+
                 $lead = $leads->first();
 
                 $contactNoPayed = true;
