@@ -48,7 +48,7 @@ class OneCController extends Controller
                     OneCPay::dispatch($pay)->delay(5);
                 } else {
 
-                    $pay = Pay::query()
+                    Pay::query()
                         ->where(['id' => $pay->id])
                         ->update($body);
 
