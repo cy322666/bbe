@@ -40,11 +40,13 @@ class PayUpdate extends Command
 
         $pay = Pay::query()->find($this->argument('pay'));
 
+        if (!$pay->check_id) return 1;
+
         $data = [
             [
                 "field_id" => 695240,
                 "values"   => [[
-                    "value"   => '_'.$pay->installment_number,
+                    "value"   => $pay->installment_number,
                 ]],
             ],
             [
