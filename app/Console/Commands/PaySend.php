@@ -243,8 +243,15 @@ class PaySend extends Command
             ]
         ]];
 
-        $amoApi
+        $check = $amoApi
             ->service
             ->ajax()->postJson('/api/v4/catalogs/6945/elements', $data, []);
+
+        if ($check) {
+            $checkId = $check->_embedded->elements[0]->id;
+
+            $pay->check_id = $checkId;
+            $pay->save();
+        }
     }
 }
