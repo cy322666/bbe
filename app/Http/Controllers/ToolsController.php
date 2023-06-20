@@ -135,6 +135,11 @@ class ToolsController extends Controller
                 'course'    => 'Дизайн персонажей',
             ],
             [
+                'user'      => '@nbelows',
+                'dateStart' => '2023-07-10',
+                'course'    => '3D-художник',
+            ],
+            [
                 'user'      => '@asyamarchenko',
                 'dateStart' => null,
                 'course'    => 'Айдентика: от идеи к визуальному воплощению',
