@@ -294,6 +294,7 @@ class ToolsController extends Controller
                 '*Клиент* ',
                 'Имя : '.$lead->contact->name ?? '-',
                 'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
+                'Телефон контакта : '.$lead->contact->cf('Телефон')->getValue() ?? '-',
                 'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
                 'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
                 'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
