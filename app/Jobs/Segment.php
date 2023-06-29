@@ -94,12 +94,11 @@ class Segment implements ShouldQueue
 
     private static function isActiveTag(array $leadsArray) : bool
     {
-        if ((count($leadsArray['sale_pipeline1']['active']) > 0) ||
-            (count($leadsArray['sale_pipeline2']['active']) > 0)
-        ) {
-
+        if (($leadsArray['sale_pipeline1']['active'] > 0) ||
+            ($leadsArray['sale_pipeline2']['active'] > 0)
+        )
             return true;
-        } else
+        else
             return false;
     }
 
