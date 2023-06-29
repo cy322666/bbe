@@ -82,8 +82,25 @@ class Segment implements ShouldQueue
             $note->element_id = $lead->id;
             $note->save();
 
+            if (static::isActiveTag($leadsArray)) {
+
+                $lead->attachTag('В работе');
+                $lead->save();
+            }
+
             $this->segment->save();
         }
+    }
+
+    private static function isActiveTag(array $leadsArray) : bool
+    {
+        if ((count($leadsArray['sale_pipeline1']['active']) > 0) ||
+            (count($leadsArray['sale_pipeline2']['active']) > 0)
+        ) {
+
+            return true;
+        } else
+            return false;
     }
 
     private static function buildText(array $leadsArray): array
