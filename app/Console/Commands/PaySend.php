@@ -134,12 +134,16 @@ class PaySend extends Command
                     "values"   => [["value" => $pay->sum]],
                 ],
                 [
+                    "field_id" => 697133,
+                    "values"   => [["value" => $pay->sum_gross]],
+                ],
+                [
                     "field_id" => 694821,
                     "values"   => [["value" => $pay->payment_type]],
                 ],
                 [
                     "field_id" => 694885,
-                    "values"   => [["value" => $pay->return == true ? 'Да' : 'Нет']],
+                    "values"   => [["value" => $pay->return ? 'Да' : 'Нет']],
                 ],
                 [
                     "field_id" => 695851,
@@ -150,7 +154,8 @@ class PaySend extends Command
 
         $check = $amoApi
             ->service
-            ->ajax()->postJson('/api/v4/catalogs/6945/elements', $data, []);
+            ->ajax()
+            ->postJson('/api/v4/catalogs/6945/elements', $data, []);
 
         if ($check) {
 

@@ -64,7 +64,7 @@ class OneCPay implements ShouldQueue
             $this->pay->status = 15;//новый контакт
             $this->pay->save();
 
-        } elseif ($contactNoPayed == true) {
+        } elseif ($contactNoPayed) {
 
             $this->pay->lead_id = $lead->id;
             $this->pay->contact_id = $contact->id;
@@ -79,9 +79,14 @@ class OneCPay implements ShouldQueue
 
                 foreach ($leads as $lead) {
 
+                    if ($lead->pipeline_id == 6362138 && $lead->status_id !== 142 && $this->pay->return) {
+
+                        break;
+                    }
+
                     if (($lead->status_id == 142 || $lead->status_id == 33524491) && $lead->pipeline_id == 3342043) {
 
-                        //+ оплачивает
+                        //+ этап оплачивает
                         break;
                     }
 

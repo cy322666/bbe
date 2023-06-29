@@ -27,5 +27,6 @@ class Pay extends Model
         'contact_id',
         'check_id',
         'installment_number',
+        'sum_gross',
     ];
 }
