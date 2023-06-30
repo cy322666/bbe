@@ -31,9 +31,10 @@ class OneCController extends Controller
                     'email'     => $payment['Mail'],
                     'code'      => $payment['Code'],
                     'sum'       => $payment['Sum'],
+                    'sum_gross' => $payment['SumGross'],
                     'return'    => $payment['Return'],
                     'status'    => 0,
-                    'payment_type' => $payment['Payment_type'],
+                    'payment_type'       => $payment['Payment_type'],
                     'installment_number' => $payment['Installment_number'],
                 ];
 
