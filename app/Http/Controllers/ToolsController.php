@@ -34,10 +34,11 @@ class ToolsController extends Controller
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
         $lead->save();
 
-        //автооплаты от админа
-        if ($lead->responsible_user_id == 6103456) exit;
-
         $product = $lead->cf('Тип продукта')->getValue();
+
+        //автооплаты от админов
+        if ($lead->responsible_user_id == 6103456 ||
+            $lead->responsible_user_id == 5998951) exit;
 
         //ненужные в чате продукты
         if ($product !== 'Курс' &&
