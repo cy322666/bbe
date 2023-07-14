@@ -32,22 +32,7 @@ class ToolsController extends Controller
             ->find($leadId);
 
         $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
-
-        try {
-            $lead->save();
-        } catch (\Throwable $exception) {
-
-            sleep(1);
-
-            $lead = $amoApi
-                ->service
-                ->leads()
-                ->find($leadId);
-
-            $lead->cf('Дата оплаты')->setDate(Carbon::now()->format('Y-m-d'));
-            $lead->save();
-        }
-
+        $lead->save();
 
         //автооплаты от админа
         if ($lead->responsible_user_id == 6103456) exit;
@@ -55,7 +40,10 @@ class ToolsController extends Controller
         $product = $lead->cf('Тип продукта')->getValue();
 
         //ненужные в чате продукты
-        if ($product !== 'Курс' && $product !== 'Годовая программа') {
+        if ($product !== 'Курс' &&
+            $product !== 'Годовая программа' &&
+            $lead->cf('Способ оплаты')->getValue() == 'Сайт (100%)' &&
+            $lead->cf('Способ оплаты')->getValue() == 'Сайт (внутренняя рассрочка)') {
 
             exit;
         }
@@ -286,28 +274,28 @@ class ToolsController extends Controller
         }
 
         Telegram::send(implode("\n", [
-                '*Успешная сделка!* ',
-                '-----------------------',
-                '*Продукт*',
-                'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
-                'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-                'Дата старта потока : '.$start,
-                'Ответственный : '.$responsibleName,
-                'Гросс : '.$lead->sale,
-                'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
-                'Способ оплаты : '.$method,
-                '*Клиент* ',
-                'Имя : '.$lead->contact->name ?? '-',
-                'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
-                'Телефон контакта : '.$lead->contact->cf('Телефон')->getValue() ?? '-',
-                'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
-                'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
-                'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
-                "Куратор : $curator",
-            ]), $chatId, $token, [
-                "text" => "Перейти в сделку",
-                "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
-            ], false
+            '*Успешная сделка!* ',
+            '-----------------------',
+            '*Продукт*',
+            'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
+            'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
+            'Дата старта потока : '.$start,
+            'Ответственный : '.$responsibleName,
+            'Гросс : '.$lead->sale,
+            'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
+            'Способ оплаты : '.$method,
+            '*Клиент* ',
+            'Имя : '.$lead->contact->name ?? '-',
+            'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
+            'Телефон контакта : '.$lead->contact->cf('Телефон')->getValue() ?? '-',
+            'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
+            'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
+            'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
+            "Куратор : $curator",
+        ]), $chatId, $token, [
+            "text" => "Перейти в сделку",
+            "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
+        ], false
         );
     }
 
