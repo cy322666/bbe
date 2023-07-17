@@ -350,14 +350,14 @@ class ToolsController extends Controller
 
             $leadsActive = $leads->filter(function($lead) {
 
-                return $lead->status_id !== 142 && $lead->status_id !== 143;
+                return $lead->status_id !== 142 && $lead->status_id !== 143 && $lead->pipeline_id == 3342043;
             });
 
             if ($leadsActive->count() > 1) {
 
                 foreach ($leadsActive as $leadActive) {
 
-                    if ($lead->pipeline_id == 3342043) {
+//                    if ($lead->pipeline_id == 3342043) {
 
                         $lead->responsible_user_id = $leadActive->responsible_user_id;
                         $lead->save();
@@ -370,7 +370,7 @@ class ToolsController extends Controller
 
                         $segment->responsible_user_id = $lead->responsible_user_id;
                         $segment->create_status = 'open lead';
-                    }
+//                    }
                 }
             } else {
                 //поиск задач
