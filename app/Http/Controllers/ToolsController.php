@@ -308,4 +308,67 @@ class ToolsController extends Controller
 
         ReturnLead::dispatch($leadId);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function createLead(Request $request)
+    {
+        Log::info(__METHOD__, $request->toArray());
+
+        $leadId = $request->toArray()['leads']['add'][0]['id'];
+
+        $amoApi = (new Client(Account::query()->first()))->init();
+
+        $lead = $amoApi
+            ->service
+            ->leads()
+            ->find($leadId);
+
+        $contact = $lead->contact;
+
+        $leads = $contact->leads;
+
+        if ($leads->count() > 1) {
+
+            $leadsActive = $leads->filter(function($lead) {
+
+                return $lead->status_id !== 142 && $lead->status_id !== 143;
+            });
+
+            if ($leadsActive->count() > 1) {
+
+                foreach ($leadsActive as $leadActive) {
+
+                    if ($lead->pipeline_id == 3342043) {
+
+                        $lead->responsible_user_id = $leadActive->responsible_user_id;
+                        $lead->save();
+
+                        $note = $lead->createNote(4);
+                        $note->text = 'Сделка передана ответственному по активной сделке : '.$leadActive->id;
+                        $note->element_type = 2;
+                        $note->element_id = $lead->id;
+                        $note->save();
+                    }
+                }
+            } else {
+                //поиск задач
+                foreach ($leads as $leadTask) {
+
+                    if ($leadTask->closest_task_at > time()) {
+
+                        $lead->responsible_user_id = $leadTask->responsible_user_id;
+                        $lead->save();
+
+                        $note = $lead->createNote(4);
+                        $note->text = 'Сделка передана ответственному по активной задаче в сделке : '.$leadTask->id;
+                        $note->element_type = 2;
+                        $note->element_id = $lead->id;
+                        $note->save();
+                    }
+                }
+            }
+        }
+    }
 }
