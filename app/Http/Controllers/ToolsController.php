@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ReturnLead;
 use App\Models\Account;
+use App\Models\Segment;
 use App\Models\TgProxy;
 use App\Services\amoCRM\Client;
 use App\Services\Telegram;
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +18,7 @@ class ToolsController extends Controller
 {
     /**
      * @throws GuzzleException
-     * @throws \Exception
+     * @throws Exception
      */
     public function datePay(Request $request)
     {
@@ -320,13 +322,18 @@ class ToolsController extends Controller
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createLead(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
 
         $leadId = $request->toArray()['leads']['add'][0]['id'];
+
+        $segment = Segment::query()->create([
+            'lead_id' => $leadId,
+            'create_status' => 'push distribution',
+        ]);
 
         $amoApi = (new Client(Account::query()->first()))->init();
 
@@ -360,6 +367,9 @@ class ToolsController extends Controller
                         $note->element_type = 2;
                         $note->element_id = $lead->id;
                         $note->save();
+
+                        $segment->responsible_user_id = $lead->responsible_user_id;
+                        $segment->create_status = 'open lead';
                     }
                 }
             } else {
@@ -376,9 +386,16 @@ class ToolsController extends Controller
                         $note->element_type = 2;
                         $note->element_id = $lead->id;
                         $note->save();
+
+                        $segment->responsible_user_id = $lead->responsible_user_id;
+                        $segment->create_status = 'open task';
                     }
                 }
             }
-        }
+        } else
+            $segment->create_status = 'one lead';
+
+        $segment->contact_id = $contact->id;
+        $segment->save();
     }
 }
