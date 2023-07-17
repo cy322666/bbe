@@ -17,5 +17,7 @@ class Segment extends Model
         'sale',
         'count_leads',
         'error',
+        'create_status',
+        'responsible_user_id',
     ];
 }
