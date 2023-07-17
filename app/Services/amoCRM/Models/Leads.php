@@ -34,9 +34,7 @@ abstract class Leads
     //поиск активных в воронке
     public static function search($contact, $client, int $pipeline_id = null)
     {
-        $leads = [];
-
-        if($contact->leads) {
+        if($contact->leads->sortBy('created_at', 'DESC')) {
 
             foreach ($contact->leads as $lead) {
 
@@ -49,6 +47,10 @@ abstract class Leads
                             ->leads()
                             ->find($lead->id);
                     }
+
+                    return $client->service
+                        ->leads()
+                        ->find($lead->id);
                 }
             }
         }
