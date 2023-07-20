@@ -363,9 +363,9 @@ class ToolsController extends Controller
                         $lead->save();
 
                         $note = $lead->createNote(4);
-                        $note->text = 'Сделка передана ответственному по активной сделке : '.$leadActive->id;
+                        $note->text = 'Сделка передана ответственному по активной сделке : '."\n".'https://bbeducation.amocrm.ru/leads/detail/'.$leadActive->id;
                         $note->element_type = 2;
-                        $note->element_id = $lead->id;
+                        $note->element_id = $leadActive->id;
                         $note->save();
 
                         $segment->responsible_user_id = $lead->responsible_user_id;
