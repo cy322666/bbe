@@ -357,17 +357,22 @@ class ToolsController extends Controller
 
                 foreach ($leadsActive as $leadActive) {
 
-                    $lead->responsible_user_id = $leadActive->responsible_user_id;
-                    $lead->save();
+                    if ($leadActive->id !== $lead->id) {
 
-                    $note = $lead->createNote(4);
-                    $note->text = 'Сделка передана ответственному по активной сделке : '.$leadActive->id;
-                    $note->element_type = 2;
-                    $note->element_id = $lead->id;
-                    $note->save();
+                        $lead->responsible_user_id = $leadActive->responsible_user_id;
+                        $lead->save();
 
-                    $segment->responsible_user_id = $lead->responsible_user_id;
-                    $segment->create_status = 'open lead';
+                        $note = $lead->createNote(4);
+                        $note->text = 'Сделка передана ответственному по активной сделке : '.$leadActive->id;
+                        $note->element_type = 2;
+                        $note->element_id = $lead->id;
+                        $note->save();
+
+                        $segment->responsible_user_id = $lead->responsible_user_id;
+                        $segment->create_status = 'open lead';
+
+                        break;
+                    }
                 }
             } else {
                 //поиск задач
