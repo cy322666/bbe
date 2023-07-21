@@ -38,7 +38,10 @@ class PaySend extends Command
     {
         Log::info(__METHOD__.' pay : '.$this->argument('pay'));
 
-        $amoApi = (new Client(Account::query()->first()))->init();
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs()
+            ->initCache();
 
         $pay = Pay::query()->find($this->argument('pay'));
 

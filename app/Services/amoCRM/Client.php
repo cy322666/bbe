@@ -5,6 +5,7 @@ namespace App\Services\amoCRM;
 use App\Models\Account;
 use App\Models\amoCRM\Field;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Ufee\Amo\Oauthapi;
@@ -15,8 +16,9 @@ class Client
     public EloquentStorage $storage;
 
     public bool $auth = false;
+    public bool $logs = false;
 
-    public function __construct($account)
+    public function __construct(Model $account)
     {
         $this->storage = new EloquentStorage([
             'domain'    => $account->subdomain,
@@ -24,8 +26,6 @@ class Client
             'client_secret' => $account->client_secret,
             'redirect_uri'  => $account->redirect_uri,
         ], $account);
-
-        \Ufee\Amo\Services\Account::setCacheTime(1);
 
         Oauthapi::setOauthStorage($this->storage);
     }
@@ -54,7 +54,7 @@ class Client
 
         } catch (Exception $exception) {
 
-            Log::error(__METHOD__, [$exception->getMessage().' '.$exception->getFile().' '.$exception->getLine()]);
+//            Log::error(__METHOD__, [$exception->getMessage().' '.$exception->getFile().' '.$exception->getLine()]);
             if ($this->storage->model->refresh_token) {
 
                 $oauth = $this->service->refreshAccessToken($this->storage->model->refresh_token);
@@ -73,6 +73,47 @@ class Client
         }
 
         $this->service->queries->setDelay(1);
+
+        return $this;
+    }
+
+    public function initCache(int $time = 3600) : Client
+    {
+        \Ufee\Amo\Services\Account::setCacheTime($time);
+
+        return $this;
+    }
+
+    public function initLogs(): Client
+    {
+        $this->service->queries->onResponseCode(429, function(\Ufee\Amo\Base\Models\QueryModel $query) {
+            \App\Models\Log::query()->create([
+                'code' => 429,
+                'url'  => $query->getUrl(),
+                'method'  => $query->method,
+                'details' => json_encode($query->toArray()),
+            ]);
+        });
+        $this->service->queries->listen(function(\Ufee\Amo\Base\Models\QueryModel $query) {
+
+            $log = \App\Models\Log::query()->create([
+                'code'  => $query->response->getCode(),
+                'url'   => $query->getUrl(),
+                'start' => $query->startDate(),
+                'end'   => $query->endDate(),
+                'method'  => $query->method,
+                'details' => json_encode($query->toArray()),
+            ]);
+
+//            print_r($query->headers);
+            if ($query->response->getCode() === 0) {
+
+                $log->error = $query->response->getError();
+            } else
+                $log->data = $query->response->getData();
+
+            $log->save();
+        });
 
         return $this;
     }

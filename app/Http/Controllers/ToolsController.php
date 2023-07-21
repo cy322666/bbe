@@ -26,7 +26,10 @@ class ToolsController extends Controller
 
         $leadId = $request->toArray()['leads']['status'][0]['id'] ?? $request->toArray()['leads']['add'][0]['id'];
 
-        $amoApi = (new Client(Account::query()->first()))->init();
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs()
+            ->initCache();
 
         $lead = $amoApi
             ->service
@@ -335,7 +338,10 @@ class ToolsController extends Controller
             'create_status' => 'push distribution',
         ]);
 
-        $amoApi = (new Client(Account::query()->first()))->init();
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs()
+            ->initCache();
 
         $lead = $amoApi
             ->service

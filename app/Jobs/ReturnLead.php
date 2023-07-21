@@ -38,9 +38,10 @@ class ReturnLead implements ShouldQueue, ShouldBeUnique
     {
         Log::info(__METHOD__, ['lead_id' => $this->leadId]);
 
-        $amoApi = (new Client(Account::query()->first()))->init();
-
-        $amoApi->service->queries->setDelay(1);
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs()
+            ->initCache();
 
         $lead = $amoApi
             ->service

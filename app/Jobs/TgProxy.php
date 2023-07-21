@@ -28,9 +28,10 @@ class TgProxy implements ShouldQueue
     public function handle()
     {
         try {
-            $amoApi = (new Client(Account::query()->first()))->init();
-
-            $amoApi->service->queries->setDelay(0.5);
+            $amoApi = (new Client(Account::query()->first()))
+                ->init()
+                ->initLogs()
+                ->initCache();
 
             $proxy = \App\Models\TgProxy::query()
                 ->where('created_at', '>', Carbon::now()->subMinutes(15))

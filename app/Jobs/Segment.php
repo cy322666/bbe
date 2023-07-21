@@ -29,9 +29,10 @@ class Segment implements ShouldQueue
      */
     public function handle()
     {
-        $amoApi = (new Client(Account::query()->first()))->init();
-
-        $amoApi->service->queries->setDelay(1);
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs()
+            ->initCache();
 
         $lead = $amoApi
             ->service
