@@ -350,14 +350,14 @@ class ToolsController extends Controller
 
             $leadsActive = $leads->filter(function($lead) {
 
-                return $lead->status_id !== 142 && $lead->status_id !== 143 && $lead->pipeline_id == 3342043;
+                return $lead->status_id != 142 && $lead->status_id != 143 && $lead->pipeline_id == 3342043;
             });
 
             if ($leadsActive->count() > 1) {
 
                 foreach ($leadsActive as $leadActive) {
 
-                    if ($leadActive->id !== $lead->id) {
+                    if ($leadActive->id != $lead->id) {
 
                         $lead->responsible_user_id = $leadActive->responsible_user_id;
                         $lead->save();
@@ -384,7 +384,7 @@ class ToolsController extends Controller
                         $lead->save();
 
                         $note = $lead->createNote(4);
-                        $note->text = 'Сделка передана ответственному по активной задаче в сделке : '.$leadTask->id;
+                        $note->text = 'Сделка передана ответственному по активной задаче в сделке : '."\n".'https://bbeducation.amocrm.ru/leads/detail/'.$leadTask->id;
                         $note->element_type = 2;
                         $note->element_id = $lead->id;
                         $note->save();
@@ -399,5 +399,16 @@ class ToolsController extends Controller
 
         $segment->contact_id = $contact->id;
         $segment->save();
+
+        $lead = $amoApi->service->leads()->find($segment->lead_id);
+
+        if ($lead->responsible_user_id != $segment->responsible_user_id) {
+
+            $lead->responsible_user_id = $segment->responsible_user_id;
+            $lead->save();
+
+            $segment->create_status = 'repeat change responsible';
+            $segment->save();
+        }
     }
 }
