@@ -356,10 +356,15 @@ class ToolsController extends Controller
 
             $leadsActive = $leads->filter(function($lead) {
 
-                return $lead->status_id != 142 && $lead->status_id != 143 && $lead->pipeline_id == 3342043;
-            });
+                return
+                    ($lead->status_id != 142 && $lead->status_id != 143) &&
+                    ($lead->pipeline_id == 3342043 || $lead->pipeline_id == 6540894);
+
+            })->sortBy('pipeline_id', 'ASC');
 
             if ($leadsActive->count() > 1) {
+
+                $segment->count_leads = $leadsActive->count();
 
                 foreach ($leadsActive as $leadActive) {
 
@@ -409,6 +414,8 @@ class ToolsController extends Controller
         $lead = $amoApi->service->leads()->find($segment->lead_id);
 
         if ($lead->responsible_user_id != $segment->responsible_user_id) {
+
+            Log::warning(__METHOD__, [$lead->responsible_user_id.' != '.$segment->responsible_user_id]);
 
             $lead->responsible_user_id = $segment->responsible_user_id;
             $lead->save();

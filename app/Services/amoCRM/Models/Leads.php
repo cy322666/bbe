@@ -32,7 +32,7 @@ abstract class Leads
     }
 
     //поиск активных в воронке
-    public static function search($contact, $client, int $pipeline_id = null)
+    public static function search($contact, $client, int|array $pipelines = null) : ?Lead
     {
         if($contact->leads->sortBy('created_at', 'DESC')) {
 
@@ -41,11 +41,22 @@ abstract class Leads
                 if ($lead->status_id != 143 &&
                     $lead->status_id != 142) {
 
-                    if($pipeline_id != null && $lead->pipeline_id == $pipeline_id) {
+                    if($pipelines != null) {
 
-                        return $client->service
-                            ->leads()
-                            ->find($lead->id);
+                        if (is_array($pipelines)) {
+
+                            if (in_array($lead->pipeline_id, $pipelines)) {
+
+                                return $client->service
+                                    ->leads()
+                                    ->find($lead->id);
+                            }
+                        } elseif ($lead->pipeline_id == $pipelines) {
+
+                            return $client->service
+                                ->leads()
+                                ->find($lead->id);
+                        }
                     }
 
                     return $client->service
@@ -54,6 +65,7 @@ abstract class Leads
                 }
             }
         }
+        return null;
     }
 
     public static function create($contact, array $params, string $leadname)
