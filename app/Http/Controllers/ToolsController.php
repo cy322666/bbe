@@ -366,6 +366,8 @@ class ToolsController extends Controller
 
                 $segment->count_leads = $leadsActive->count();
 
+                $lead->attachTag('В работе');
+
                 foreach ($leadsActive as $leadActive) {
 
                     if ($leadActive->id != $lead->id) {
