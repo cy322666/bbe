@@ -278,17 +278,6 @@ class ToolsController extends Controller
             }
         }
 
-        try {
-
-            $lead->save();
-
-        } catch (\Throwable $e) {
-
-            $lead->save();
-
-            Log::error(__METHOD__, [$e->getMessage().' '.$e->getFile().' '.$e->getLine()]);
-        }
-
         Telegram::send(implode("\n", [
             '*Успешная сделка!* ',
             '-----------------------',
@@ -313,6 +302,16 @@ class ToolsController extends Controller
             "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
         ], false
         );
+
+        try {
+
+            $lead->updated_at = time() + 10;
+            $lead->save();
+
+        } catch (\Throwable $e) {
+
+            Log::error(__METHOD__, [$e->getMessage().' '.$e->getFile().' '.$e->getLine()]);
+        }
     }
 
     public function return(Request $request)
