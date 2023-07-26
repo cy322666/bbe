@@ -282,37 +282,37 @@ class ToolsController extends Controller
 
             $lead->save();
 
-        } catch (\Throwable $e) {} finally {
-
-            sleep(2);
+        } catch (\Throwable $e) {
 
             $lead->save();
 
-            Telegram::send(implode("\n", [
-                '*Успешная сделка!* ',
-                '-----------------------',
-                '*Продукт*',
-                'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
-                'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
-                'Дата старта потока : '.$start,
-                'Ответственный : '.$responsibleName,
-                'Гросс : '.$lead->sale,
-                'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
-                'Способ оплаты : '.$method,
-                '*Клиент* ',
-                'Имя : '.$lead->contact->name ?? '-',
-                'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
-                'Телефон контакта : '.$lead->contact->cf('Телефон')->getValue() ?? '-',
-                'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
-                'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
-                'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
-                "Куратор : $curator",
-            ]), $chatId, $token, [
-                "text" => "Перейти в сделку",
-                "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
-            ], false
-            );
+            Log::error(__METHOD__, [$e->getMessage().' '.$e->getFile().' '.$e->getLine()]);
         }
+
+        Telegram::send(implode("\n", [
+            '*Успешная сделка!* ',
+            '-----------------------',
+            '*Продукт*',
+            'Название : '.$lead->cf('Название продукта')->getValue() ?? '-',
+            'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
+            'Дата старта потока : '.$start,
+            'Ответственный : '.$responsibleName,
+            'Гросс : '.$lead->sale,
+            'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
+            'Способ оплаты : '.$method,
+            '*Клиент* ',
+            'Имя : '.$lead->contact->name ?? '-',
+            'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
+            'Телефон контакта : '.$lead->contact->cf('Телефон')->getValue() ?? '-',
+            'Почта контакта : '.$lead->contact->cf('Email')->getValue() ?? '-',
+            'Почта плательщика : '.$lead->cf('Почта плательщика')->getValue() ?? '-',
+            'Почта студента : '.$lead->cf('Почта студента (оплата)')->getValue() ?? '-',
+            "Куратор : $curator",
+        ]), $chatId, $token, [
+            "text" => "Перейти в сделку",
+            "url"  => "https://bbeducation.amocrm.ru/leads/detail/".$leadId
+        ], false
+        );
     }
 
     public function return(Request $request)
