@@ -30,8 +30,6 @@ class OneCPay implements ShouldQueue
     {
         $amoApi = (new Client(Account::query()->first()))->init();
 
-        $amoApi->service->queries->setDelay(1);
-
         $contactNoPayed = false;
 
         if ($this->pay->email)

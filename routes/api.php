@@ -29,6 +29,8 @@ Route::post('segment', [SegmentController::class, 'hook']);
 
 Route::post('pays/hook', [OneCController::class, 'pay']);
 
+Route::post('pays/cron', [OneCController::class, 'cron']);
+
 Route::post('tools/pay', [ToolsController::class, 'datePay']);
 
 Route::post('tools/return', [ToolsController::class, 'return']);
