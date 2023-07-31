@@ -355,9 +355,13 @@ class ToolsController extends Controller
 
             $leadsActive = $leads->filter(function($lead) {
 
-                return
-                    ($lead->status_id != 142 && $lead->status_id != 143) &&
-                    ($lead->pipeline_id == 3342043 || $lead->pipeline_id == 6540894);
+                if ($lead->status_id != 142 && $lead->status_id != 143) {
+
+                    if ($lead->pipeline_id == 3342043 || $lead->pipeline_id == 6540894) {
+
+                        return $lead;
+                    }
+                }
 
             })->sortBy('pipeline_id', 'ASC');
 
@@ -414,12 +418,19 @@ class ToolsController extends Controller
 
         $lead = $amoApi->service->leads()->find($segment->lead_id);
 
-        if ($lead->responsible_user_id != $segment->responsible_user_id) {
+        if ($segment->responsible_user_id !== null &&
+            $lead->responsible_user_id != $segment->responsible_user_id) {
 
             Log::warning(__METHOD__, [$lead->responsible_user_id.' != '.$segment->responsible_user_id]);
 
             $lead->responsible_user_id = $segment->responsible_user_id;
             $lead->save();
+
+            $note = $lead->createNote(4);
+            $note->text = 'Сделка передана ответственному повторно'."\n";
+            $note->element_type = 2;
+            $note->element_id = $leadActive->id;
+            $note->save();
 
             $segment->create_status = 'repeat change responsible';
             $segment->save();
