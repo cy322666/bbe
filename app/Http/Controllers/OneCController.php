@@ -61,22 +61,33 @@ class OneCController extends Controller
             } catch (Throwable $e) {
 
                 Log::error(__METHOD__, [$e->getMessage()]);
-
-                continue;
             }
-
         }
     }
 
     public function cron()
     {
         $pays = Pay::query()
+            ->where('datetime', '>', '2023-06-25 16:00:00')
             ->where('status', 0)
-            ->where('check_id', null)
+            ->where('lead_id', null)
+            ->where('contact_id', null)
             ->limit(1)
             ->get();
 
         foreach ($pays as $pay) {
+
+            $type = explode('.', $pay->code)[0];
+
+            $action = $pay->action ?? 'create';
+
+            Log::info(__METHOD__, [
+                'type'   => $type,
+                'action' => $action,
+                'return' => $pay->return
+            ]);
+
+
 
             if ($pay->action == ('create' || null)) {
 
