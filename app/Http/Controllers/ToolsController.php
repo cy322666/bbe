@@ -376,6 +376,7 @@ class ToolsController extends Controller
                     if ($leadActive->id != $lead->id) {
 
                         $lead->responsible_user_id = $leadActive->responsible_user_id;
+                        $lead->updated_at = time() + 5;
                         $lead->save();
 
                         $note = $lead->createNote(4);
@@ -397,6 +398,7 @@ class ToolsController extends Controller
                     if ($leadTask->closest_task_at > time()) {
 
                         $lead->responsible_user_id = $leadTask->responsible_user_id;
+                        $lead->updated_at = time() + 5;
                         $lead->save();
 
                         $note = $lead->createNote(4);
@@ -424,6 +426,7 @@ class ToolsController extends Controller
             Log::warning(__METHOD__, [$lead->responsible_user_id.' != '.$segment->responsible_user_id]);
 
             $lead->responsible_user_id = $segment->responsible_user_id;
+            $lead->updated_at = time() + 5;
             $lead->save();
 
             $note = $lead->createNote(4);
