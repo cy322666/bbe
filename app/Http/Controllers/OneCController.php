@@ -4,7 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Jobs\OneCPay;
 use App\Jobs\OneCPayUpdate;
+use App\Models\Account;
 use App\Models\OneC\Pay;
+use App\Services\amoCRM\Client;
+use App\Services\amoCRM\Models\Contacts;
+use App\Services\amoCRM\Services\OneC\SendCourse;
+use App\Services\amoCRM\Services\OneC\SendInstallment;
+use App\Services\amoCRM\Services\OneC\SendReturn;
+use App\Services\amoCRM\Services\OneC\SendSubscription;
+use App\Services\amoCRM\Services\OneC\SendUpdate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -65,6 +73,9 @@ class OneCController extends Controller
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function cron()
     {
         $pays = Pay::query()
@@ -72,31 +83,42 @@ class OneCController extends Controller
             ->where('status', 0)
             ->where('lead_id', null)
             ->where('contact_id', null)
-            ->limit(1)
+            ->limit(500)
             ->get();
 
         foreach ($pays as $pay) {
-
+//            $pay = Pay::query()->where('id', 36192)->first();
             $type = explode('.', $pay->code)[0];
 
             $action = $pay->action ?? 'create';
 
-            Log::info(__METHOD__, [
-                'type'   => $type,
-                'action' => $action,
-                'return' => $pay->return
-            ]);
+            $installment = preg_match_all("@\d{2}\.\d{2}.\d{2}-\d{2}\.\d{2}.\d{2}@", $pay->title);
 
+            $actionName = "$type.$installment.$action.$pay->return";
 
+            $amoApi = (new Client(Account::query()->first()))
+                ->init()
+                ->initLogs()
+                ->initCache();
 
-            if ($pay->action == ('create' || null)) {
+            $service = match ($actionName) {
+                'course.1.create.0' => SendInstallment::class,  //рассрочка курса
+                'course.0.create.0' => SendCourse::class,       //оплата курса
 
-                OneCPay::dispatch($pay);
-            }
-            if ($pay->action == 'update') {
+                'subscription.0.create.0' => SendCourse::class, //оплата подписки
 
-                Artisan::call('1c:pay-update '.$pay->id);
-            }
+                'course.1.create.1', 'subscription.0.create.1', 'course.0.create.1',
+                'course.1.update.1', 'subscription.0.update.1', 'course.0.update.1' => SendReturn::class,
+
+                'course.1.update.0', 'subscription.0.update.0', 'course.0.update.0' => SendUpdate::class,
+            };
+
+            if ($actionName !== 'course.1.create.0' && $actionName !== 'course.0.create.0') continue;
+
+            $pay->action_name = $actionName;
+            $pay->save();
+
+            $service::run($amoApi, $pay);
         }
     }
 }
