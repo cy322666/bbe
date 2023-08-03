@@ -375,6 +375,8 @@ class ToolsController extends Controller
 
                     if ($leadActive->id != $lead->id) {
 
+                        if (static::checkAdmin($leadActive->responsible_user_id)) continue;
+
                         $lead->responsible_user_id = $leadActive->responsible_user_id;
                         $lead->updated_at = time() + 5;
                         $lead->save();
@@ -396,6 +398,8 @@ class ToolsController extends Controller
                 foreach ($leads as $leadTask) {
 
                     if ($leadTask->closest_task_at > time()) {
+
+                        if (static::checkAdmin($leadTask->responsible_user_id)) continue;
 
                         $lead->responsible_user_id = $leadTask->responsible_user_id;
                         $lead->updated_at = time() + 5;
@@ -425,6 +429,8 @@ class ToolsController extends Controller
 
             Log::warning(__METHOD__, [$lead->responsible_user_id.' != '.$segment->responsible_user_id]);
 
+            if (static::checkAdmin($lead->responsible_user_id)) return;
+
             $lead->responsible_user_id = $segment->responsible_user_id;
             $lead->updated_at = time() + 5;
             $lead->save();
@@ -438,5 +444,21 @@ class ToolsController extends Controller
             $segment->create_status = 'repeat change responsible';
             $segment->save();
         }
+    }
+
+    private static function checkAdmin(int $responsible_user_id) : bool
+    {
+        $arrayAdmins = [
+            5998951,
+            6103456,
+            6117505,
+        ];
+
+        if (in_array($responsible_user_id, $arrayAdmins)) {
+
+            return true;
+        }
+
+        return false;
     }
 }
