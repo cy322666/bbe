@@ -110,7 +110,7 @@ class Client
 
                 $log->error = $query->response->getError();
             } else
-                $log->data = $query->response->getData();
+                $log->data = strlen($query->response->getData() > 1) ? $query->response->getData() : [];
 
             $log->save();
         });
