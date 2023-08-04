@@ -353,6 +353,8 @@ class ToolsController extends Controller
 
         if ($leads->count() > 1) {
 
+            sleep(15);
+
             $leadsActive = $leads->filter(function($lead) {
 
                 if ($lead->status_id != 142 && $lead->status_id != 143) {
