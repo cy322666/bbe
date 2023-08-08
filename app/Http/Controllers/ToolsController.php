@@ -353,7 +353,7 @@ class ToolsController extends Controller
 
         if ($leads->count() > 1) {
 
-            sleep(30);
+            sleep(10);
 
             $leadsActive = $leads->filter(function($lead) {
 
