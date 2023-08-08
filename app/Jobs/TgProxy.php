@@ -46,6 +46,8 @@ class TgProxy implements ShouldQueue
 
                 $body = json_decode($proxy->body);
 
+                sleep(60);
+
                 $lead->cf('utm_source')->setValue($body->utm_source ?? null);
                 $lead->cf('utm_medium')->setValue($body->utm_medium ?? null);
                 $lead->cf('utm_term')->setValue($body->utm_term ?? null);
