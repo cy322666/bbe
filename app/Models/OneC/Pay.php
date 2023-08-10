@@ -29,5 +29,6 @@ class Pay extends Model
         'installment_number',
         'sum_gross',
         'action',
+        'action_name',
     ];
 }

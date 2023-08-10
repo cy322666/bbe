@@ -81,13 +81,12 @@ class OneCController extends Controller
         $pays = Pay::query()
             ->where('datetime', '>', '2023-06-25 16:00:00')
             ->where('status', 0)
-            ->where('lead_id', null)
             ->where('contact_id', null)
-            ->limit(500)
+            ->limit(30)
             ->get();
 
         foreach ($pays as $pay) {
-//            $pay = Pay::query()->where('id', 36192)->first();
+
             $type = explode('.', $pay->code)[0];
 
             $action = $pay->action ?? 'create';
@@ -112,8 +111,6 @@ class OneCController extends Controller
 
                 'course.1.update.0', 'subscription.0.update.0', 'course.0.update.0' => SendUpdate::class,
             };
-
-            if ($actionName !== 'course.1.create.0' && $actionName !== 'course.0.create.0') continue;
 
             $pay->action_name = $actionName;
             $pay->save();
