@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('site', [SiteController::class, 'create'])->middleware(SiteCheckMiddleware::class);
+Route::post('site', [SiteController::class, 'index']);//->middleware(SiteCheckMiddleware::class);
 
 Route::post('segment', [SegmentController::class, 'hook']);
 
