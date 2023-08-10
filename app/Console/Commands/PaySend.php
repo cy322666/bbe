@@ -81,7 +81,7 @@ class PaySend extends Command
         return 1;
     }
 
-    private static function addPayWithLead($pay, $amoApi)
+    public static function addPayWithLead($pay, Client $amoApi)
     {
         $data = [[
             "name" => 'Оплата №'.$pay->number,
@@ -155,10 +155,15 @@ class PaySend extends Command
             ]
         ]];
 
-        $check = $amoApi
-            ->service
-            ->ajax()
-            ->postJson('/api/v4/catalogs/6945/elements', $data, []);
+        try {
+            $check = $amoApi
+                ->service
+                ->ajax()
+                ->postJson('/api/v4/catalogs/6945/elements', $data, []);
+        } catch (\Throwable $e) {
+
+            dd($e);
+        }
 
         if ($check) {
 
@@ -168,7 +173,8 @@ class PaySend extends Command
             $pay->save();
 
             $amoApi->service
-                ->ajax()->post('/api/v4/leads/' . $pay->lead_id . '/link', [
+                ->ajax()
+                ->post('/api/v4/leads/' . $pay->lead_id . '/link', [
                     [
                         "to_entity_id" => $checkId,
                         "to_entity_type" => "catalog_elements",
@@ -181,7 +187,7 @@ class PaySend extends Command
         }
     }
 
-    private static function addPayWithoutLead($pay, $amoApi)
+    public static function addPayWithoutLead($pay, $amoApi)
     {
         $data = [[
             "name" => 'Оплата №'.$pay->number,

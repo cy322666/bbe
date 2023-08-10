@@ -41,15 +41,19 @@ class OneCPay implements ShouldQueue
                 ->leads()
                 ->searchByCustomField($this->pay->email, 'Почта плательщика');
 
-            if ($leads->first()) {
+            $lead = $leads->first();
 
-                $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
+            if ($lead) {
 
-                if ($contact) {
+                $contact = $lead->contact;
 
-                    $contactNoPayed = true;
-                }
-                $lead = $leads->first();
+//                $contact = Contacts::search(['Почта' => $this->pay->email], $amoApi);
+//
+//                if ($contact) {
+//
+//                    $contactNoPayed = true;
+//                }
+//                $lead = $leads->first();
             }
         }
 
@@ -60,13 +64,6 @@ class OneCPay implements ShouldQueue
 
             $this->pay->contact_id = $contact->id;
             $this->pay->status = 15;//новый контакт
-            $this->pay->save();
-
-        } elseif ($contactNoPayed) {
-
-            $this->pay->lead_id = $lead->id;
-            $this->pay->contact_id = $contact->id;
-            $this->pay->status = 17;
             $this->pay->save();
 
         } else {

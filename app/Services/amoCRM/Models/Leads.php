@@ -31,41 +31,51 @@ abstract class Leads
         return $leads;
     }
 
-    //поиск активных в воронке
-    public static function search($contact, $client, int|array $pipelines = null) : ?Lead
+    public static function searchSuccess($contact, $client, int|array $pipelines) : Lead|false
     {
-        if($contact->leads->sortBy('created_at', 'DESC')) {
+        return $contact->leads->filter(function($lead) use ($client, $pipelines) {
 
-            foreach ($contact->leads as $lead) {
+            if ($lead->status_id == 142) {
 
-                if ($lead->status_id != 143 &&
-                    $lead->status_id != 142) {
+                if (is_array($pipelines)) {
 
-                    if($pipelines != null) {
+                    if (in_array($lead->pipeline_id, $pipelines)) {
 
-                        if (is_array($pipelines)) {
-
-                            if (in_array($lead->pipeline_id, $pipelines)) {
-
-                                return $client->service
-                                    ->leads()
-                                    ->find($lead->id);
-                            }
-                        } elseif ($lead->pipeline_id == $pipelines) {
-
-                            return $client->service
-                                ->leads()
-                                ->find($lead->id);
-                        }
+                        return $lead;
                     }
+                } elseif ($lead->pipeline_id == $pipelines) {
 
-                    return $client->service
-                        ->leads()
-                        ->find($lead->id);
+                    return $lead;
                 }
+
+                return $lead;
             }
-        }
-        return null;
+        })->sortBy('created_at', 'DESC')?->first();
+    }
+
+    public static function search($contact, $client, int|array $pipelines = null)
+    {
+        return $contact->leads->filter(function($lead) use ($client, $pipelines) {
+
+            if ($lead->status_id != 143 &&
+                $lead->status_id != 142) {
+
+                if($pipelines != null) {
+
+                    if (is_array($pipelines)) {
+
+                        if (in_array($lead->pipeline_id, $pipelines)) {
+
+                            return true;
+                        }
+                    } elseif ($lead->pipeline_id == $pipelines) {
+
+                        return true;
+                    }
+                } else
+                    return true;
+            }
+        })->sortBy('created_at', 'DESC')?->first();
     }
 
     public static function create($contact, array $params, string $leadname)

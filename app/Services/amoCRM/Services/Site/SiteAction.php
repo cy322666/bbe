@@ -11,9 +11,9 @@ use App\Services\amoCRM\Models\Tasks;
 use Exception;
 use Throwable;
 
-class OrderAction
+class SiteAction
 {
-    private string $taskText = 'Клиент оплатил на сайте, проверь и переведи в Успешно реализовано';
+    private string $taskText = 'Клиент оставил заявку на сайте';
 
     public function __construct(public Client $amoApi) {}
 
@@ -38,13 +38,7 @@ class OrderAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::create($contact, [
-                    'status_id' => 142,
-                    'price'     => $body->price,
-                ], $body->name);
-
-                $lead->attachTag('Автооплата');
-                $lead->save();
+                $lead = Leads::create($contact, [], $body->name);
 
             } else {
 
@@ -53,26 +47,12 @@ class OrderAction
                     6540894,
                 ]);
 
-                if (!$lead) {
+                if ($lead) {
 
-                    foreach ($contact->leads as $leadTask) {
+                    $lead->attachTag('В работе');
+                    $lead->save();
 
-                        if ($leadTask->closest_task_at > time()) {
-
-                            Notes::addOne($lead, NoteHelper::createNoteOrder());
-
-                            Tasks::create($lead, [
-                                'complete_till_at'    => time() + 60 + 60,
-                                'responsible_user_id' => $leadTask->responsible_user_id,
-                            ], $this->taskText);
-
-                            break;
-                        }
-                    }
                 } else {
-                    $lead->cf('Источник')->setValue('Основной сайт');
-                    $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->cf('Тип продукта')->setValue();
 
                     $productType = NoteHelper::getTypeProduct($body);
 
@@ -82,22 +62,24 @@ class OrderAction
                         $lead->attachTag($productType);
                     }
 
+                    $lead->cf('Источник')->setValue('Основной сайт');
+                    $lead->cf('Способ оплаты')->setValue('Сайт');
+                    $lead->cf('Тип продукта')->setValue();
+                    $lead->save();
+
                     if ($body->communicationMethod) {
 
                         $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
                     }
 
                     $lead = LeadHelper::setUtmsForObject($lead, $body);
-
-                    $lead->attachTag('В работе');
-                    $lead->save();
                 }
             }
 
             $lead->attachTag('Основной');
             $lead->save();
 
-            NoteHelper::createNoteOrder(json_decode($body, true));
+            NoteHelper::createNoteConsultation(json_decode($body, true));
 
         } catch (Throwable $e) {
 
