@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class SiteCheckMiddleware
 {
@@ -18,11 +19,14 @@ class SiteCheckMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        Log::info('> site', $request->toArray());
+
         if ($request->action !== 'subscribe-course' &&
             $request->action !== 'subscribe-school' &&
             $request->action !== 'subscribe-school-api') {
 
             return $next($request);
         }
+        exit;
     }
 }

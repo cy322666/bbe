@@ -51,13 +51,19 @@ class SiteCheckTest
     {
         foreach (static::$testEmails as $testEmail) {
 
-            return $testEmail == $value || strripos($value, $testEmail) !== false;
+            if ($testEmail == $value || strripos($value, $testEmail) !== false)
+
+                return true;
         }
 
         foreach (static::$testPhones as $testPhone) {
 
-            return $testPhone == $value || strripos($value, $testPhone) !== false;
+            if ($testPhone == $value || strripos($value, $testPhone) !== false)
+
+                return true;
         }
+
+        return false;
     }
 
     public static function isTest(Request $request): bool
