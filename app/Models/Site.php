@@ -21,5 +21,11 @@ class Site extends Model
         'body',
         'is_test',
         'status',
+        'utm_term',
+        'utm_source',
+        'utm_medium',
+        'utm_content',
+        'utm_campaign',
+        'error',
     ];
 }

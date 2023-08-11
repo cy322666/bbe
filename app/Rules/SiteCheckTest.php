@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
 
-class SiteCheckTest implements Rule
+class SiteCheckTest
 {
     private static array $testEmails = [
         'edokovdmitrii@gmail.com',
@@ -41,41 +41,31 @@ class SiteCheckTest implements Rule
         '91990537349',
     ];
 
-    public function __construct()
-    {
-    }
-
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param mixed $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public static function validate(string $value): bool
     {
         foreach (static::$testEmails as $testEmail) {
 
-            return $testEmail == $value;
+            return $testEmail == $value || strripos($value, $testEmail) !== false;
         }
 
         foreach (static::$testPhones as $testPhone) {
 
-            return $testPhone == $value;
+            return $testPhone == $value || strripos($value, $testPhone) !== false;
         }
-    }
-
-    public function message()
-    {
-        return [];
     }
 
     public static function isTest(Request $request): bool
     {
-        $isTest = $request->validate([
-            'phone' => new SiteCheckTest(),
-            'email' => new SiteCheckTest(),
-        ]);
+        $isTest = [
+            'phone' => static::validate($request->phone),
+            'email' => static::validate($request->email)
+        ];
 
         return $isTest['phone'] || $isTest['email'];
     }
