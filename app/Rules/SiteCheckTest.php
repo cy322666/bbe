@@ -47,7 +47,7 @@ class SiteCheckTest
      * @param mixed $value
      * @return bool
      */
-    public static function validate(string $value): bool
+    public static function validate(?string $value): bool
     {
         foreach (static::$testEmails as $testEmail) {
 

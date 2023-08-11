@@ -95,9 +95,4 @@ abstract class LeadHelper
 
         return $lead;
     }
-
-    public static function checkTest(Request $request)
-    {
-        
-    }
 }
