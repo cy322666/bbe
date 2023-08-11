@@ -38,7 +38,9 @@ class SiteAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::create($contact, [], $body->name);
+                $lead = Leads::create($contact, [
+                    'status_id' => !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : null,
+                ], $body->name);
 
             } else {
 
