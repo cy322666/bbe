@@ -13,7 +13,7 @@ class SiteController extends Controller
     /**
      * @throws \Exception
      */
-    public function site(SiteRequest $request)
+    public function index(SiteRequest $request)
     {
         $site = Site::query()->create([
             'name'    => $request->name,
