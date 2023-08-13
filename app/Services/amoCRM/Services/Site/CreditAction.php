@@ -38,7 +38,10 @@ class CreditAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::create($contact, [], $body->name);
+                $lead = Leads::create($contact, [
+                    'status_id' => $site->is_test ? 53757562 : 33522700,
+                    'price'     => $body->price,
+                ], $body->name);
 
             } else {
 
@@ -79,6 +82,10 @@ class CreditAction
             $lead->attachTag('Основной');
             $lead->save();
 
+            $site->lead_id = $lead->id;
+            $site->contact_id = $contact->id;
+            $site->save();
+
             NoteHelper::createNoteCredit(json_decode($body, true));
 
         } catch (Throwable $e) {
@@ -89,6 +96,6 @@ class CreditAction
             throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
 
-        return true;
+        return 1;
     }
 }

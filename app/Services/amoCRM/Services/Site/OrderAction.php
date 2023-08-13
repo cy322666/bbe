@@ -39,7 +39,7 @@ class OrderAction
                 ]);
 
                 $lead = Leads::create($contact, [
-                    'status_id' => 142,
+                    'status_id' => $site->is_test ? 53757562 : 33522700,
                     'price'     => $body->price,
                 ], $body->name);
 
@@ -97,6 +97,10 @@ class OrderAction
             $lead->attachTag('Основной');
             $lead->save();
 
+            $site->lead_id = $lead->id;
+            $site->contact_id = $contact->id;
+            $site->save();
+
             NoteHelper::createNoteOrder(json_decode($body, true));
 
         } catch (Throwable $e) {
@@ -107,6 +111,6 @@ class OrderAction
             throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
 
-        return true;
+        return 1;
     }
 }
