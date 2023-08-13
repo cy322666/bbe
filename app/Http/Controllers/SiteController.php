@@ -42,7 +42,7 @@ class SiteController extends Controller
             ->first();
 
         if (!$double) {
-dd('end');
+
             $result = SiteSend::send($site);
 
             $site->status = $result;
