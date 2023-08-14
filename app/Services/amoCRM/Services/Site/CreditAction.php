@@ -26,7 +26,7 @@ class CreditAction
 
             $contact = Contacts::search([
                 'Телефоны' => $site->phone,
-                'Почта'    => $site->email
+                'Почта'    => $site->email ?? null,
             ]);
 
             if (!$contact) {
