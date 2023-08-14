@@ -44,6 +44,8 @@ class CreditAction
                     'price'     => $body->price,
                 ], $body->name);
 
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
+
             } else {
 
                 $lead = Leads::search($contact, $this->amoApi, [
