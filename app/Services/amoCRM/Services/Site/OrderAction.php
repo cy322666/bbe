@@ -25,6 +25,9 @@ class OrderAction
     {
         try {
 
+            if ($site->name == 'Подписка на год' ||
+                $site->name == 'Подписка на месяц') exit;
+
             $productType = NoteHelper::getTypeProduct($body);
 
             $contact = Contacts::search([
