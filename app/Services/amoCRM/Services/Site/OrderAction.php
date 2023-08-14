@@ -27,7 +27,7 @@ class OrderAction
             $contact = Contacts::search([
                 'Телефоны' => $site->phone,
                 'Почта'    => $site->email ?? null,
-            ]);
+            ], $this->amoApi);
 
             if (!$contact) {
 
