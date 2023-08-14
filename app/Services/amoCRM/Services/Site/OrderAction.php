@@ -85,12 +85,6 @@ class OrderAction
                     $lead->cf('Способ оплаты')->setValue('Сайт');
                     $lead->cf('Тип продукта')->setValue($productType);
 
-
-                    if ($body->communicationMethod) {
-
-                        $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                    }
-
                     $lead = LeadHelper::setUtmsForObject($lead, $body);
                 }
             }
