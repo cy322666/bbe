@@ -8,6 +8,7 @@ use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
 use App\Services\amoCRM\Models\Tasks;
+use App\Services\Telegram;
 use Exception;
 use Throwable;
 
@@ -47,6 +48,14 @@ class SiteAction
                     'status_id' => $statusId
                 ], $body->name);
 
+                try {
+
+                    $lead->cf('Название продукта')->setValue($site->name);
+                } catch (Exception $e) {
+
+                    Telegram::send('Неизвестный продукт', env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                }
+
                 $lead->cf('Тип продукта')->setValue($productType);
                 $lead->attachTag($productType);
 
@@ -81,6 +90,13 @@ class SiteAction
 
                     $lead->attachTag($productType);
 
+                    try {
+
+                        $lead->cf('Название продукта')->setValue($site->name);
+                    } catch (Exception $e) {
+
+                        Telegram::send('Неизвестный продукт', env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                    }
                     $lead->cf('Тип продукта')->setValue($productType);
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');

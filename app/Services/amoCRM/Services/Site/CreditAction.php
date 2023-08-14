@@ -2,12 +2,14 @@
 
 namespace App\Services\amoCRM\Services\Site;
 
+use App\Models\Log;
 use App\Models\Site;
 use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
 use App\Services\amoCRM\Models\Tasks;
+use App\Services\Telegram;
 use Exception;
 use Throwable;
 
@@ -44,6 +46,14 @@ class CreditAction
                     'price'     => $body->price,
                 ], $body->name);
 
+                try {
+
+                    $lead->cf('Название продукта')->setValue($site->name);
+                } catch (Exception $e) {
+
+                    Telegram::send('Неизвестный продукт', env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                }
+
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
 
             } else {
@@ -67,6 +77,13 @@ class CreditAction
 
                     $lead->attachTag($productType);
 
+                    try {
+
+                        $lead->cf('Название продукта')->setValue($site->name);
+                    } catch (Exception $e) {
+
+                        Telegram::send('Неизвестный продукт', env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                    }
                     $lead->cf('Тип продукта')->setValue($productType);
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
