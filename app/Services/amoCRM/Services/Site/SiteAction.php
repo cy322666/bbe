@@ -29,6 +29,11 @@ class SiteAction
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 
+            $statusId = $site->is_test ? 53757562 : 33522700;
+            $statusId = !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : $statusId;
+
+            $productType = NoteHelper::getTypeProduct($body);
+
             if (!$contact) {
 
                 $contact = Contacts::create($this->amoApi);
@@ -38,12 +43,24 @@ class SiteAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $statusId = $site->is_test ? 53757562 : 33522700;
-                $statusId = !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : $statusId;
-
                 $lead = Leads::create($contact, [
                     'status_id' => $statusId
                 ], $body->name);
+
+                $lead->cf('Тип продукта')->setValue($productType);
+                $lead->attachTag($productType);
+
+                $lead->cf('Источник')->setValue('Основной сайт');
+                $lead->cf('Способ оплаты')->setValue('Сайт');
+                $lead->save();
+
+                if ($body->communicationMethod) {
+
+                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+                }
+                $lead->save();
+
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
 
             } else {
 
@@ -59,23 +76,21 @@ class SiteAction
 
                 } else {
 
-                    $productType = NoteHelper::getTypeProduct($body);
+                    $lead = Leads::create($contact, [
+                        'status_id' => $statusId
+                    ], $body->name);
 
-                    if ($productType) {
+                    $lead->attachTag($productType);
 
-                        $lead->cf('Тип продукта')->setValue($productType);
-                        $lead->attachTag($productType);
-                    }
-
+                    $lead->cf('Тип продукта')->setValue($productType);
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->cf('Тип продукта')->setValue();
-                    $lead->save();
 
                     if ($body->communicationMethod) {
 
                         $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
                     }
+                    $lead->save();
 
                     $lead = LeadHelper::setUtmsForObject($lead, $body);
                 }
