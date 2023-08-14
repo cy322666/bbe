@@ -16,7 +16,7 @@ class SiteController extends Controller
     public function index(SiteRequest $request)
     {
         $site = Site::query()->create([
-            'name'    => $request->name,
+            'name'    => $request->name ?? $request->course_name,
             'email'   => $request->email,
             'phone'   => $request->phone,
             'course'  => $request->course_name ?? null,

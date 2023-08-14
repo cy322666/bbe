@@ -76,7 +76,7 @@ class OrderAction
                     $lead = Leads::create($contact, [
                         'status_id' => $site->is_test ? 53757562 : 142,
                         'price'     => $site->amount,
-                    ], $body->name);
+                    ], $site->name);
 
                     $lead->attachTag('Автооплата');
                     $lead->attachTag($productType);
