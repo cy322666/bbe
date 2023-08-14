@@ -105,7 +105,7 @@ class CreditAction
             $site->contact_id = $contact->id;
             $site->save();
 
-            NoteHelper::createNoteCredit($body, $site);
+            Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
 
         } catch (Throwable $e) {
 
