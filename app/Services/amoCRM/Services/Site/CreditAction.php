@@ -86,7 +86,7 @@ class CreditAction
             $site->contact_id = $contact->id;
             $site->save();
 
-            NoteHelper::createNoteCredit(json_decode($body, true));
+            NoteHelper::createNoteCredit($body);
 
         } catch (Throwable $e) {
 

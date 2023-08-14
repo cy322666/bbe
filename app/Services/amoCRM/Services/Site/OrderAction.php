@@ -101,7 +101,7 @@ class OrderAction
             $site->contact_id = $contact->id;
             $site->save();
 
-            NoteHelper::createNoteOrder(json_decode($body, true));
+            NoteHelper::createNoteOrder($body);
 
         } catch (Throwable $e) {
 
