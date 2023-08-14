@@ -86,6 +86,8 @@ abstract class NoteHelper
         if (!empty($body->product_name) && $body->product_name == 'Подписка на год')
 
             return 'Подписка - 12 месяцев';
+
+        return null;
     }
 
     public static function createNoteCredit($data, $site): string
