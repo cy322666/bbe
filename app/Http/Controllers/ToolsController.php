@@ -351,8 +351,6 @@ class ToolsController extends Controller
 
         $leads = $contact->leads;
 
-        sleep(10);
-
         if ($leads->count() > 1) {
 
             $leadsActive = $leads->filter(function($lead) {
