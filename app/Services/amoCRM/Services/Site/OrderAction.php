@@ -89,8 +89,8 @@ class OrderAction
                 }
             }
 
-            $lead->attachTag('Основной');
             $lead->save();
+            $lead->attachTag('Основной');
 
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;
