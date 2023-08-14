@@ -91,7 +91,8 @@ abstract class NoteHelper
 
             return 'Подписка - Месяц';
 
-        if ($body->action == 'order' && $body->discriminator == 'course')
+        if (($body->action == 'order' && $body->discriminator == 'course') ||
+            (!empty($body->type) && $body->type == 'course'))
 
             return 'Курс';
 
