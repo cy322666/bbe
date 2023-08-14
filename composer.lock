@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab621dc3db656fb5c70b8d47dd642155",
+    "content-hash": "11bba8fec09bfd278380d1453628bb70",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5328,16 +5328,16 @@
         },
         {
             "name": "ufee/amoapi",
-            "version": "0.9.3.4",
+            "version": "0.9.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ufee/amoapi.git",
-                "reference": "30571cb8fd1b7384851db076af271576f93d6fab"
+                "reference": "2e281181791e57eebaf0b8d295e4776fb52838a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ufee/amoapi/zipball/30571cb8fd1b7384851db076af271576f93d6fab",
-                "reference": "30571cb8fd1b7384851db076af271576f93d6fab",
+                "url": "https://api.github.com/repos/ufee/amoapi/zipball/2e281181791e57eebaf0b8d295e4776fb52838a8",
+                "reference": "2e281181791e57eebaf0b8d295e4776fb52838a8",
                 "shasum": ""
             },
             "require": {
@@ -5368,9 +5368,9 @@
             "support": {
                 "email": "vlad@ufee.ru",
                 "issues": "https://github.com/ufee",
-                "source": "https://github.com/ufee/amoapi/tree/0.9.3.4"
+                "source": "https://github.com/ufee/amoapi/tree/0.9.3.5"
             },
-            "time": "2023-03-06T13:58:41+00:00"
+            "time": "2023-06-26T10:52:08+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -8058,5 +8058,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

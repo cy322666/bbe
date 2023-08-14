@@ -52,7 +52,6 @@ class SiteAction
 
                 $lead->cf('Источник')->setValue('Основной сайт');
                 $lead->cf('Способ оплаты')->setValue('Сайт');
-                $lead->save();
 
                 if ($body->communicationMethod) {
 
