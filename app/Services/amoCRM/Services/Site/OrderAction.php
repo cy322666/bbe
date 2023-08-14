@@ -24,6 +24,8 @@ class OrderAction
     {
         try {
 
+            $productType = NoteHelper::getTypeProduct($body);
+
             $contact = Contacts::search([
                 'Телефоны' => $site->phone,
                 'Почта'    => $site->email ?? null,
@@ -39,12 +41,13 @@ class OrderAction
                 ]);
 
                 $lead = Leads::create($contact, [
-                    'status_id' => $site->is_test ? 53757562 : 33522700,
+                    'status_id' => $site->is_test ? 53757562 : 142,
                     'price'     => $body->price,
                 ], $body->name);
 
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
+
                 $lead->attachTag('Автооплата');
-                $lead->save();
 
             } else {
 
@@ -70,17 +73,18 @@ class OrderAction
                         }
                     }
                 } else {
+                    $lead = Leads::create($contact, [
+                        'status_id' => $site->is_test ? 53757562 : 142,
+                        'price'     => $body->price,
+                    ], $body->name);
+
+                    $lead->attachTag('Автооплата');
+                    $lead->attachTag($productType);
+
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->cf('Тип продукта')->setValue();
+                    $lead->cf('Тип продукта')->setValue($productType);
 
-                    $productType = NoteHelper::getTypeProduct($body);
-
-                    if ($productType) {
-
-                        $lead->cf('Тип продукта')->setValue($productType);
-                        $lead->attachTag($productType);
-                    }
 
                     if ($body->communicationMethod) {
 
@@ -88,9 +92,6 @@ class OrderAction
                     }
 
                     $lead = LeadHelper::setUtmsForObject($lead, $body);
-
-                    $lead->attachTag('В работе');
-                    $lead->save();
                 }
             }
 
