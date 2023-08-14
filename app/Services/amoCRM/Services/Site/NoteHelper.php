@@ -9,7 +9,7 @@ abstract class NoteHelper
 //        return match ($action)
     }
 
-    public static function createNoteDefault($data): string
+    public static function createNoteDefault($data, $site): string
     {
         $text = [
             'Новая заявка на сайте!',
@@ -25,7 +25,7 @@ abstract class NoteHelper
         return implode("\n", $text);
     }
 
-    public static function createNoteOrder($data): string
+    public static function createNoteOrder($data, $site): string
     {
         $text = [
             'Новая оплата на сайте!',
@@ -33,16 +33,16 @@ abstract class NoteHelper
             ' - Имя : '. $data->firstname ?? '-',
             ' - Почта : '. $data->email ?? '-',
             ' - Телефон : '. $data->phone ?? '-',
-            ' - Оплачено : '. $data->amount ?? '-',
+            ' - Оплачено : '. $site->amount ?? '-',
             '-----------------------------',
-            ' - Название курса : '. $data->course_name ?? '-',
-            ' - ID курса : '. $data->course_id ?? '-',
+            ' - Название курса : '. $site->name ?? '-',
+            ' - ID курса : '. $site->course_id ?? '-',
             '-----------------------------'
         ];
         return implode("\n", $text);
     }
 
-    public static function createNoteConsultation($data): string
+    public static function createNoteConsultation($data, $site): string
     {
         $text = [
             'Новая заявка на консультацию!',
@@ -51,15 +51,14 @@ abstract class NoteHelper
             ' - Почта : '. $data->email ?? '-',
             ' - Телефон : '. $data->phone ?? '-',
             '-----------------------------',
-            ' - Название продукта : '. $data->coursename ?? '-',
-            ' - Тип продукта : '. $data->coursetype ?? '-',
-            ' - ID курса : '. $data->courseid ?? '-',
+            ' - Название продукта : '. $site->name ?? '-',
+            ' - ID курса : '. $site->course_id ?? '-',
             '-----------------------------'
         ];
 
-        if(!empty($data['communicationMethod']))
+        if(!empty($data->communicationMethod))
             $text = array_merge($text, [
-                ' - Способ связи : '.self::switchCommunication($data['communicationMethod']),
+                ' - Способ связи : '.self::switchCommunication($data->communicationMethod),
             ]);
 
         return implode("\n", $text);
@@ -89,19 +88,18 @@ abstract class NoteHelper
             return 'Подписка - 12 месяцев';
     }
 
-    public static function createNoteCredit($data): string
+    public static function createNoteCredit($data, $site): string
     {
         $text = [
             'Новая рассрочка с сайта !',
             '-----------------------------',
             ' - Имя : '. $data->firstname ?? '-',
-            ' - Почта : '. $data->email ?? '-',
-            ' - Телефон : '. $data->phone ?? '-',
-            ' - Оплачено : '. $data->amount ?? '-',
+            ' - Почта : '. $site->email ?? '-',
+            ' - Телефон : '. $site->phone ?? '-',
+            ' - Оплачено : '. $site->amount ?? '-',
             '-----------------------------',
-            ' - Название продукта : '. $data->coursename ?? '-',
-            ' - Тип продукта : '. $data->coursetype ?? '-',
-            ' - ID курса : '. $data->courseid ?? '-',
+            ' - Название продукта : '. $site->name ?? '-',
+            ' - ID курса : '. $site->course_id ?? '-',
             '-----------------------------'
         ];
         return implode("\n", $text);
