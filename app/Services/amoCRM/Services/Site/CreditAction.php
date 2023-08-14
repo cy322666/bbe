@@ -29,11 +29,12 @@ class CreditAction
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 
+            $productType = NoteHelper::getTypeProduct($body);
+
             if (!$contact) {
 
-                $contact = Contacts::create($this->amoApi);
+                $contact = Contacts::create($this->amoApi, $body->firstname);
                 $contact = Contacts::update($contact, [
-                    'Имя'      => $site->name,
                     'Почта'    => $site->email,
                     'Телефоны' => [$site->phone],
                 ]);
@@ -57,17 +58,16 @@ class CreditAction
 
                 } else {
 
-                    $productType = NoteHelper::getTypeProduct($body);
+                    $lead = Leads::create($contact, [
+                        'status_id' => $site->is_test ? 53757562 : 33522700,
+                        'price'     => $body->price,
+                    ], $body->name);
 
-                    if ($productType) {
+                    $lead->attachTag($productType);
 
-                        $lead->cf('Тип продукта')->setValue($productType);
-                        $lead->attachTag($productType);
-                    }
-
+                    $lead->cf('Тип продукта')->setValue($productType);
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->cf('Тип продукта')->setValue();
                     $lead->save();
 
                     if ($body->communicationMethod) {

@@ -36,7 +36,7 @@ class SiteAction
 
             if (!$contact) {
 
-                $contact = Contacts::create($this->amoApi);
+                $contact = Contacts::create($this->amoApi, $body->firstname);
                 $contact = Contacts::update($contact, [
                     'Имя'      => $site->name,
                     'Почта'    => $site->email,
