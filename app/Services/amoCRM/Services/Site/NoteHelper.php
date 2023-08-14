@@ -87,6 +87,10 @@ abstract class NoteHelper
 
             return 'Подписка - 12 месяцев';
 
+        if (!empty($body->product_name) && $body->product_name == 'Подписка на месяц')
+
+            return 'Подписка - Месяц';
+
         return null;
     }
 
