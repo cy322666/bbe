@@ -88,7 +88,7 @@ class SiteAction
             $site->contact_id = $contact->id;
             $site->save();
 
-            NoteHelper::createNoteConsultation($body);
+            NoteHelper::createNoteConsultation($body, $site);
 
         } catch (Throwable $e) {
 
