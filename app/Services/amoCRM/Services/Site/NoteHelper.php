@@ -14,12 +14,12 @@ abstract class NoteHelper
         $text = [
             'Новая заявка на сайте!',
             '-----------------------------',
-            ' - Имя : '. $data['firstname'] ?? '-',
-            ' - Почта : '. $data['email'] ?? '-',
-            ' - Телефон : '. $data['phone'] ?? '-',
+            ' - Имя : '. $data->firstname ?? '-',
+            ' - Почта : '. $data->email ?? '-',
+            ' - Телефон : '. $data->phone ?? '-',
             '-----------------------------',
-            ' - Название курса : '. $data['course_name'] ?? '-',
-            ' - ID курса : '. $data['course_id'] ?? '-',
+            ' - Название курса : '. $data->course_name ?? '-',
+            ' - ID курса : '. $data->course_id ?? '-',
             '-----------------------------'
         ];
         return implode("\n", $text);
@@ -30,13 +30,13 @@ abstract class NoteHelper
         $text = [
             'Новая оплата на сайте!',
             '-----------------------------',
-            ' - Имя : '. $data['firstname'] ?? '-',
-            ' - Почта : '. $data['email'] ?? '-',
-            ' - Телефон : '. $data['phone'] ?? '-',
-            ' - Оплачено : '. $data['amount'] ?? '-',
+            ' - Имя : '. $data->firstname ?? '-',
+            ' - Почта : '. $data->email ?? '-',
+            ' - Телефон : '. $data->phone ?? '-',
+            ' - Оплачено : '. $data->amount ?? '-',
             '-----------------------------',
-            ' - Название курса : '. $data['course_name'] ?? '-',
-            ' - ID курса : '. $data['course_id'] ?? '-',
+            ' - Название курса : '. $data->course_name ?? '-',
+            ' - ID курса : '. $data->course_id ?? '-',
             '-----------------------------'
         ];
         return implode("\n", $text);
@@ -94,14 +94,14 @@ abstract class NoteHelper
         $text = [
             'Новая рассрочка с сайта !',
             '-----------------------------',
-            ' - Имя : '. $data['firstname'] ?? '-',
-            ' - Почта : '. $data['email'] ?? '-',
-            ' - Телефон : '. $data['phone'] ?? '-',
-            ' - Оплачено : '. $data['amount'] ?? '-',
+            ' - Имя : '. $data->firstname ?? '-',
+            ' - Почта : '. $data->email ?? '-',
+            ' - Телефон : '. $data->phone ?? '-',
+            ' - Оплачено : '. $data->amount ?? '-',
             '-----------------------------',
-            ' - Название продукта : '. $data['coursename'] ?? '-',
-            ' - Тип продукта : '. $data['coursetype'] ?? '-',
-            ' - ID курса : '. $data['courseid'] ?? '-',
+            ' - Название продукта : '. $data->coursename ?? '-',
+            ' - Тип продукта : '. $data->coursetype ?? '-',
+            ' - ID курса : '. $data->courseid ?? '-',
             '-----------------------------'
         ];
         return implode("\n", $text);
