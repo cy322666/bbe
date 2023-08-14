@@ -75,15 +75,15 @@ abstract class NoteHelper
 
     public static function getTypeProduct($body) :? string
     {
-        if (($body->discriminator && $body->discriminator == 'yearly-program') ||
-            ($body->coursetype && $body->coursetype == 'yearly-program'))
+        if ((!empty($body->discriminator) && $body->discriminator == 'yearly-program') ||
+            (!empty($body->coursetype) && $body->coursetype == 'yearly-program'))
 
             return 'Годовая программа';
 
-        if (($body->discriminator && $body->discriminator == 'course') ||
-            ($body->coursetype && $body->coursetype == 'course'))
+        if ((!empty($body->discriminator) && $body->discriminator == 'course') ||
+            (!empty($body->coursetype) && $body->coursetype == 'course'))
 
-        if ($body->product_name && $body->product_name == 'Подписка на год')
+        if (!empty($body->product_name) && $body->product_name == 'Подписка на год')
 
             return 'Подписка - 12 месяцев';
     }
