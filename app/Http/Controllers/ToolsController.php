@@ -342,12 +342,12 @@ class ToolsController extends Controller
             ->initLogs()
             ->initCache();
 
-        $lead = $amoApi
+        $leadBase = $amoApi
             ->service
             ->leads()
             ->find($leadId);
 
-        $contact = $lead->contact;
+        $contact = $leadBase->contact;
 
         $leads = $contact->leads;
 
@@ -362,32 +362,31 @@ class ToolsController extends Controller
                         return $lead;
                     }
                 }
-
             })->sortBy('pipeline_id', 'ASC');
 
             if ($leadsActive->count() > 1) {
 
                 $segment->count_leads = $leadsActive->count();
 
-                $lead->attachTag('В работе');
+                $leadBase->attachTag('В работе');
 
                 foreach ($leadsActive as $leadActive) {
 
-                    if ($leadActive->id != $lead->id) {
+                    if ($leadActive->id != $leadBase->id) {
 
                         if (static::checkAdmin($leadActive->responsible_user_id)) continue;
 
-                        $lead->responsible_user_id = $leadActive->responsible_user_id;
-                        $lead->updated_at = time() + 5;
-                        $lead->save();
+                        $leadBase->responsible_user_id = $leadActive->responsible_user_id;
+                        $leadBase->updated_at = time() + 5;
+                        $leadBase->save();
 
-                        $note = $lead->createNote(4);
+                        $note = $leadBase->createNote(4);
                         $note->text = 'Сделка передана ответственному по активной сделке : '."\n".'https://bbeducation.amocrm.ru/leads/detail/'.$leadActive->id;
                         $note->element_type = 2;
                         $note->element_id = $leadActive->id;
                         $note->save();
 
-                        $segment->responsible_user_id = $lead->responsible_user_id;
+                        $segment->responsible_user_id = $leadBase->responsible_user_id;
                         $segment->create_status = 'open lead';
 
                         break;
@@ -401,17 +400,17 @@ class ToolsController extends Controller
 
                         if (static::checkAdmin($leadTask->responsible_user_id)) continue;
 
-                        $lead->responsible_user_id = $leadTask->responsible_user_id;
-                        $lead->updated_at = time() + 5;
-                        $lead->save();
+                        $leadBase->responsible_user_id = $leadTask->responsible_user_id;
+                        $leadBase->updated_at = time() + 5;
+                        $leadBase->save();
 
-                        $note = $lead->createNote(4);
+                        $note = $leadBase->createNote(4);
                         $note->text = 'Сделка передана ответственному по активной задаче в сделке : '."\n".'https://bbeducation.amocrm.ru/leads/detail/'.$leadTask->id;
                         $note->element_type = 2;
-                        $note->element_id = $lead->id;
+                        $note->element_id = $leadBase->id;
                         $note->save();
 
-                        $segment->responsible_user_id = $lead->responsible_user_id;
+                        $segment->responsible_user_id = $leadBase->responsible_user_id;
                         $segment->create_status = 'open task';
                     }
                 }
@@ -425,20 +424,20 @@ class ToolsController extends Controller
         $lead = $amoApi->service->leads()->find($segment->lead_id);
 
         if ($segment->responsible_user_id !== null &&
-            $lead->responsible_user_id != $segment->responsible_user_id) {
+            $leadBase->responsible_user_id != $segment->responsible_user_id) {
 
-            Log::warning(__METHOD__, [$lead->responsible_user_id.' != '.$segment->responsible_user_id]);
+            Log::warning(__METHOD__, [$leadBase->responsible_user_id.' != '.$segment->responsible_user_id]);
 
-            if (static::checkAdmin($lead->responsible_user_id)) return;
+            if (static::checkAdmin($leadBase->responsible_user_id)) return;
 
-            $lead->responsible_user_id = $segment->responsible_user_id;
-            $lead->updated_at = time() + 5;
-            $lead->save();
+            $leadBase->responsible_user_id = $segment->responsible_user_id;
+            $leadBase->updated_at = time() + 5;
+            $leadBase->save();
 
-            $note = $lead->createNote(4);
+            $note = $leadBase->createNote(4);
             $note->text = 'Сделка передана ответственному повторно'."\n";
             $note->element_type = 2;
-            $note->element_id = $leadActive->id;
+            $note->element_id = $leadBase->id;
             $note->save();
 
             $segment->create_status = 'repeat change responsible';
@@ -454,11 +453,6 @@ class ToolsController extends Controller
             6117505,
         ];
 
-        if (in_array($responsible_user_id, $arrayAdmins)) {
-
-            return true;
-        }
-
-        return false;
+        return in_array($responsible_user_id, $arrayAdmins);
     }
 }
