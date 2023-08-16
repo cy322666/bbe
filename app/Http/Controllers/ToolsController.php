@@ -339,8 +339,7 @@ class ToolsController extends Controller
 
         $amoApi = (new Client(Account::query()->first()))
             ->init()
-            ->initLogs()
-            ->initCache();
+            ->initLogs();
 
         $leadBase = $amoApi
             ->service
