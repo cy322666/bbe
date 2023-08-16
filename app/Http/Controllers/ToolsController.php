@@ -350,6 +350,8 @@ class ToolsController extends Controller
 
         $leads = $contact->leads;
 
+        $segment->count_leads = $leads->count();
+
         if ($leads->count() > 1) {
 
             $leadsActive = $leads->filter(function($lead) {
@@ -420,7 +422,7 @@ class ToolsController extends Controller
         $segment->contact_id = $contact->id;
         $segment->save();
 
-        $lead = $amoApi->service->leads()->find($segment->lead_id);
+        $leadBase = $amoApi->service->leads()->find($segment->lead_id);
 
         if ($segment->responsible_user_id !== null &&
             $leadBase->responsible_user_id != $segment->responsible_user_id) {

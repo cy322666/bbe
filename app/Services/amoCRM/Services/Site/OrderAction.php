@@ -63,10 +63,7 @@ class OrderAction
 
             } else {
 
-                $lead = Leads::search($contact, $this->amoApi, [
-                    3342043,
-                    6540894,
-                ]);
+                $lead = Leads::search($contact, $this->amoApi);
 
                 if (!$lead) {
 
