@@ -96,7 +96,7 @@ class OrderAction
                     }
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->cf('Тип продукта')->setValue($productType);
+                    $lead->cf('Тип продукта')->setValue($productType ?? null);
                     $lead->save();
 
                     $lead = LeadHelper::setUtmsForObject($lead, $body);

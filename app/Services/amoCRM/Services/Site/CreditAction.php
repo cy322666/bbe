@@ -75,7 +75,7 @@ class CreditAction
                         'price'     => $body->price,
                     ], $body->name);
 
-                    $lead->attachTag($productType);
+                    $lead->attachTag($productType ?? null);
 
                     try {
 
@@ -84,7 +84,7 @@ class CreditAction
 
                         Telegram::send('Неизвестный продукт:'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
                     }
-                    $lead->cf('Тип продукта')->setValue($productType);
+                    $lead->cf('Тип продукта')->setValue($productType ?? null);
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
                     $lead->save();
