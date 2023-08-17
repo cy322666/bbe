@@ -67,58 +67,29 @@ class OrderAction
 
                 if (!$lead) {
 
-                    $isActive = false;
+                    foreach ($contact->leads as $lead) {
 
-                    foreach ($contact->leads as $leadTask) {
-
-                        if ($leadTask->closest_task_at > time()) {
+                        if ($lead->closest_task_at > time()) {
 
                             Notes::addOne($lead, NoteHelper::createNoteOrder());
 
                             Tasks::create($lead, [
                                 'complete_till_at'    => time() + 60 + 60,
-                                'responsible_user_id' => $leadTask->responsible_user_id,
+                                'responsible_user_id' => $lead->responsible_user_id,
                             ], $this->taskText);
-
-                            $isActive = true;
 
                             break;
                         }
                     }
 
-                    if ($isActive == false) {
-
-                        $lead = Leads::create($contact, [
-                            'status_id' => $site->is_test ? 53757562 : 142,
-                            'price'     => $body->price,
-                        ], $body->name);
-
-                        $lead = LeadHelper::setUtmsForObject($lead, $body);
-
-                        $lead->attachTag('Автооплата');
-
-                        try {
-
-                            $lead->cf('Название продукта')->setValue($site->name);
-                        } catch (Exception $e) {
-
-                            Telegram::send('Неизвестный продукт:'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
-                        }
-                        $lead->save();
-                    }
-
                 } else {
-                    $lead = Leads::create($contact, [
-                        'status_id' => $site->is_test ? 53757562 : 142,
-                        'price'     => $site->amount,
-                    ], $site->name);
 
-                    $lead->attachTag('Автооплата');
-                    $lead->attachTag($productType);
+//                    $lead->attachTag('Автооплата');
+                    $lead->attachTag($productType ?? null);
 
                     try {
-
                         $lead->cf('Название продукта')->setValue($site->name);
+
                     } catch (Exception $e) {
 
                         Telegram::send('Неизвестный продукт:'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
@@ -126,13 +97,11 @@ class OrderAction
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
                     $lead->cf('Тип продукта')->setValue($productType);
+                    $lead->save();
 
                     $lead = LeadHelper::setUtmsForObject($lead, $body);
                 }
             }
-
-            $lead->save();
-            $lead->attachTag('Основной');
 
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;
