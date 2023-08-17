@@ -55,8 +55,10 @@ class SiteAction
                     Telegram::send('Неизвестный продукт :'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
                 }
 
-                $lead->cf('Тип продукта')->setValue($productType ?? null);
-                $lead->attachTag($productType ?? null);
+                if ($productType)
+                    $lead->cf('Тип продукта')->setValue($productType);
+
+                $lead->attachTag($productType);
 
                 $lead->cf('Источник')->setValue('Основной сайт');
                 $lead->cf('Способ оплаты')->setValue('Сайт');
@@ -96,7 +98,9 @@ class SiteAction
 
                         Telegram::send('Неизвестный продукт :'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
                     }
-                    $lead->cf('Тип продукта')->setValue($productType);
+                    if ($productType)
+                        $lead->cf('Тип продукта')->setValue($productType);
+
                     $lead->cf('Источник')->setValue('Основной сайт');
                     $lead->cf('Способ оплаты')->setValue('Сайт');
 
