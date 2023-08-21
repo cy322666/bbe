@@ -8,6 +8,7 @@ use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Notes;
 use App\Services\TargetSMS;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SmsController extends Controller
 {
@@ -16,6 +17,8 @@ class SmsController extends Controller
      */
     public function agreement(Request $request)
     {
+        Log::info(__METHOD__, $request->toArray());
+
         $authCode = new TargetSMS(
             env('TARGET_LOGIN'),
             env('TARGET_PASSWORD')
