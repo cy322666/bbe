@@ -4,6 +4,7 @@ use App\Http\Controllers\OneCController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Middleware\SiteCheckMiddleware;
@@ -40,4 +41,8 @@ Route::post('products/list', [ProductController::class, 'list']);
 Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
 
 Route::post('telegram/create', [TelegramController::class, 'create']);
+
+Route::post('sms/agreement', [SmsController::class, 'agreement']);
+
+Route::post('sms/check', [SmsController::class, 'check']);
 
