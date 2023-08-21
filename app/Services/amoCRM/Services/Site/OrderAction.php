@@ -37,8 +37,6 @@ class OrderAction
 
             if (!$contact) {
 
-                dd('!contact');
-
                 $contact = Contacts::create($this->amoApi, $body->firstname);
                 $contact = Contacts::update($contact, [
                     'Почта'    => $site->email,
