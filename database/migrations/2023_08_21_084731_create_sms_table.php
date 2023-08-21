@@ -16,6 +16,18 @@ return new class extends Migration
         Schema::create('sms', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->integer('send_code')->nullable();
+            $table->integer('get_code')->nullable();
+            $table->string('id_sms')->nullable();
+            $table->string('status')->nullable();
+            $table->string('info')->nullable();
+            $table->string('result')->nullable();
+            $table->text('error')->nullable();
+            $table->integer('lead_id')->nullable();
+            $table->string('phone')->nullable();
+            $table->integer('contact_id')->nullable();
+            $table->boolean('is_agreement')->default(false);
         });
     }
 
