@@ -452,6 +452,9 @@ class ToolsController extends Controller
             5998951,
             6103456,
             6117505,
+
+            //отпуск
+            9353222,
         ];
 
         return in_array($responsible_user_id, $arrayAdmins);

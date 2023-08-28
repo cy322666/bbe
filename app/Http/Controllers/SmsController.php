@@ -61,6 +61,9 @@ class SmsController extends Controller
         ]);
 
         Notes::addOne($lead, $text);
+
+        $lead->status_id = 59740474; //код отправлен
+        $lead->save();
     }
 
     /**
@@ -68,6 +71,8 @@ class SmsController extends Controller
      */
     public function check(Request $request)
     {
+        Log::info(__METHOD__, $request->toArray());
+
         $amoApi = (new Client(Account::query()->first()))
             ->init()
             ->initLogs();

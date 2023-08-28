@@ -138,7 +138,6 @@ class Segment implements ShouldQueue
         ]);
     }
 
-
     private static function buildLinks($leadIds) : array
     {
         $leadsArray = [];
