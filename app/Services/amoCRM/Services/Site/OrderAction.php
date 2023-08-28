@@ -54,7 +54,7 @@ class OrderAction
 
                 try {
 
-                    $lead->cf('Название продукта')->setValue($site->name);
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Exception $e) {
 
                     Telegram::send('Неизвестный продукт: '.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
@@ -93,7 +93,7 @@ class OrderAction
 
                 try {
 
-                    $lead->cf('Название продукта')->setValue($site->name);
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Exception $e) {
 
                     Telegram::send('Неизвестный продукт: '.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
