@@ -27,6 +27,11 @@ class TelegramController extends Controller
     {
         Log::info(__METHOD__, $request->toArray());
 
+        foreach ($request->toArray() as $key => $value) {
+
+            if ($value == 'test') exit;
+        }
+
         \App\Jobs\TgProxy::dispatch($request->toArray()['leads']['add'][0]['id']);
     }
 }
