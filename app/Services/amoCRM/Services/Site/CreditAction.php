@@ -51,7 +51,7 @@ class CreditAction
                     $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Exception $e) {
 
-                    Telegram::send('Неизвестный продукт:'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                    Telegram::send('Неизвестный продукт:'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
                 }
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
@@ -82,7 +82,7 @@ class CreditAction
                         $lead->cf('Название продукта')->setValue(trim($site->name));
                     } catch (Exception $e) {
 
-                        Telegram::send('Неизвестный продукт:'.$site->name, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                        Telegram::send('Неизвестный продукт:'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
                     }
                     if ($productType)
                         $lead->cf('Тип продукта')->setValue($productType);
