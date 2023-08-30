@@ -12,6 +12,7 @@ class SegmentController extends Controller
     public function hook(Request $request)
     {
         try {
+            exit;
             Log::info(__METHOD__, $request->toArray());
 
             $leadId = $request->toArray()['leads']['add'][0]['id'];
