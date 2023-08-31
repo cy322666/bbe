@@ -119,7 +119,7 @@ abstract class Leads
                 if(!empty($params['status_id']))
                     $lead->status_id = $params['status_id'];
 
-                $lead->updated_at = time();
+                $lead->updated_at = time() + 10;
                 $lead->save();
 
                 return $lead;

@@ -71,6 +71,7 @@ abstract class Contacts extends Client
             }
         }
 
+        $contact->updated_at = time() + 10;
         $contact->save();
 
         return $contact;
