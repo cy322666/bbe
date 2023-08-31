@@ -63,7 +63,10 @@ class OrderAction
 
             } else {
 
-                dump('contact', $contact->id);
+                $contact = Contacts::update($contact, [
+                    'Почта'    => $site->email,
+                    'Телефоны' => [$site->phone],
+                ]);
 
                 $lead = Leads::search($contact, $this->amoApi);
 

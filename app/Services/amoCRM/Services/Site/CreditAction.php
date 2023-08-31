@@ -58,6 +58,11 @@ class CreditAction
 
             } else {
 
+                $contact = Contacts::update($contact, [
+                    'Почта'    => $site->email,
+                    'Телефоны' => [$site->phone],
+                ]);
+
                 $lead = Leads::search($contact, $this->amoApi, [
                     3342043,
                     6540894,
