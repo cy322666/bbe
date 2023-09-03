@@ -34,6 +34,8 @@ Route::post('tools/pay', [ToolsController::class, 'datePay']);
 
 Route::post('tools/return', [ToolsController::class, 'return']);
 
+Route::post('tools/sng', [ToolsController::class, 'sng']);
+
 Route::post('tools/create', [ToolsController::class, 'createLead']);
 
 Route::post('products/list', [ProductController::class, 'list']);

@@ -446,6 +446,46 @@ class ToolsController extends Controller
         }
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function sng(Request $request)
+    {
+        Log::info(__METHOD__, $request->toArray());
+
+        $leadId = $request->toArray()['leads']['add'][0]['id'] ?? $request->toArray()['leads']['status'][0]['id'];
+
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs();
+
+        $lead = $amoApi
+            ->service
+            ->leads()
+            ->find($leadId);
+
+        $contact = $lead->contact;
+
+        $country = $contact->cf('Страна')->getValue();
+
+        if (in_array($country, [
+            'Азербайджан',
+            'Армения',
+            'Беларусь',
+            'Казахстан',
+            'Кыргызстан',
+            'Молдова',
+            'Таджикистан',
+            'Киргизия',
+            'Узбекистан',
+            'Белоруссия',
+        ])) {
+
+            $lead->status_id = 60155626;
+            $lead->save();
+        }
+    }
+
     private static function checkAdmin(int $responsible_user_id) : bool
     {
         $arrayAdmins = [
