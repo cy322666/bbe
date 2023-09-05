@@ -63,46 +63,45 @@ class CreditAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::search($contact, $this->amoApi, [
+                $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
                     6540894,
+                    7206046,
                 ]);
 
-                if ($lead) {
+                $lead = Leads::create($contact, [
+                    'status_id' => $site->is_test ? 53757562 : 33522700,
+                    'price'     => $body->price,
+                ], $body->name);
+
+                if ($leadActive) {
 
                     $lead->attachTag('В работе');
                     $lead->save();
-
-                } else {
-
-                    $lead = Leads::create($contact, [
-                        'status_id' => $site->is_test ? 53757562 : 33522700,
-                        'price'     => $body->price,
-                    ], $body->name);
-
-                    $lead->attachTag($productType ?? null);
-
-                    try {
-
-                        $lead->cf('Название продукта')->setValue(trim($site->name));
-                    } catch (Exception $e) {
-
-                        Telegram::send('Неизвестный продукт:'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
-                    }
-                    if ($productType)
-                        $lead->cf('Тип продукта')->setValue($productType);
-
-                    $lead->cf('Источник')->setValue('Основной сайт');
-                    $lead->cf('Способ оплаты')->setValue('Сайт');
-                    $lead->save();
-
-                    if ($body->communicationMethod) {
-
-                        $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                    }
-
-                    $lead = LeadHelper::setUtmsForObject($lead, $body);
                 }
+
+                $lead->attachTag($productType ?? null);
+
+                try {
+
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Exception $e) {
+
+                    Telegram::send('Неизвестный продукт:'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                }
+                if ($productType)
+                    $lead->cf('Тип продукта')->setValue($productType);
+
+                $lead->cf('Источник')->setValue('Основной сайт');
+                $lead->cf('Способ оплаты')->setValue('Сайт');
+                $lead->save();
+
+                if ($body->communicationMethod) {
+
+                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+                }
+
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
             }
 
             $lead->attachTag('Основной');

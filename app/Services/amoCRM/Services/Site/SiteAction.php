@@ -78,45 +78,44 @@ class SiteAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::search($contact, $this->amoApi, [
+                $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
                     6540894,
+                    7206046,
                 ]);
 
-                if ($lead) {
+                $lead = Leads::create($contact, [
+                    'status_id' => $statusId
+                ], $body->name);
+
+                if ($leadActive) {
 
                     $lead->attachTag('В работе');
                     $lead->save();
-
-                } else {
-
-                    $lead = Leads::create($contact, [
-                        'status_id' => $statusId
-                    ], $body->name);
-
-                    $lead->attachTag($productType ?? null);
-
-                    try {
-
-                        $lead->cf('Название продукта')->setValue(trim($site->name));
-                    } catch (Exception $e) {
-
-                        Telegram::send('Неизвестный продукт :'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
-                    }
-                    if ($productType)
-                        $lead->cf('Тип продукта')->setValue($productType);
-
-                    $lead->cf('Источник')->setValue('Основной сайт');
-                    $lead->cf('Способ оплаты')->setValue('Сайт');
-
-                    if ($body->communicationMethod) {
-
-                        $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                    }
-                    $lead->save();
-
-                    $lead = LeadHelper::setUtmsForObject($lead, $body);
                 }
+
+                $lead->attachTag($productType ?? null);
+
+                try {
+
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Exception $e) {
+
+                    Telegram::send('Неизвестный продукт :'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
+                }
+                if ($productType)
+                    $lead->cf('Тип продукта')->setValue($productType);
+
+                $lead->cf('Источник')->setValue('Основной сайт');
+                $lead->cf('Способ оплаты')->setValue('Сайт');
+
+                if ($body->communicationMethod) {
+
+                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+                }
+                $lead->save();
+
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
             }
 
             $lead->attachTag('Основной');
