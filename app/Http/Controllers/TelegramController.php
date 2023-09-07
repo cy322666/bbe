@@ -15,6 +15,14 @@ class TelegramController extends Controller
     {
         Log::info(__METHOD__, [$request->server(), $request->all()]);
 
+        foreach ($request->all() as $key => $value) {
+
+            if ($value == 'test') {
+
+                exit;
+            }
+        }
+
         TgProxy::query()->create([
             'referrer' => json_encode($request->server('HTTP_REFERER')),
             'body'     => json_encode($request->toArray()),
@@ -26,11 +34,6 @@ class TelegramController extends Controller
     public function create(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
-
-        foreach ($request->toArray() as $key => $value) {
-
-            if ($value == 'test') exit;
-        }
 
         \App\Jobs\TgProxy::dispatch($request->toArray()['leads']['add'][0]['id']);
     }
