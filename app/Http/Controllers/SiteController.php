@@ -37,7 +37,6 @@ class SiteController extends Controller
         $double = Site::query()
             ->where('id', '!=', $site->id)
             ->where('phone', $request->phone)
-            ->where('action', $request->action)
             ->where('created_at', '>', Carbon::now()->subMinutes(5)->format('Y-m-d H:i:s'))
             ->first();
 
