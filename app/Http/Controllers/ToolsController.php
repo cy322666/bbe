@@ -47,8 +47,9 @@ class ToolsController extends Controller
         //ненужные в чате продукты
         if ($product !== 'Курс' &&
             $product !== 'Годовая программа' &&
-            $lead->cf('Способ оплаты')->getValue() == 'Сайт (100%)' &&
-            $lead->cf('Способ оплаты')->getValue() == 'Сайт (внутренняя рассрочка)') {
+            $lead->cf('Название продукта')->getValue() == 'Сайт (100%)' ||
+            ($lead->cf('Название продукта')->getValue() == null ||
+            $lead->cf('Тип продукта')->getValue() == null)) {
 
             exit;
         }
@@ -474,12 +475,15 @@ class ToolsController extends Controller
             'Беларусь',
             'Казахстан',
             'Кыргызстан',
+            'Киргизстан',
             'Молдова',
             'Таджикистан',
             'Киргизия',
             'Узбекистан',
             'Белоруссия',
         ])) {
+
+            Log::info(__METHOD__.' отправлен СНГ');
 
             $lead->status_id = 60155626;
             $lead->save();
