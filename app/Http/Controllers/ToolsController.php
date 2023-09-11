@@ -465,9 +465,7 @@ class ToolsController extends Controller
             ->leads()
             ->find($leadId);
 
-        $contact = $lead->contact;
-
-        $country = $contact->cf('Страна')->getValue();
+        $country = $lead->contact->cf('Страна')->getValue();
 
         if (in_array($country, [
             'Азербайджан',
@@ -482,6 +480,8 @@ class ToolsController extends Controller
             'Узбекистан',
             'Белоруссия',
         ])) {
+
+            Log::info(__METHOD__.' страна : '.$country);
 
             Log::info(__METHOD__.' отправлен СНГ');
 
