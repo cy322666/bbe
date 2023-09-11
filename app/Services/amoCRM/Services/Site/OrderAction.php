@@ -87,6 +87,7 @@ class OrderAction
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 142,
                     'sale'      => $site->amount,
+                    'responsible_user_id' => 6103456,
                 ], $body->name);
 
                 $lead->attachTag('Автооплата');
