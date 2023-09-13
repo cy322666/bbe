@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
@@ -77,207 +78,9 @@ class ToolsController extends Controller
             }
         }
 
-        $arrayMatch = [
-            [
-                'user'      => null,
-                'dateStart' => '2023-06-19',
-                'course'    => 'Иллюстрация',
-            ],
-            [
-                'user'      => '@anasyrova',
-                'dateStart' => '2023-06-13',
-                'course'    => '2d-анимация',
-            ],
-            [
-                'user'      => '@susan_sto_helit',
-                'dateStart' => '2023-06-20',
-                'course'    => 'UX/UI',
-            ],
-            [
-                'user'      => '@nabrodova',
-                'dateStart' => '2023-06-26',
-                'course'    => 'Графический дизайн',
-            ],
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-06-05',
-                'course'    => 'Моушн-дизайн ',
-            ],
-            [
-                'user'      => '@dtxnv',
-                'dateStart' => '2023-06-07',
-                'course'    => 'Режиссура монтажа',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-06-19',
-                'course'    => 'Дизайн жилых интерьеров',
-            ],
-            [
-                'user'      => '@anasyrova',
-                'dateStart' => '2023-06-20',
-                'course'    => 'Иллюстрация: ищем стиль',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-05-31',
-                'course'    => 'Иллюстрация: как приручить бумагу',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-06-26',
-                'course'    => 'Дизайн персонажей',
-            ],
-            [
-                'user'      => '@nbelows',
-                'dateStart' => '2023-07-10',
-                'course'    => '3D-художник',
-            ],
-            [
-                'user'      => '@asyamarchenko',
-                'dateStart' => null,
-                'course'    => 'Айдентика: от идеи к визуальному воплощению',
-            ],
-            [
-                'user'      => '@asyamarchenko',
-                'dateStart' => null,
-                'course'    => 'Типографика и верстка: все внимание к тексту',
-            ],
-            [
-                'user'      => '@janevetl',
-                'dateStart' => '2023-05-08',
-                'course'    => 'Коллаж и фотореалистичный рисунок',
-            ],
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-06-05',
-                'course'    => 'Кинетическая типографика',
-            ],
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-06-05',
-                'course'    => 'Моушн-дизайн: от основ до реальных проектов',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-06-15',
-                'course'    => 'Дизайн упаковки для реального мира',
-            ],
-            [
-                'user'      => null,
-                'dateStart' => '2023-06-19',
-                'course'    => 'Векторная графика в Adobe Illustrator',
-            ],
-            [
-                'user'      => null,
-                'dateStart' => '2023-06-20',
-                'course'    => 'Айдентика: пошаговая инструкция ',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-06-20',
-                'course'    => 'Иллюстрация: ищем стиль',
-            ],
-            [
-                'user'      => null,
-                'dateStart' => '2023-06-26',
-                'course'    => 'Моушн-дизайн: от простого к сложному',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-06-26',
-                'course'    => 'Дизайн персонажей',
-            ],
-            [
-                'user'      => null,
-                'dateStart' => '2023-06-26',
-                'course'    => 'Webflow: веб-дизайн без кода и границ',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-05-31',
-                'course'    => 'Иллюстрация: как приручить бумагу',
-            ],
-            /*
-            [
-                'user'      => '@janevetl',
-                'dateStart' => '2023-05-26',
-                'course'    => 'Иллюстрация',
-            ], [
-                'user'      => '@anasyrova',
-                'dateStart' => '2023-05-22',
-                'course'    => '2D-анимация',
-            ], */
-            [
-                'user'      => '@nabrodova',
-                'dateStart' => '2023-07-04',
-                'course'    => 'UX/UI',
-            ],
-            /*
-            [
-                'user'      => null,
-                'dateStart' => '2023-05-22',
-                'course'    => 'Графический дизайн',
-            ],
-            */
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-06-05',
-                'course'    => 'Моушн-дизайн',
-            ],
-            [
-                'user'      => '@dtxnv',
-                'dateStart' => '2023-06-07',
-                'course'    => 'Режиссура монтажа',
-            ], [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-06-07',
-                'course'    => 'Дизайн жилых интерьеров',
-            ],
-            /*[
-                'user'      => '@anasyrova',
-                'dateStart' => '2023-05-14',
-                'course'    => 'Основы Blender',
-            ], [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-05-29',
-                'course'    => 'Дизайн персонажей',
-            ],
-            [
-                'user'      => '@garm_k',
-                'dateStart' => '2023-05-15',
-                'course'    => 'Арт-дирекшн цифрового продукта',
-            ], [
-                'user'      => '@garm_k',
-                'dateStart' => '2023-05-19',
-                'course'    => 'UX-исследования',
-            ],
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-05-22',
-                'course'    => 'Моушн-дизайн: от простого к сложному',
-            ], [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-05-23',
-                'course'    => 'Фотореалистичный рендер',
-            ]
-            */
-        ];
-
         $curator = ' ';
 
         $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
-
-        foreach ($arrayMatch as $data) {
-
-            if (strripos($lead->cf('Название продукта')->getValue(), $data['course']) !== false) {
-
-                if ($start == $data['dateStart']) {
-
-                    $curator = $data['user'];
-                }
-            }
-        }
 
         Telegram::send(implode("\n", [
             '*Успешная сделка!* ',
@@ -312,6 +115,34 @@ class ToolsController extends Controller
         } catch (\Throwable $e) {
 
             Log::error(__METHOD__, [$e->getMessage().' '.$e->getFile().' '.$e->getLine()]);
+        }
+    }
+
+    public function country(Request $request)
+    {
+        Log::info(__METHOD__, $request->toArray());
+
+        $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
+
+        $amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initLogs();
+
+        $lead = $amoApi->service->leads()->find($leadId);
+
+        $contact = $lead->contact;
+
+        if (!$contact->cf('Страна')->getValue()) {
+
+            $dadata = new \Dadata\DadataClient(
+                Env::get('DADATA_TOKEN'),
+                Env::get('DADATA_SECRET'),
+            );
+
+            $response = $dadata->clean("phone", $lead->contact->cf('Телефон'));
+
+            $contact->cf($response['country'])->setValue();
+            $contact->save();
         }
     }
 

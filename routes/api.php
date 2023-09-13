@@ -38,6 +38,8 @@ Route::post('tools/sng', [ToolsController::class, 'sng']);
 
 Route::post('tools/create', [ToolsController::class, 'createLead']);
 
+Route::post('tools/country', [ToolsController::class, 'country']);
+
 Route::post('products/list', [ProductController::class, 'list']);
 
 Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
