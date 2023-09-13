@@ -118,6 +118,9 @@ class ToolsController extends Controller
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function country(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
@@ -139,9 +142,9 @@ class ToolsController extends Controller
                 Env::get('DADATA_SECRET'),
             );
 
-            $response = $dadata->clean("phone", $lead->contact->cf('Телефон'));
+            $response = $dadata->clean("phone", $contact->cf('Телефон')->getValue());
 
-            $contact->cf($response['country'])->setValue();
+            $contact->cf('Страна')->setValue($response['country']);
             $contact->save();
         }
     }
