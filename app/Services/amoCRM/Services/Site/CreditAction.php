@@ -43,7 +43,7 @@ class CreditAction
 
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 33522700,
-                    'price'     => $body->price,
+                    'sale'      => $site->amount,
                 ], $body->name);
 
                 try {
@@ -71,7 +71,7 @@ class CreditAction
 
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 33522700,
-                    'price'     => $body->price,
+                    'sale'      => $site->amount,
                 ], $body->name);
 
                 if ($leadActive) {

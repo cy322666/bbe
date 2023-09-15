@@ -44,7 +44,8 @@ class SiteAction
                 ]);
 
                 $lead = Leads::create($contact, [
-                    'status_id' => $statusId
+                    'status_id' => $statusId,
+                    'sale'      => $site->amount,
                 ], $body->name);
 
                 try {
@@ -85,7 +86,8 @@ class SiteAction
                 ]);
 
                 $lead = Leads::create($contact, [
-                    'status_id' => $statusId
+                    'status_id' => $statusId,
+                    'sale'      => $site->amount,
                 ], $body->name);
 
                 if ($leadActive) {
