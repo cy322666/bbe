@@ -135,13 +135,6 @@ class ToolsController extends Controller
 
         $contact = $lead->contact;
 
-        $dadata = new \Dadata\DadataClient(
-            Env::get('DADATA_TOKEN'),
-            Env::get('DADATA_SECRET'),
-        );
-
-        $response = $dadata->clean("phone", $contact->cf('Телефон')->getValue());
-
         if (!$contact->cf('Страна')->getValue()) {
 
             $dadata = new \Dadata\DadataClient(
@@ -151,7 +144,7 @@ class ToolsController extends Controller
 
             $response = $dadata->clean("phone", $contact->cf('Телефон')->getValue());
 
-            Log::info(__METHOD__, [$response['country'] ?? 'Ошибка с ответом']);
+            Log::info(__METHOD__, [$response['country'] ?? 'Ошибка в отвте']);
 
             $contact->cf('Страна')->setValue($response['country']);
             $contact->save();
@@ -339,6 +332,9 @@ class ToolsController extends Controller
             5998951,
             6103456,
             6117505,
+
+            //отпуск
+            9353222,
         ];
 
         return in_array($responsible_user_id, $arrayAdmins);
