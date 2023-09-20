@@ -78,9 +78,9 @@ class CreditAction
 
                     $lead->attachTag('В работе');
                     $lead->save();
-                }
 
-                $lead->attachTag($productType ?? null);
+                } else
+                    $lead->cf('ID курса')->setValue($site->course_id);
 
                 try {
 
@@ -94,6 +94,8 @@ class CreditAction
 
                 $lead->cf('Источник')->setValue('Основной сайт');
                 $lead->cf('Способ оплаты')->setValue('Сайт');
+
+                $lead->attachTag($productType ?? null);
                 $lead->save();
 
                 if ($body->communicationMethod) {
