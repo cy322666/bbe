@@ -27,7 +27,7 @@ class CreditAction
         try {
 
             $contact = Contacts::search([
-                'Телефоны' => $site->phone,
+                'Телефоны' => Contacts::clearPhone($site->phone),
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 
