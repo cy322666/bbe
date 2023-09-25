@@ -167,7 +167,9 @@ class ToolsController extends Controller
     {
         Log::info(__METHOD__, $request->toArray());
 
-        $leadId = $request->toArray()['leads']['add'][0]['id'] ?? $request->toArray()['status']['add'][0]['id'];
+        $leadId = $request->toArray()['leads']['add'][0]['id'] ?? null;// ?? $request->toArray()['status']['add'][0]['id'];
+
+        if (!$leadId) exit;
 
         $segment = Segment::query()->create([
             'lead_id' => $leadId,
