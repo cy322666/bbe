@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
 {
-
     /**
      * @throws GuzzleException
      * @throws Exception

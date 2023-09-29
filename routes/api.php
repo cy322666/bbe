@@ -4,6 +4,7 @@ use App\Http\Controllers\OneCController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SlaController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\ToolsController;
@@ -49,4 +50,8 @@ Route::post('telegram/create', [TelegramController::class, 'create']);
 Route::post('sms/agreement', [SmsController::class, 'agreement']);
 
 Route::post('sms/check', [SmsController::class, 'check']);
+
+Route::post('sla/hook1', [SlaController::class, 'hook1']);
+
+Route::post('sla/hook2', [SlaController::class, 'hook2']);
 
