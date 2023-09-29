@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
 {
+
     /**
      * @throws GuzzleException
      * @throws Exception
@@ -336,7 +337,7 @@ class ToolsController extends Controller
             6117505,
 
             //отпуск
-            9353222,
+//            9353222,
         ];
 
         return in_array($responsible_user_id, $arrayAdmins);
