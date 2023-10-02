@@ -78,9 +78,129 @@ class ToolsController extends Controller
             }
         }
 
+        $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
+
         $curator = ' ';
 
-        $start = $lead->cf('Дата старта потока')->getValue() ? Carbon::parse($lead->cf('Дата старта потока')->getValue())->format('Y-m-d') : '-';
+        $arrayMatch = [
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-30',
+                'course'    => 'Графический дизайнер Plus',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-30',
+                'course'    => 'Графический дизайнер',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-24',
+                'course'    => 'UX/UI-дизайнер',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-24',
+                'course'    => 'UX/UI-дизайнер Plus',
+            ],
+            [
+                'user'      => '@Garm_k',
+                'dateStart' => '2023-10-16',
+                'course'    => 'Моушн-дизайнер',
+            ],
+            [
+                'user'      => '@nastyashalygina',
+                'dateStart' => '2023-10-16',
+                'course'    => 'Моушн-дизайнер Plus',
+            ],
+            [
+                'user'      => '@protsenko_mur',
+                'dateStart' => '2023-10-02',
+                'course'    => 'Продакт-менеджер',
+            ],
+            [
+                'user'      => '@vickylich',
+                'dateStart' => '2023-10-16',
+                'course'    => '2d-анимация',
+            ],
+            [
+                'user'      => '@nbelows',
+                'dateStart' => '2023-10-23',
+                'course'    => '3D-художник',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-30',
+                'course'    => 'Иллюстратор',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-11-10',
+                'course'    => 'Режиссер монтажа',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-10-01',
+                'course'    => 'Основы Blender: создаем персонажа',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-10-02',
+                'course'    => 'Моушн-дизайн: от простого к сложному',
+            ],
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-10-09',
+                'course'    => 'Иллюстрация: ищем стиль',
+            ],
+            [
+                'user'      => '@afflaty',
+                'dateStart' => '2023-10-09',
+                'course'    => 'Фотореалистичный рендер',
+            ],
+            [
+                'user'      => '@anasyrova',
+                'dateStart' => '2023-10-09',
+                'course'    => 'Сторителлинг в иллюстрации',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-10-11',
+                'course'    => 'Текст: от статей до интерейса',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-10-12',
+                'course'    => 'Дизайн упаковки для реального мира',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-10-16',
+                'course'    => 'Айдентика: пошаговая инструкция',
+            ],
+            [
+                'user'      => '@Garm_k',
+                'dateStart' => '2023-10-24',
+                'course'    => 'Дизайн мобильных приложений',
+            ],
+
+            [
+                'user'      => ' ',
+                'dateStart' => '2023-11-06',
+                'course'    => 'Типографика: о форме и содержании',
+            ]
+        ];
+
+        foreach ($arrayMatch as $data) {
+
+            if (strripos($lead->cf('Название продукта')->getValue(), $data['course']) !== false) {
+
+                if ($start == $data['dateStart']) {
+
+                    $curator = $data['user'];
+                }
+            }
+        }
 
         Telegram::send(implode("\n", [
             '*Успешная сделка!* ',
