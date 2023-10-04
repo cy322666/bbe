@@ -44,9 +44,12 @@ class SmsController extends Controller
             4,
             $text,
         );
+
         $code   = $result['xml']->success->attributes()['code'];
         $idSms  = $result['xml']->success->attributes()['id_sms'];
         $status = $result['xml']->success->attributes()['status'];
+
+        Log::info(__METHOD__, [$result]);
 
         Sms::query()->create([
             'id_sms' => $idSms,
