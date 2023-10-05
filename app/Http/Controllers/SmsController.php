@@ -79,6 +79,7 @@ class SmsController extends Controller
         Notes::addOne($lead, $text);
 
         $lead->status_id = 59740474; //код отправлен
+        $lead->cf('Код подтверждения')->setValue($code);
         $lead->save();
     }
 
