@@ -45,9 +45,19 @@ class SmsController extends Controller
             $text,
         );
 
-        $code   = $result['xml']->success->attributes()['code'];
-        $idSms  = $result['xml']->success->attributes()['id_sms'];
-        $status = $result['xml']->success->attributes()['status'];
+        $str = "\u003c?xml version\u003d\"1.0\" encoding\u003d\"utf-8\"?\u003e\u003cresponse\u003e\u003csuccess code\u003d\"7409\" id_sms\u003d\"2464803639\" status\u003d\"send\" /\u003e\u003c/response\u003e";
+
+        $str = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UTF-16BE');
+        }, $str);
+
+        $p = xml_parser_create();
+        xml_parse_into_struct($p, $str, $vals, $index);
+        xml_parser_free($p);
+
+        $code   = $vals[1]['attributes']['CODE'];
+        $idSms  = $vals[1]['attributes']['ID_SMS'];
+        $status = $vals[1]['attributes']['STATUS'];
 
         Log::info(__METHOD__, [$result]);
 
