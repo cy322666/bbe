@@ -58,7 +58,11 @@ class SmsController extends Controller
         $idSms  = $vals[1]['attributes']['ID_SMS'];
         $status = $vals[1]['attributes']['STATUS'];
 
-        Log::info(__METHOD__, [$result]);
+        Log::info(__METHOD__, [
+            'code' => $code,
+            'id_sms' => $idSms,
+            'status' => $status,
+        ]);
 
         Sms::query()->create([
             'id_sms' => $idSms,
