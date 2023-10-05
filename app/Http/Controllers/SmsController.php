@@ -47,7 +47,7 @@ class SmsController extends Controller
 
         $str = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
             return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UTF-16BE');
-        }, $result->result);
+        }, $result['result']);
 
         $p = xml_parser_create();
         xml_parse_into_struct($p, $str, $vals, $index);
