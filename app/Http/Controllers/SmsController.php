@@ -67,9 +67,9 @@ class SmsController extends Controller
         Sms::query()->create([
             'id_sms' => $idSms,
             'status' => $status,
-            'info'   => $result['info'],
-            'result' => $result['result'],
-            'error'  => $result['error'],
+//            'info'   => $result['info'],
+//            'result' => $result['result'],
+//            'error'  => $result['error'],
             'phone'  => $phone,
             'lead_id' => $lead->id,
             'send_code'  => $code,
