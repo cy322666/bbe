@@ -53,6 +53,7 @@ class SmsController extends Controller
         xml_parse_into_struct($p, $str, $vals, $index);
         xml_parser_free($p);
 
+        Log::info(__METHOD__, [$vals]);
         $code   = $vals[1]['attributes']['CODE'];
         $idSms  = $vals[1]['attributes']['ID_SMS'];
         $status = $vals[1]['attributes']['STATUS'];
