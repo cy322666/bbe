@@ -36,7 +36,7 @@ class SmsController extends Controller
 
         $phone = $lead->cf('Телефон')->getValue();
 
-        $text = 'Вот ваш договор '.$lead->cf('Договор. Ссылка')->getValue().'. Вот код подтверждения: {код}. Подтвердите введя его тут '.$lead->cf('Договор. Анкета код')->getValue();
+        $text = 'Вот ваш договор '.$lead->cf('Договор. Ссылка')->getValue().'. Вот код подтверждения: {код}. Подтвердите введя его тут '.$lead->cf('Договор. Анкета код')->getValue().'. Cайт https://bangbangeducation.ru';
 
         $result = $authCode->generateCode(
             $phone,
