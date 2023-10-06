@@ -34,7 +34,7 @@ class SmsController extends Controller
 
         $contact = $lead->contact;
 
-        $phone = $lead->cf('Телефон')->getValue();
+        $phone = $contact->cf('Телефон')->getValue();
 
         $text = 'Ознакомиться с договором на обучение можно по ссылке '.$lead->cf('Договор. Ссылка')->getValue().'. Код подтверждения: {код}. Для подписания договора введите его тут '.$lead->cf('Договор. Анкета код')->getValue().'. Cайт https://bangbangeducation.ru';
 
