@@ -317,7 +317,9 @@ class ToolsController extends Controller
 
                 if ($lead->status_id != 142 && $lead->status_id != 143) {
 
-                    if ($lead->pipeline_id == 3342043 || $lead->pipeline_id == 6540894) {
+                    if ($lead->pipeline_id == 3342043 ||
+                        $lead->pipeline_id == 6540894 ||
+                        $lead->pipeline_id == 7206046) {
 
                         return $lead;
                     }
