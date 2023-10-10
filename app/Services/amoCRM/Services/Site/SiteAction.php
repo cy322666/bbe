@@ -51,6 +51,7 @@ class SiteAction
                 try {
                     $lead->cf('ID курса')->setValue($site->course_id);
                     $lead->cf('Название продукта')->setValue($site->name);
+                    $lead->cf('url')->setValue($body->url);
 
                 } catch (Exception $e) {
 
@@ -97,8 +98,10 @@ class SiteAction
                 else
                     $lead->cf('ID курса')->setValue($site->course_id);
 
+
                 try {
                     $lead->cf('Название продукта')->setValue(trim($site->name));
+                    $lead->cf('url')->setValue($body->url);
 
                 } catch (Exception $e) {
 

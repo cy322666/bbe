@@ -53,6 +53,7 @@ class OrderAction
                 $lead->attachTag('Автооплата');
 
                 try {
+                    $lead->cf('url')->setValue($body->url);
                     $lead->cf('ID курса')->setValue($site->course_id);
                     $lead->cf('Название продукта')->setValue(trim($site->name));
 
@@ -97,6 +98,7 @@ class OrderAction
 
                 try {
 
+                    $lead->cf('url')->setValue($body->url);
                     $lead->cf('ID курса')->setValue($site->course_id);
                     $lead->cf('Название продукта')->setValue(trim($site->name));
 

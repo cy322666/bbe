@@ -47,8 +47,9 @@ class CreditAction
                 ], $body->name);
 
                 try {
-
+                    $lead->cf('url')->setValue($body->url);
                     $lead->cf('Название продукта')->setValue(trim($site->name));
+
                 } catch (Exception $e) {
 
                     Telegram::send('Неизвестный продукт:'.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
@@ -84,6 +85,7 @@ class CreditAction
 
                 try {
 
+                    $lead->cf('url')->setValue($body->url);
                     $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Exception $e) {
 
