@@ -111,8 +111,8 @@ class SmsController extends Controller
             $lead->status_id = 142;
             $lead->save();
 
-            Notes::addOne($lead, 'Коды подтверждения совпадают : '.$sms->send_sms.' > '.$sms->get_sms);
+            Notes::addOne($lead, 'Коды подтверждения совпадают : '.$sms->send_code.' > '.$sms->get_code);
         } else
-            Notes::addOne($lead, 'Коды подтверждения не совпадают : '.$sms->send_sms.' > '.$sms->get_sms);
+            Notes::addOne($lead, 'Коды подтверждения не совпадают : '.$sms->send_code.' > '.$sms->get_code);
     }
 }
