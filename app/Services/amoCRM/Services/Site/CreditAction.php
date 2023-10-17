@@ -77,15 +77,13 @@ class CreditAction
 
                 if ($leadActive) {
 
-                    if ($lead->cf('ID курса')->getValue()) {
-
-                        $lead->cf('ID курса')->setValue($site->course_id);
-                    }
                     $lead->attachTag('В работе');
                     $lead->save();
 
                 } else
                     $lead->cf('ID курса')->setValue($site->course_id);
+
+                $lead->cf('ID курса')->setValue($site->course_id);
 
                 try {
 
