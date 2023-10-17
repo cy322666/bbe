@@ -94,6 +94,11 @@ class SiteAction
 
                 if ($leadActive)
 
+                    if ($lead->cf('ID курса')->getValue()) {
+
+                        $lead->cf('ID курса')->setValue($site->course_id);
+                    }
+
                     $lead->attachTag('В работе');
                 else
                     $lead->cf('ID курса')->setValue($site->course_id);
