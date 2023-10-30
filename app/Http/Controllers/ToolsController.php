@@ -99,6 +99,11 @@ class ToolsController extends Controller
                 'course'    => 'UX/UI-дизайнер',
             ],
             [
+                'user'      => '@janevetl',
+                'dateStart' => '2023-10-30',
+                'course'    => 'Иллюстратор',
+            ],
+            [
                 'user'      => ' ',
                 'dateStart' => '2023-10-24',
                 'course'    => 'UX/UI-дизайнер Plus',
