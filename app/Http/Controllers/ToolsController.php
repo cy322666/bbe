@@ -100,8 +100,13 @@ class ToolsController extends Controller
             ],
             [
                 'user'      => '@janevetl',
-                'dateStart' => '2023-10-30',
+                'dateStart' => '2023-10-29',
                 'course'    => 'Иллюстратор',
+            ],
+            [
+                'user'      => '@janevetl',
+                'dateStart' => '2023-10-29',
+                'course'    => 'Иллюстрация',
             ],
             [
                 'user'      => ' ',
