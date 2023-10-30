@@ -85,6 +85,52 @@ class ToolsController extends Controller
         $arrayMatch = [
             [
                 'user'      => ' ',
+                'dateStart' => '2023-11-06',
+                'course'    => 'Типографика: о форме и содержании',
+            ],
+
+            [
+                'user'      => '@nabrodova',
+                'dateStart' => '2023-10-30',
+                'course'    => 'Графический дизайн',
+            ],
+            [
+                'user'      => '@shiningmithra',
+                'dateStart' => '2023-10-31',
+                'course'    => 'Дизайн жилых интерьеров',
+            ],
+            [
+                'user'      => '@shiningmithra',
+                'dateStart' => '2023-10-31',
+                'course'    => 'Режиссура монтажа',
+            ],
+            [
+                'user'      => '@lisovix',
+                'dateStart' => '2023-11-10',
+                'course'    => 'Режиссура монтажа',
+            ],
+            [
+                'user'      => '@AdelinaBarykina',
+                'dateStart' => '2023-11-13',
+                'course'    => '3D-художник',
+            ],
+            [
+                'user'      => '@nastyashalygina',
+                'dateStart' => '2023-11-20',
+                'course'    => 'Моушн-дизайнер',
+            ],
+            [
+                'user'      => '@grewawewa',
+                'dateStart' => '2023-11-06',
+                'course'    => 'Типографика: о форме и содержании',
+            ],
+            [
+                'user'      => '@Garm_k',
+                'dateStart' => '2023-11-13',
+                'course'    => 'Смелый креатив: как легко придумывать прорывные идеи',
+            ],
+            [
+                'user'      => ' ',
                 'dateStart' => '2023-10-30',
                 'course'    => 'Графический дизайнер Plus',
             ],
@@ -192,53 +238,6 @@ class ToolsController extends Controller
                 'user'      => '@Garm_k',
                 'dateStart' => '2023-10-24',
                 'course'    => 'Дизайн мобильных приложений',
-            ],
-
-            [
-                'user'      => ' ',
-                'dateStart' => '2023-11-06',
-                'course'    => 'Типографика: о форме и содержании',
-            ],
-
-            [
-                'user'      => '@nabrodova',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Графический дизайн',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-10-31',
-                'course'    => 'Дизайн жилых интерьеров',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-10-31',
-                'course'    => 'Режиссура монтажа',
-            ],
-            [
-                'user'      => '@lisovix',
-                'dateStart' => '2023-11-10',
-                'course'    => 'Режиссура монтажа',
-            ],
-            [
-                'user'      => '@AdelinaBarykina',
-                'dateStart' => '2023-11-13',
-                'course'    => '3D-художник',
-            ],
-            [
-                'user'      => '@nastyashalygina',
-                'dateStart' => '2023-11-20',
-                'course'    => 'Моушн-дизайнер',
-            ],
-            [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-11-06',
-                'course'    => 'Типографика: о форме и содержании',
-            ],
-            [
-                'user'      => '@Garm_k',
-                'dateStart' => '2023-11-13',
-                'course'    => 'Смелый креатив: как легко придумывать прорывные идеи',
             ],
         ];
 
