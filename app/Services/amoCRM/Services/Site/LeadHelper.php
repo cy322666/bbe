@@ -26,6 +26,9 @@ abstract class LeadHelper
             'yclid'    => $body->yclid ?? null,
             '_YM_UID'  => $body->_YM_UID ?? null,
             '_ym_uid'  => $body->_ym_uid ?? null,
+
+            'advcake_track_id'  => $body->advcake_track_id ?? null,
+            'advcake_track_url' => $body->advcake_track_url ?? null,
         ]);
     }
 
