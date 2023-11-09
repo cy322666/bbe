@@ -17,7 +17,7 @@ abstract class Contacts extends Client
                 ->searchByPhone(self::clearPhone($arrayFields['Телефоны'][0]));
         }
 
-        if ($contacts == null || $contacts->first() == null) {
+        if ($contacts == null || !$contacts->first()) {
 
             if(key_exists('Почта', $arrayFields)) {
 
