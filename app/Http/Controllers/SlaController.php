@@ -6,7 +6,9 @@ use App\Models\Account;
 use App\Models\Sla;
 use App\Services\amoCRM\Client;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SlaController extends Controller
 {
@@ -16,22 +18,47 @@ class SlaController extends Controller
 
         Sla::query()->updateOrCreate([
             'lead_id' => $leadId,
-        ],[
-            'hook_1'  => Carbon::now()->format('Y-m-d H:i:s')
+        ], [
+            'hook_1'  => Carbon::now()
+                ->timezone('Europe/Moscow')
+                ->format('Y-m-d H:i:s')
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function hook2(Request $request)
     {
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
         $sla = Sla::query()->updateOrCreate([
             'lead_id' => $leadId,
-        ],[
-            'hook_2'  => Carbon::now()->format('Y-m-d H:i:s'),
+        ], [
+            'hook_2'  => Carbon::now()
+                ->timezone('Europe/Moscow')
+                ->format('Y-m-d H:i:s')
         ]);
 
         if ($sla->hook_1) {
+
+            $checkPeriod = Sla::query()
+                ->where('id', $sla->id)
+                ->whereBetween('hook_1', [
+                    '09:00:00',
+                    '21:00:00',
+                ])
+                ->whereBetween('hook_2', [
+                    '09:00:00',
+                    '21:00:00',
+                ])->first();
+
+            if ($checkPeriod->exists() === false) {
+
+                Log::warning(__METHOD__.' sla : '.$sla->id.' not in range');
+
+                exit;
+            }
 
             $hook1 = Carbon::parse($sla->hook_1);
             $hook2 = Carbon::parse($sla->hook_2);
