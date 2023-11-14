@@ -45,12 +45,12 @@ class SlaController extends Controller
             $checkPeriod = Sla::query()
                 ->where('id', $sla->id)
                 ->whereBetween('hook_1', [
-                    '09:00:00',
-                    '21:00:00',
+                    '10:00:00',
+                    '19:00:00',
                 ])
                 ->whereBetween('hook_2', [
-                    '09:00:00',
-                    '21:00:00',
+                    '10:00:00',
+                    '19:00:00',
                 ])->first();
 
             if ($checkPeriod->exists() === false) {
