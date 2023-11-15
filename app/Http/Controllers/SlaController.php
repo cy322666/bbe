@@ -51,9 +51,9 @@ class SlaController extends Controller
                 ->whereBetween('hook_2', [
                     '10:00:00',
                     '19:00:00',
-                ])->exists();
+                ]);
 
-            if ($checkPeriod === false) {
+            if (!$checkPeriod) {
 
                 Log::warning(__METHOD__.' sla : '.$sla->id.' not in range');
 
