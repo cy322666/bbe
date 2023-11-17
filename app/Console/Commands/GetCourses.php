@@ -22,6 +22,9 @@ class GetCourses extends Command
      */
     protected $description = 'Command description';
 
+    /**
+     * @throws \Exception
+     */
     public function handle()
     {
         $response = Http::get('https://bangbangeducation.ru/api/v4/courses');
@@ -44,9 +47,8 @@ class GetCourses extends Command
                 ]);
             } catch (\Throwable $e) {
 
-                dd($e->getMessage(), $e->getLine());
+                throw new \Exception($e->getMessage(), $e->getLine());
             }
-
         }
     }
 }

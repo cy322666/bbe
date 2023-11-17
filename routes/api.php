@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OneCController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
@@ -41,8 +42,6 @@ Route::post('tools/create', [ToolsController::class, 'createLead']);
 
 Route::post('tools/country', [ToolsController::class, 'country']);
 
-Route::post('products/list', [ProductController::class, 'list']);
-
 Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
 
 Route::post('telegram/create', [TelegramController::class, 'create']);
@@ -54,4 +53,6 @@ Route::post('sms/check', [SmsController::class, 'check']);
 Route::post('sla/hook1', [SlaController::class, 'hook1']);
 
 Route::post('sla/hook2', [SlaController::class, 'hook2']);
+
+Route::get('courses/update', [CourseController::class, 'update']);
 
