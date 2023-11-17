@@ -52,15 +52,9 @@ class OrderAction
 
                 $lead->attachTag('Автооплата');
 
-                try {
-                    $lead->cf('url')->setValue($body->url);
-                    $lead->cf('ID курса')->setValue($site->course_id);
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-
-                } catch (Exception $e) {
-
-                    Telegram::send('Неизвестный продукт: '.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
-                }
+                $lead->cf('url')->setValue($body->url);
+                $lead->cf('ID курса')->setValue($site->course_id);
+                $lead->cf('Название продукта')->setValue(trim($site->name));
                 $lead->save();
 
             } else {
@@ -96,17 +90,9 @@ class OrderAction
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
 
-                try {
-
-                    $lead->cf('url')->setValue($body->url);
-                    $lead->cf('ID курса')->setValue($site->course_id);
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-
-                } catch (Exception $e) {
-
-                    Telegram::send('Неизвестный продукт: '.$site->name.' '.$lead->id, env('TG_CHAT_DEBUG'), env('TG_TOKEN_DEBUG'), []);
-                }
-
+                $lead->cf('url')->setValue($body->url);
+                $lead->cf('ID курса')->setValue($site->course_id);
+                $lead->cf('Название продукта')->setValue(trim($site->name));
                 $lead->cf('Способ оплаты')->setValue('Сайт (100%)');
                 $lead->cf('Источник')->setValue('Сайт');
 

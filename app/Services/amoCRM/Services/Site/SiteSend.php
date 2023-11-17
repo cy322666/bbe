@@ -22,8 +22,6 @@ class SiteSend
             default => SiteAction::class,
         };
 
-        //$lead->attachTags(['ИнОплата']);
-
         return (new $service($amoApi))->send($site, json_decode($site->body));
     }
 }

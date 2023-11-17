@@ -42,6 +42,29 @@ abstract class NoteHelper
         return implode("\n", $text);
     }
 
+    public static function createNoteHubspot($site): string
+    {
+        $text = [
+            'Новая заявка на консультацию!',
+            '-----------------------------',
+            ' - Имя : '. $site->firstname,
+            ' - Почта : '. $site->email,
+            ' - Телефон : '. $site->phone,
+            '-----------------------------',
+            ' - Название продукта : '. $site->coursename,
+            ' - Тип продукта : '. $site->coursetype,
+            ' - ID курса : '. $site->courseid,
+            '-----------------------------'
+        ];
+
+        if(!empty($data->communicationMethod))
+            $text = array_merge($text, [
+                ' - Способ связи : '.self::switchCommunication($data->communicationMethod),
+            ]);
+
+        return implode("\n", $text);
+    }
+
     public static function createNoteConsultation($data, $site): string
     {
         $text = [
