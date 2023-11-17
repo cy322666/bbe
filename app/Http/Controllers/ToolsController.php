@@ -490,14 +490,14 @@ class ToolsController extends Controller
             'Узбекистан',
             'Белоруссия',
         ])) {
-
             Log::info(__METHOD__.' страна : '.$country);
 
             Log::info(__METHOD__.' отправлен СНГ');
 
             $lead->status_id = 60155626;
             $lead->save();
-        }
+        } else
+            Log::info(__METHOD__.' не СНГ, страна : '.$country);
     }
 
     private static function checkAdmin(int $responsible_user_id) : bool
