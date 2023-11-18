@@ -49,8 +49,11 @@ class SiteAction
                 ], $body->name);
 
                 $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('Название продукта')->setValue($site->name);
-                $lead->cf('url')->setValue($body->url);
+                $lead->cf('url')->setValue($body->url ?? null);
+
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
 
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
@@ -91,9 +94,10 @@ class SiteAction
                     $lead->attachTag('В работе');
 
                 $lead->cf('ID курса')->setValue($site->course_id);
-
-                $lead->cf('Название продукта')->setValue(trim($site->name));
-                $lead->cf('url')->setValue($body->url);
+                $lead->cf('url')->setValue($body->url ?? null);
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
 
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);

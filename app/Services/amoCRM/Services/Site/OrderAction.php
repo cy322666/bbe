@@ -52,9 +52,11 @@ class OrderAction
 
                 $lead->attachTag('Автооплата');
 
-                $lead->cf('url')->setValue($body->url);
+                $lead->cf('url')->setValue($body->url ?? null);
                 $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('Название продукта')->setValue(trim($site->name));
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
                 $lead->save();
 
             } else {
@@ -90,11 +92,14 @@ class OrderAction
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
 
-                $lead->cf('url')->setValue($body->url);
+                $lead->cf('url')->setValue($body->url ?? null);
                 $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('Название продукта')->setValue(trim($site->name));
                 $lead->cf('Способ оплаты')->setValue('Сайт (100%)');
                 $lead->cf('Источник')->setValue('Сайт');
+
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
 
                 $lead->attachTag('Автооплата');
                 $lead->save();

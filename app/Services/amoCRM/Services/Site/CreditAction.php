@@ -46,8 +46,10 @@ class CreditAction
                     'sale'      => $site->amount,
                 ], $body->name);
 
-                $lead->cf('url')->setValue($body->url);
-                $lead->cf('Название продукта')->setValue(trim($site->name));
+                $lead->cf('url')->setValue($body->url ?? null);
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
 
@@ -78,8 +80,11 @@ class CreditAction
                     $lead->cf('ID курса')->setValue($site->course_id);
 
                 $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('url')->setValue($body->url);
-                $lead->cf('Название продукта')->setValue(trim($site->name));
+                $lead->cf('url')->setValue($body->url ?? null);
+
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+                } catch (Throwable $e) {}
 
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
