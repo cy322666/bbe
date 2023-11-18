@@ -489,6 +489,7 @@ class ToolsController extends Controller
             'Киргизия',
             'Узбекистан',
             'Белоруссия',
+            'Грузия'
         ])) {
             Log::info(__METHOD__.' страна : '.$country);
 
