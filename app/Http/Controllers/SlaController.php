@@ -32,6 +32,13 @@ class SlaController extends Controller
     {
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
+        $slaFirst = Sla::query()
+            ->where('lead_id', $leadId)
+            ->where('hook_2', null)
+            ->first();
+
+        if (!$slaFirst) exit;
+
         $sla = Sla::query()->updateOrCreate([
             'lead_id' => $leadId,
         ], [
