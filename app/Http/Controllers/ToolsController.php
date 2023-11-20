@@ -495,7 +495,7 @@ class ToolsController extends Controller
 
             Log::info(__METHOD__.' отправлен СНГ');
 
-            $lead->status_id = 60155626;
+            $lead->status_id = $lead->pipeline_id == 3342043 ? 60155626 : 61978382; //снг теплые и снг
             $lead->save();
         } else
             Log::info(__METHOD__.' не СНГ, страна : '.$country);
