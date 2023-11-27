@@ -96,6 +96,16 @@ abstract class LeadHelper
             $lead->cf('_ym_uid')->setValue($utms['_ym_uid'] ?? null);
         }
 
+        if ($lead->cf('advcake_track_id')->getValue() == null) {
+
+            $lead->cf('advcake_track_id')->setValue($utms['advcake_track_id'] ?? null);
+        }
+
+        if ($lead->cf('advcake_track_url')->getValue() == null) {
+
+            $lead->cf('advcake_track_url')->setValue($utms['advcake_track_url'] ?? null);
+        }
+
         return $lead;
     }
 }
