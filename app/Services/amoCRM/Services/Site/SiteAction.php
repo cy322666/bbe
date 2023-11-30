@@ -93,6 +93,11 @@ class SiteAction
                     'sale'      => $site->amount,
                 ], $body->name);
 
+                if (!empty($body->course_tariff) && $body->course_tariff !== null) {
+
+                    $lead->cf('Тариф')->setValue($body->course_tariff);
+                }
+
                 if ($leadActive)
 
                     $lead->attachTag('В работе');
