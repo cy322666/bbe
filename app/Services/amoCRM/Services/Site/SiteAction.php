@@ -67,10 +67,15 @@ class SiteAction
                 $lead->cf('Источник')->setValue('Основной сайт');
                 $lead->cf('Способ оплаты')->setValue('Сайт');
 
-                if ($body->communicationMethod) {
-
+                if ($body->communicationMethod)
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                }
+
+                if (!empty($body->months))
+                    $lead->cf('')->setValue($body->months);
+
+                if (!empty($body->credit_price))
+                    $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+
                 $lead->save();
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
@@ -116,6 +121,12 @@ class SiteAction
 
                 if ($body->communicationMethod)
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+
+                if (!empty($body->months))
+                    $lead->cf('')->setValue($body->months);
+
+                if (!empty($body->credit_price))
+                    $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
 
                 $lead->attachTag($productType ?? null);
 

@@ -48,6 +48,12 @@ class CreditAction
 
                 $lead->cf('url')->setValue($body->url ?? null);
                 try {
+                    if (!empty($body->months))
+                        $lead->cf('')->setValue($body->months);
+
+                    if (!empty($body->credit_price))
+                        $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+
                     if (!empty($body->course_tariff) && $body->course_tariff !== null) {
 
                         $lead->cf('Тариф')->setValue($body->course_tariff);
@@ -87,6 +93,12 @@ class CreditAction
                 $lead->cf('url')->setValue($body->url ?? null);
 
                 try {
+                    if (!empty($body->months))
+                        $lead->cf('')->setValue($body->months);
+
+                    if (!empty($body->credit_price))
+                        $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+
                     $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Throwable $e) {}
 
