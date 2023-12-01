@@ -51,9 +51,13 @@ class CreditAction
                     if (!empty($body->months))
                         $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
-                    if (!empty($body->credit_price))
-                        $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                    if (!empty($body->credit_price)) {
 
+                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
+
+                        $lead->cf('Стоимость в месяц')->setValue();
+                        $lead->sale = $price * $body->months;
+                    }
                     if (!empty($body->course_tariff) && $body->course_tariff !== null) {
 
                         $lead->cf('Тариф')->setValue($body->course_tariff);
@@ -96,9 +100,13 @@ class CreditAction
                     if (!empty($body->months))
                         $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
-                    if (!empty($body->credit_price))
-                        $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                    if (!empty($body->credit_price)) {
 
+                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
+
+                        $lead->cf('Стоимость в месяц')->setValue();
+                        $lead->sale = $price * $body->months;
+                    }
                     $lead->cf('Название продукта')->setValue(trim($site->name));
                 } catch (Throwable $e) {}
 
