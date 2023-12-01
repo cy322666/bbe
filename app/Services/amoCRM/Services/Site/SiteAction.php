@@ -129,13 +129,13 @@ class SiteAction
                 if (!empty($body->months))
                     $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
-                if (!empty($body->credit_price)) {
-
-                    $price = preg_replace("/[^0-9]/", '', $body->credit_price);
-
-                    $lead->cf('Стоимость в месяц')->setValue();
-                    $lead->sale = $price * $body->months;
-                }
+//                if (!empty($body->credit_price)) {
+//
+//                    $price = preg_replace("/[^0-9]/", '', $body->credit_price);
+//
+//                    $lead->cf('Стоимость в месяц')->setValue();
+//                    $lead->sale = $price * $body->months;
+//                }
 
                 $lead->attachTag($productType ?? null);
 
