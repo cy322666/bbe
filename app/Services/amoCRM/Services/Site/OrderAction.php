@@ -56,10 +56,10 @@ class OrderAction
                 $lead->cf('ID курса')->setValue($site->course_id);
                 try {
                     if (!empty($body->months))
-                        $lead->cf('')->setValue($body->months);
+                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
                     if (!empty($body->credit_price))
-                        $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                        $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
 
                     if (!empty($body->course_tariff) && $body->course_tariff !== null) {
 
@@ -111,10 +111,10 @@ class OrderAction
                     $lead->cf('Название продукта')->setValue(trim($site->name));
 
                     if (!empty($body->months))
-                        $lead->cf('')->setValue($body->months);
+                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
                     if (!empty($body->credit_price))
-                        $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                        $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
 
                 } catch (Throwable $e) {}
 

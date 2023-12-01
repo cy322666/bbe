@@ -71,10 +71,10 @@ class SiteAction
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
 
                 if (!empty($body->months))
-                    $lead->cf('')->setValue($body->months);
+                    $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
                 if (!empty($body->credit_price))
-                    $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                    $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
 
                 $lead->save();
 
@@ -123,10 +123,10 @@ class SiteAction
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
 
                 if (!empty($body->months))
-                    $lead->cf('')->setValue($body->months);
+                    $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
                 if (!empty($body->credit_price))
-                    $lead->cf('')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
+                    $lead->cf('Стоимость в месяц')->setValue(preg_replace("/[^0-9]/", '', $body->credit_price));
 
                 $lead->attachTag($productType ?? null);
 
