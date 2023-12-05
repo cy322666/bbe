@@ -39,14 +39,13 @@ abstract class Leads
 
                 if (is_array($pipelines)) {
 
-                    if (in_array($lead->pipeline_id, $pipelines)) {
+                    if (in_array($lead->pipeline_id, $pipelines))
 
                         return $lead;
-                    }
-                } elseif ($lead->pipeline_id == $pipelines) {
+
+                } elseif ($lead->pipeline_id == $pipelines)
 
                     return $lead;
-                }
 
                 return $lead;
             }
@@ -64,14 +63,13 @@ abstract class Leads
 
                     if (is_array($pipelines)) {
 
-                        if (in_array($lead->pipeline_id, $pipelines)) {
+                        if (in_array($lead->pipeline_id, $pipelines))
 
                             return true;
-                        }
-                    } elseif ($lead->pipeline_id == $pipelines) {
+
+                    } elseif ($lead->pipeline_id == $pipelines)
 
                         return true;
-                    }
                 } else
                     return true;
             }
@@ -99,7 +97,7 @@ abstract class Leads
         return $lead;
     }
 
-    public static function update($lead, array $params, array $fields)
+    public static function update($lead, array $params, array $fields, $amoApi = null)
     {
         try {
 
@@ -119,8 +117,21 @@ abstract class Leads
                 if(!empty($params['status_id']))
                     $lead->status_id = $params['status_id'];
 
-                $lead->updated_at = time() + 10;
-                $lead->save();
+                $lead->updated_at = time();
+
+                try {
+
+                    $lead->save();
+
+                } catch (\Throwable $e) {
+
+                    if ($amoApi) {
+
+                        $lead = $amoApi->services->leads()->find($lead->id);
+
+                        return static::update($lead, $params, $fields);
+                    }
+                }
 
                 return $lead;
             }
@@ -135,9 +146,7 @@ abstract class Leads
     {
         try {
 
-            $lead = $client->service->leads()->find($id);
-
-            return $lead;
+            return $client->service->leads()->find($id);
 
         } catch (\Exception $exception) {
 

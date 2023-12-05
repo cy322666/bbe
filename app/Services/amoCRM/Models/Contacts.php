@@ -34,7 +34,7 @@ abstract class Contacts extends Client
         return null;
     }
 
-    public static function update($contact, $arrayFields = [])
+    public static function update($contact, $arrayFields = [], $amoApi = null)
     {
         if(key_exists('Телефоны', $arrayFields)) {
 
@@ -71,8 +71,19 @@ abstract class Contacts extends Client
             }
         }
 
-        $contact->updated_at = time() + 10;
-        $contact->save();
+        try {
+
+            $contact->save();
+
+        } catch (\Throwable $e) {
+
+            if ($amoApi) {
+
+                $contact = $amoApi->services->leads()->find($contact->id);
+
+                return static::update($contact, $arrayFields);
+            }
+        }
 
         return $contact;
     }
