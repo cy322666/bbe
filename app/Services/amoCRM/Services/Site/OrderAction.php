@@ -46,6 +46,7 @@ class OrderAction
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 142,
                     'sale'      => $site->amount,
+                    'responsible_user_id' => 5998951,
                 ], $body->name);
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);

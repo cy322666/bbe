@@ -100,6 +100,7 @@ class SiteAction
                 $lead = Leads::create($contact, [
                     'status_id' => $statusId,
                     'sale'      => $site->amount,
+                    'responsible_user_id' => 5998951,//я
                 ], $body->name);
 
                 if (!empty($body->course_tariff) && $body->course_tariff !== null) {
