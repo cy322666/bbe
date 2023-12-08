@@ -57,6 +57,7 @@ class SiteController extends Controller
         $sites = Site::query()
             ->where('created_at', '>', Carbon::now()->subMinutes(60)->format('Y-m-d H:i:s'))
             ->where('status', 0)
+            ->where('error', '!=', null)
             ->where('lead_id', null)
             ->limit(10)
             ->get();
