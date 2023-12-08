@@ -55,7 +55,7 @@ class SiteController extends Controller
     public function cron()
     {
         $sites = Site::query()
-            ->where('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d H:i:s'))
+            ->where('created_at', '>', Carbon::now()->subMinutes(60)->format('Y-m-d H:i:s'))
             ->where('status', 0)
             ->where('lead_id', null)
             ->limit(10)
