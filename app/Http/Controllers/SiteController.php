@@ -63,9 +63,12 @@ class SiteController extends Controller
 
         foreach ($sites as $site) {
 
-            $result = SiteSend::send($site);
-            $site->status = $result;
-            $site->save();
+            try {
+                $result = SiteSend::send($site);
+                $site->status = $result;
+                $site->save();
+
+            } catch (\Throwable $e) {}
         }
     }
 }
