@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('site', [SiteController::class, 'index'])->middleware(SiteCheckMiddleware::class);
 
+Route::post('site/cron', [SiteController::class, 'cron']);
+
 Route::post('segment', [SegmentController::class, 'hook']);
 
 Route::post('pays/hook', [OneCController::class, 'pay']);
