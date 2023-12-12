@@ -80,7 +80,7 @@ class SiteAction
 //                    $lead->cf('Стоимость в месяц')->setValue();
 //                    $lead->sale = $price * $body->months;
 //                }
-                $lead->save();
+//                $lead->save();
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
 
@@ -141,11 +141,19 @@ class SiteAction
                 $lead->attachTag($productType ?? null);
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
-                $lead->save();
             }
 
             $lead->attachTag('Основной');
-            $lead->save();
+
+            try {
+                $lead->save();
+
+            } catch (Throwable $e) {
+
+                sleep(5);
+
+                $lead->save();
+            }
 
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;
