@@ -2,7 +2,6 @@
 
 namespace App\Services\amoCRM\Services\Site;
 
-use Illuminate\Http\Request;
 use Ufee\Amo\Models\Lead;
 
 abstract class LeadHelper
@@ -104,6 +103,27 @@ abstract class LeadHelper
         if ($lead->cf('advcake_track_url')->getValue() == null) {
 
             $lead->cf('advcake_track_url')->setValue($utms['advcake_track_url'] ?? null);
+        }
+
+        return $lead;
+    }
+
+    public static function setTarrif($lead, $site)
+    {
+        if (!empty($body->course_tariff) && $body->course_tariff !== null)
+
+            $lead->cf('Тариф')->setValue($body->course_tariff);
+
+        if (!empty($body->months))
+
+            $lead->cf('Рассрочка Месяцы')->setValue($body->months);
+
+        if (!empty($body->credit_price)) {
+
+            $price = preg_replace("/[^0-9]/", '', $body->credit_price);
+
+            $lead->cf('Стоимость в месяц')->setValue($price);
+            $lead->sale = $price * $body->months;
         }
 
         return $lead;

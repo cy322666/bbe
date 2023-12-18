@@ -37,7 +37,6 @@ class SiteController extends Controller
         $double = Site::query()
             ->where('id', '!=', $site->id)
             ->where('email', $request->email)
-//            ->orWhere('phone', $request->phone)
             ->where('created_at', '>', Carbon::now()->subMinutes(5)->format('Y-m-d H:i:s'))
             ->first();
 
@@ -64,12 +63,12 @@ class SiteController extends Controller
 
         foreach ($sites as $site) {
 
-            try {
+//            try {
                 $result = SiteSend::send($site);
                 $site->status = $result;
                 $site->save();
 
-            } catch (\Throwable $e) {}
+//            } catch (\Throwable $e) {}
         }
     }
 }

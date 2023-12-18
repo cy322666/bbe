@@ -26,7 +26,13 @@ class OrderAction
         try {
 
             if ($site->name == 'Подписка на год' ||
-                $site->name == 'Подписка на месяц') exit;
+                $site->name == 'Подписка на месяц') {
+
+                $site->status = 4;
+                $site->save();
+
+                exit;
+            }
 
             $productType = NoteHelper::getTypeProduct($body);
 
@@ -81,7 +87,11 @@ class OrderAction
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::search($contact, $this->amoApi);
+                $lead = Leads::search($contact, $this->amoApi, [
+                    3342043,
+                    6540894,
+                    7206046,
+                ]);
 
                 if (!$lead) {
 
