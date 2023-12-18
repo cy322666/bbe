@@ -72,7 +72,7 @@ class SiteCheckTest
         return false;
     }
 
-    public static function isTest(Request $request): bool
+    public static function isTest($request): bool
     {
         $isTest = [
             'phone' => static::validate($request->phone),

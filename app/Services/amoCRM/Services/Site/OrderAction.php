@@ -31,7 +31,7 @@ class OrderAction
             $productType = NoteHelper::getTypeProduct($body);
 
             $contact = Contacts::search([
-                'Телефоны' => Contacts::clearPhone($site->phone),
+                'Телефон'  => Contacts::clearPhone($site->phone),
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 

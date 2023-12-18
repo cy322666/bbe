@@ -467,8 +467,7 @@ class ToolsController extends Controller
         $leadId = $request->toArray()['leads']['add'][0]['id'] ?? $request->toArray()['leads']['status'][0]['id'];
 
         $amoApi = (new Client(Account::query()->first()))
-            ->init()
-            ->initLogs();
+            ->init();
 
         $lead = $amoApi
             ->service
