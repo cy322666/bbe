@@ -2,6 +2,7 @@
 
 namespace App\Services\amoCRM\Services\Site;
 
+use App\Models\Course;
 use App\Models\Site;
 use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
@@ -33,6 +34,12 @@ class OrderAction
 
                 exit;
             }
+
+            $course = $site->course_id ?
+                Course::query()
+                    ->where('course_id', $site->course_id)
+                    ->first()
+                : null;
 
             $productType = NoteHelper::getTypeProduct($body);
 
@@ -145,6 +152,14 @@ class OrderAction
                     'complete_till_at'    => time() + 60 + 60,
                     'responsible_user_id' => $lead->responsible_user_id,
                 ], $this->taskText);
+
+            if ($course) {
+
+                $lead->sale = $course->price;
+                $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
+            }
+
+            $lead->save();
 
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;

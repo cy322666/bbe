@@ -2,6 +2,7 @@
 
 namespace App\Services\amoCRM\Services\Site;
 
+use App\Models\Course;
 use App\Models\Log;
 use App\Models\Site;
 use App\Services\amoCRM\Client;
@@ -32,6 +33,12 @@ class CreditAction
             ], $this->amoApi);
 
             $productType = NoteHelper::getTypeProduct($body);
+
+            $course = $site->course_id ?
+                Course::query()
+                    ->where('course_id', $site->course_id)
+                    ->first()
+                : null;
 
             if (!$contact) {
 
@@ -126,6 +133,12 @@ class CreditAction
                 }
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
+            }
+
+            if ($course) {
+
+                $lead->sale = $course->price;
+                $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
             }
 
             $lead->attachTag('Основной');
