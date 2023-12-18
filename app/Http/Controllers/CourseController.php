@@ -11,4 +11,9 @@ class CourseController extends Controller
     {
         Artisan::call('courses:get');
     }
+
+    public function update()
+    {
+        Artisan::call('courses:field-update');
+    }
 }

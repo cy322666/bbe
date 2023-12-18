@@ -58,3 +58,5 @@ Route::post('sla/hook2', [SlaController::class, 'hook2']);
 
 Route::get('courses', [CourseController::class, 'get']);
 
+Route::get('courses/update', [CourseController::class, 'update']);
+
