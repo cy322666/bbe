@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class CourseController extends Controller
 {
-    public function update()
+    public function get()
     {
         Artisan::call('courses:get');
     }
