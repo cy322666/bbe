@@ -478,6 +478,7 @@ class ToolsController extends Controller
 
         if (in_array($country, [
             'Азербайджан',
+            'Азербайджанская Республика',
             'Армения',
             'Беларусь',
             'Казахстан',
@@ -490,6 +491,7 @@ class ToolsController extends Controller
             'Узбекистан',
             'Белоруссия',
             'Грузия',
+            'Украина',
         ])) {
             Log::info(__METHOD__.' страна : '.$country);
 
