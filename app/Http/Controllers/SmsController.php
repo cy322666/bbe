@@ -108,7 +108,7 @@ class SmsController extends Controller
 
         if ($sms->is_agreement) {
 
-            $lead->status_id = 142;
+            $lead->status_id = 59889726;
             $lead->save();
 
             Notes::addOne($lead, 'Коды подтверждения совпадают : '.$sms->send_code.' > '.$sms->get_code);
