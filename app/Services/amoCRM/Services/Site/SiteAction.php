@@ -91,15 +91,22 @@ class SiteAction
 
             $lead->save();
 
-            $lead = $this->amoApi->service->leads()->find($lead->id);
-
-            $lead = LeadHelper::setUtmsForObject($lead, $body);
-
-            $lead->save();
-
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;
             $site->save();
+
+            try {
+                $lead = $this->amoApi->service->leads()->find($lead->id);
+
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
+                $lead->save();
+            } catch (Throwable) {
+
+                $lead = $this->amoApi->service->leads()->find($lead->id);
+
+                $lead = LeadHelper::setUtmsForObject($lead, $body);
+                $lead->save();
+            }
 
             Notes::addOne($lead, NoteHelper::createNoteConsultation($body, $site));
 
