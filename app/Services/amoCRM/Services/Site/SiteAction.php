@@ -95,6 +95,8 @@ class SiteAction
 
             $lead = LeadHelper::setUtmsForObject($lead, $body);
 
+            $lead->save();
+
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;
             $site->save();
