@@ -22,7 +22,7 @@ class GetHubspotAll extends Command
      */
     protected $description = 'Command description';
 
-    public function handle(): int
+    public function handle()
     {
         $formIds = config('services.hubspot');
 

@@ -42,20 +42,16 @@ class SendHubspot extends Command
         $site = Site::query()->find($this->argument('site'));
 
         $double = Site::query()
+            ->where('created_at', '>', Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s'))
             ->where('id', '!=', $site->id)
             ->where('email', $site->email)
             ->orWhere('phone', $site->phone)
-            ->where('created_at', '>', Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s'))
             ->first();
 
-        $course = Course::query()
-            ->where('course_id', $site->courseid)
-            ->first();
-
-        if (!$course) {
-
-            throw new \Exception('product not found');
-        }
+        if ($site->courseid)
+            $course = Course::query()
+                ->where('course_id', $site->courseid)
+                ->first();
 
         if (!$double) {
 
@@ -70,7 +66,7 @@ class SendHubspot extends Command
 
                     $statusId = 53757562;
                 else
-                    $statusId = '';//TODO match status for form id
+                    $statusId = '';//TODO match status for form id?
 
                 $productType = NoteHelper::getTypeProduct($site);
 
@@ -85,10 +81,15 @@ class SendHubspot extends Command
                     $lead = Leads::create($contact, [
                         'status_id' => $statusId,
                         'sale'      => $site->amount,
+                        //resp me
                     ], $site->name);
 
+                    try {
+                        $lead->cf('Название продукта')->setValue($site->coursename);
+
+                    } catch (\Throwable $e) {}
+
                     $lead->cf('ID курса')->setValue($site->courseid);
-                    $lead->cf('Название продукта')->setValue($site->coursename);
                     $lead->cf('url')->setValue($site->course_url);
 
                     if ($productType)
@@ -118,6 +119,7 @@ class SendHubspot extends Command
                     $lead = Leads::create($contact, [
                         'status_id' => $statusId,
                         'sale'      => $course->price,//TODO
+                        //TODO resp
                     ], $site->coursename);
 
                     if ($leadActive)
@@ -146,6 +148,7 @@ class SendHubspot extends Command
 
                 $site->lead_id = $lead->id;
                 $site->contact_id = $contact->id;
+                $site->status = 1;
                 $site->save();
 
                 Notes::addOne($lead, NoteHelper::createNoteHubspot($site));

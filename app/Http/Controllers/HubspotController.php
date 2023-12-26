@@ -29,4 +29,14 @@ class HubspotController extends Controller
             Artisan::call('hubspot:get', ['form' => $formId]);
         }
     }
+
+    public function getBroken()
+    {
+        Artisan::call('hubspot:get-broken', ['form' => 'c8970cb9-5052-437e-939b-94f388a92312']);
+    }
+
+    public function pushBroken()
+    {
+        Artisan::call('hubspot:send-broken');
+    }
 }

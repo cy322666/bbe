@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\HubspotController;
 use App\Http\Controllers\OneCController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
@@ -59,4 +60,8 @@ Route::post('sla/hook2', [SlaController::class, 'hook2']);
 Route::get('courses', [CourseController::class, 'get']);
 
 Route::get('courses/update', [CourseController::class, 'update']);
+
+Route::get('hubspot/get-broken', [HubspotController::class, 'getBroken']);
+
+Route::get('hubspot/send-broken', [HubspotController::class, 'pushBroken']);
 

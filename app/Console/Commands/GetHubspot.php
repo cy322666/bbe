@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Hubspot\Site;
+use App\Rules\SiteCheckTest;
 use Carbon\Carbon;
 use HubSpot\Factory;
 use Illuminate\Console\Command;
@@ -61,6 +62,7 @@ class GetHubspot extends Command
                 $site->body = json_encode($form);
                 $site->submitted_at = $result->submittedAt;
                 $site->form = $this->argument('form');
+                $site->is_test = SiteCheckTest::isTest($site);
                 $site->save();
 
                 foreach ($form as $item) {
