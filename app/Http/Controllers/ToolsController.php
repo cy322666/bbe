@@ -256,7 +256,7 @@ class ToolsController extends Controller
             '*Успешная сделка!* ',
             '-----------------------',
             '*Продукт*',
-            'Название : '.$lead->cf('Название продукта')->getValue() ?? '-'.' '.$lead->cf('Тариф')->getValue(),
+            'Название : '.$lead->cf('Название продукта')->getValue().' '.$lead->cf('Тариф')->getValue(),
             'Тип : '.$lead->cf('Тип продукта')->getValue() ?? '-',
             'Дата старта потока : '.$start,
             'Ответственный : '.$responsibleName,
