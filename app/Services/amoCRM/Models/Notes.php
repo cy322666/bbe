@@ -9,13 +9,13 @@ abstract class Notes
 {
     public static function add($model, array $values)
     {
-        foreach ($values as $key => $value) {
-
-            $array[] = ' - '.$key.' : '.$value;
-        }
+//        foreach ($values as $key => $value) {
+//
+//            $array[] = ' - '.$key.' : '.$value;
+//        }
 
         $note = $model->createNote($type = 4);
-        $note->text = implode("\n", $array);
+        $note->text = implode("\n", $values);
         $note->save();
 
         return $note;
