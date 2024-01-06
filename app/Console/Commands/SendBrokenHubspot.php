@@ -59,6 +59,7 @@ class SendBrokenHubspot extends Command
                 ->exists()) {
 
                 $broken->is_double = true;
+                $broken->status = 9;
                 $broken->save();
 
                 break;
@@ -112,7 +113,8 @@ class SendBrokenHubspot extends Command
                                 $broken->save();
 
                             } catch (\Throwable $e) {
-                                Log::info(__METHOD__, [$e->getMessage(), $e->getTraceAsString()]);
+
+                                throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
                             }
 
                             break;
@@ -127,11 +129,17 @@ class SendBrokenHubspot extends Command
                     ]);
 
                     if ($leadSuccess) {
+//                        dd(Carbon::parse($leadSuccess->closed_at)->addHours(3)->format('Y-m-d H:i:s').' < '.Carbon::now()->addHours(3)->subDays(3)->format('Y-m-d H:i:s'));
                         //менее трех дней как закрыт в успех?
                         if (Carbon::parse($leadSuccess->closed_at)->addHours(3) <
                             Carbon::now()->addHours(3)->subDays(3)) {
 
                             $this->create($broken, $contact, $productType, $course);
+                        } else {
+                            $broken->lead_id = $leadSuccess->id;
+                            $broken->contact_id = $contact->id;
+                            $broken->status = 7;
+                            $broken->save();
                         }
                     } else
                         $this->create($broken, $contact, $productType, $course);
@@ -145,7 +153,7 @@ class SendBrokenHubspot extends Command
     }
 
     public function create($broken, $contact, $productType, $course)
-    {
+    {dd('create');
         try {
             $lead = Leads::create($contact, [
                 'status_id' => $broken->is_test ? 53757562 : 33522700
@@ -157,7 +165,9 @@ class SendBrokenHubspot extends Command
             try {
                 $lead->cf('Название продукта')->setValue(trim($broken->coursename));
 
-            } catch (\Throwable $e) {}
+            } catch (\Throwable $e) {
+                throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            }
 
             if ($course) {
 
