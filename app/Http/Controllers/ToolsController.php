@@ -495,7 +495,14 @@ class ToolsController extends Controller
         ])) {
             Log::info(__METHOD__.' страна : '.$country);
 
-            Log::info(__METHOD__.' отправлен СНГ');
+            Log::info(__METHOD__.'  отправлен СНГ');
+
+            if ($lead->cf('СНГ проверка')) {
+
+                Log::info(__METHOD__.$lead->id.' уже отработано ');
+
+                exit;
+            }
 
             $lead->status_id = $lead->pipeline_id == 3342043 ? 60155626 : 61978382; //снг теплые и снг
             $lead->cf('СНГ проверка')->enable();
