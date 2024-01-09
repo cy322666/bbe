@@ -153,7 +153,7 @@ class SendBrokenHubspot extends Command
     }
 
     public function create($broken, $contact, $productType, $course)
-    {dd('create');
+    {
         try {
             $lead = Leads::create($contact, [
                 'status_id' => $broken->is_test ? 53757562 : 33522700
