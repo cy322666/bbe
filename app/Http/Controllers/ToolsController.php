@@ -493,11 +493,8 @@ class ToolsController extends Controller
             'Грузия',
             'Украина',
         ])) {
-            Log::info(__METHOD__.' страна : '.$country);
 
-            Log::info(__METHOD__.'  отправлен СНГ');
-
-            if ($lead->cf('СНГ проверка')) {
+            if ($lead->cf('СНГ проверка')->getValue()) {
 
                 Log::info(__METHOD__.$lead->id.' уже отработано ');
 
@@ -507,6 +504,8 @@ class ToolsController extends Controller
             $lead->status_id = $lead->pipeline_id == 3342043 ? 60155626 : 61978382; //снг теплые и снг
             $lead->cf('СНГ проверка')->enable();
             $lead->save();
+
+            Log::info(__METHOD__.' страна : '.$country.'  отправлен СНГ');
         } else
             Log::info(__METHOD__.' не СНГ, страна : '.$country);
     }
