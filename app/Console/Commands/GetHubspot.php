@@ -63,6 +63,14 @@ class GetHubspot extends Command
             $site->is_test = SiteCheckTest::isTest($site);
             $site->save();
 
+            $site->is_double = Site::query()
+                ->where('id', '!=', $site->id)
+                ->where('form', $this->argument('form'))
+                ->where('email', $site->email)
+                ->exists();
+
+            $site->save();
+
             foreach ($form as $item) {
 
                 try {
