@@ -39,4 +39,14 @@ class HubspotController extends Controller
     {
         Artisan::call('hubspot:send-broken');
     }
+
+    public function getSegmentPython()
+    {
+        Artisan::call('hubspot:get-segment-python');
+    }
+
+    public function sendSegment()
+    {
+
+    }
 }

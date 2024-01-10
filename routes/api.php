@@ -65,3 +65,8 @@ Route::get('hubspot/get-broken', [HubspotController::class, 'getBroken']);
 
 Route::get('hubspot/send-broken', [HubspotController::class, 'pushBroken']);
 
+Route::get('hubspot/get-segment-python', [HubspotController::class, 'getSegmentPython']);
+
+
+
+
