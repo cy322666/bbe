@@ -34,60 +34,58 @@ class GetHubspot extends Command
     {
         $hubspot = Factory::createWithAccessToken(env('HUBSPOT_TOKEN'));
 
-//        for ($i = 0, $after = null; ; $i++) {
+        $response = $hubspot->apiRequest([
+            'path' => '/form-integrations/v1/submissions/forms/'.$this->argument('form'),
+            'qs' => [
+                'limit' => 20,
+                'after' => null,
+            ]
+        ]);
 
-            $response = $hubspot->apiRequest([
-                'path' => '/form-integrations/v1/submissions/forms/'.$this->argument('form'),
-                'qs' => [
-                    'limit' => 20,
-                    'after' => null,
-                ]
-            ]);
+        $response = json_decode($response->getBody()->getContents());
 
-            $response = json_decode($response->getBody()->getContents());
+        foreach ($response->results as $result)
+        {
+            $form = $result->values;
 
-            foreach ($response->results as $result)
-            {
-                $form = $result->values;
+            if (Site::query()
+                ->where('submitted_at', $result->submittedAt)
+                ->where('form', $this->argument('form'))
+                ->exists()) {
 
-                if (Site::query()
-                    ->where('submitted_at', $result->submittedAt)
-                    ->where('form', $this->argument('form'))
-                    ->exists()) {
+                continue;
+            }
 
-                    continue;
-                }
+            $site = new Site();
+            $site->body = json_encode($form);
+            $site->submitted_at = $result->submittedAt;
+            $site->form = $this->argument('form');
+            $site->is_test = SiteCheckTest::isTest($site);
+            $site->save();
 
-                $site = new Site();
-                $site->body = json_encode($form);
-                $site->submitted_at = $result->submittedAt;
-                $site->form = $this->argument('form');
-                $site->is_test = SiteCheckTest::isTest($site);
-                $site->save();
+            foreach ($form as $item) {
 
-                foreach ($form as $item) {
+                try {
+                    if ($item->name == 'phone_number') {
 
-                    try {
-                        if ($item->name == 'phone_number') {
+                        $site->phone = $item->value;
+                        $site->save();
 
-                            $site->phone = $item->value;
-                            $site->save();
+                    } elseif ($item->name == 'course_name') {
 
-                        } elseif ($item->name == 'course_name') {
+                        $site->coursename = $item->value;
+                        $site->save();
+                    } else {
 
-                            $site->coursename = $item->value;
-                            $site->save();
-                        } else {
-
-                            $site->{$item->name} = $item->value;
-                            $site->save();
-                        }
-
-                    } catch (\Throwable $e) {
-
-                        dump(__METHOD__, [$e->getMessage()]);
+                        $site->{$item->name} = $item->value;
+                        $site->save();
                     }
+
+                } catch (\Throwable $e) {
+
+                    Log::alert(__METHOD__, [$e->getMessage()]);
                 }
             }
         }
+    }
 }

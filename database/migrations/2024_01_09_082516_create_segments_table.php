@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('broken_segments', function (Blueprint $table) {
+        Schema::create('hubspot_segments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 

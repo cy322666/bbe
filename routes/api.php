@@ -25,16 +25,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//site
 Route::post('site', [SiteController::class, 'index'])->middleware(SiteCheckMiddleware::class);
 
 Route::get('site/cron', [SiteController::class, 'cron']);
 
-Route::post('segment', [SegmentController::class, 'hook']);
+//Route::post('segment', [SegmentController::class, 'hook']);
 
+//1c
 Route::post('pays/hook', [OneCController::class, 'pay']);
 
 Route::post('pays/cron', [OneCController::class, 'cron']);
 
+//tools
 Route::post('tools/pay', [ToolsController::class, 'datePay']);
 
 Route::post('tools/return', [ToolsController::class, 'return']);
@@ -45,27 +48,42 @@ Route::post('tools/create', [ToolsController::class, 'createLead']);
 
 Route::post('tools/country', [ToolsController::class, 'country']);
 
+//tg
 Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
 
 Route::post('telegram/create', [TelegramController::class, 'create']);
 
+//sms
 Route::post('sms/agreement', [SmsController::class, 'agreement']);
 
 Route::post('sms/check', [SmsController::class, 'check']);
 
+//sla
 Route::post('sla/hook1', [SlaController::class, 'hook1']);
 
 Route::post('sla/hook2', [SlaController::class, 'hook2']);
 
+//course
 Route::get('courses', [CourseController::class, 'get']);
 
 Route::get('courses/update', [CourseController::class, 'update']);
 
+//hb
 Route::get('hubspot/get-broken', [HubspotController::class, 'getBroken']);
 
 Route::get('hubspot/send-broken', [HubspotController::class, 'pushBroken']);
 
 Route::get('hubspot/get-segment-python', [HubspotController::class, 'getSegmentPython']);
+
+Route::get('hubspot/cron1', [HubspotController::class, 'cron1']);
+
+Route::get('hubspot/cron2', [HubspotController::class, 'cron2']);
+
+Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
+
+Route::get('hubspot/cron4', [HubspotController::class, 'cron4']);
+
+Route::get('hubspot/send', [HubspotController::class, 'send']);
 
 
 
