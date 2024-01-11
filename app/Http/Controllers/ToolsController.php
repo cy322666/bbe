@@ -501,11 +501,35 @@ class ToolsController extends Controller
                 exit;
             }
 
-            $lead->status_id = $lead->pipeline_id == 3342043 ? 60155626 : 61978382; //снг теплые и снг
+            Log::info(__METHOD__.' страна : '.$country.'  отправлен СНГ', [
+                'lead_id' => $leadId,
+                'status_id' => $lead->status_id,
+                'pipeline_id' => $lead->pipeline_id,
+            ]);
+
+            if ($lead->pipeline_id == 3342043) {
+
+                $statusId = 60155626;
+            }
+
+            if ($lead->pipeline_id == 6540894) {
+
+                $statusId = 61978382;
+            }
+
+            if (empty($statusId)) {
+
+                throw new Exception($leadId. ' : неопределенный этап продажи');
+            }
+
+            $lead->status_id = $statusId;
             $lead->cf('СНГ проверка')->enable();
             $lead->save();
 
-            Log::info(__METHOD__.' страна : '.$country.'  отправлен СНГ');
+            Log::info(__METHOD__.' страна : '.$country.'  отправлен СНГ', [
+                'lead_id' => $leadId,
+                'status_id' => $statusId,
+            ]);
         } else
             Log::info(__METHOD__.' не СНГ, страна : '.$country);
     }
