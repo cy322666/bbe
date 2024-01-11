@@ -521,6 +521,9 @@ class ToolsController extends Controller
 
             if (empty($statusId)) {
 
+                $lead->cf('СНГ проверка')->enable();
+                $lead->save();
+
                 throw new Exception($leadId. ' : неопределенный этап продажи');
             }
 
