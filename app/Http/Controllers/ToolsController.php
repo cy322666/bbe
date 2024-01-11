@@ -517,6 +517,8 @@ class ToolsController extends Controller
                 $statusId = 61978382;
             }
 
+            if ($lead->pipeline_id == 7206046 || $lead->pipeline_id == 7468118)
+
             if (empty($statusId)) {
 
                 throw new Exception($leadId. ' : неопределенный этап продажи');
