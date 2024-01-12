@@ -107,12 +107,12 @@ class SendHubspot extends Command
                     $productType = NoteHelper::getTypeProduct($site);
 
                     if ($productType)
-                        $lead->cf('Тип продукта')->setValue($productType);
+                        $lead->cf('Тип продукта')->setValue($info['type'] ?? $productType);
 
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
                     $lead->cf('Источник')->setValue($info['source']);
 
-                    $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? null);
+                    $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
 
                     $lead = LeadHelper::setUtmsForObject($lead, $site);
                     $lead->save();
