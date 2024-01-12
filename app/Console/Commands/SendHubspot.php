@@ -133,7 +133,7 @@ class SendHubspot extends Command
                     $productType = NoteHelper::getTypeProduct($site);
 
                     if ($productType)
-                        $lead->cf('Тип продукта')->setValue($info['type'] ?? $productType);
+                        $lead->cf('Тип продукта')->setValue($productType ?? $info['type']);
 
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
                     $lead->cf('Источник')->setValue($info['source']);
