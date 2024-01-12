@@ -33,6 +33,16 @@ class SendHubspot extends Command
      */
     protected $description = 'Command description';
 
+    static array $softForms = [
+        '3f4cc224-7bd6-4dbe-a52b-7a145c436d9e',
+        'a226fb88-ccbf-49ed-a617-8f7e4fc02412',
+        '36920db7-a258-4f06-bd36-c9385147e956',
+        '6edfaf7d-39ff-4857-941e-e98b30fc3828',
+        '4e034ae3-22e8-4212-9e03-9de547c97ad1',
+        '9bd28df2-7a96-464d-b300-45d8a68d60ce',
+        'bc127ef2-14df-4955-bb8c-900ad1e5dc10',
+        '172fdf59-fdee-4a6f-aed2-9cec7f8bc4e6',
+    ];
     /**
      * Execute the console command.
      * @throws \Exception
@@ -89,8 +99,24 @@ class SendHubspot extends Command
 
                 else {
 
+                    if ($site->is_test) {
+
+                        $statusId = 53757562;
+                    } else {
+
+                        foreach (static::$softForms as $form) {
+
+                            if ($form == $site->form) {
+
+                                $statusId = 33522700;
+
+                                break;
+                            }
+                        }
+                    }
+
                     $lead = Leads::create($contact, [
-                        'status_id' => $site->is_test ? 53757562 : null,
+                        'status_id' => $statusId ?? null,
                         'sale'      => $course->price ?? null,
                         //TODO resp
                     ], $info['product'] ?? 'Новая заявка Hubspot');
