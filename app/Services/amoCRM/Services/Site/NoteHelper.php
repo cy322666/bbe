@@ -42,18 +42,19 @@ abstract class NoteHelper
         return implode("\n", $text);
     }
 
-    public static function createNoteHubspot($site): string
+    public static function createNoteHubspot($site, $info): string
     {
         $text = [
-            'Новая заявка на консультацию!',
+            'Новая заявка из Hubspot!',
             '-----------------------------',
             ' - Имя : '. $site->firstname,
             ' - Почта : '. $site->email,
             ' - Телефон : '. $site->phone,
             '-----------------------------',
-            ' - Название продукта : '. $site->coursename,
-            ' - Тип продукта : '. $site->coursetype,
-            ' - ID курса : '. $site->courseid,
+            ' - Название продукта : '. $info['product'],
+            ' - Тип продукта : '. $info['type'],
+            ' - ID курса : '. $info['course_id'],
+            ' - Источник : '. $info['source'],
             '-----------------------------'
         ];
 

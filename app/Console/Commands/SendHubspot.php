@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Account;
 use App\Models\Course;
 use App\Models\Hubspot\Site;
 use App\Models\Product;
+use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
@@ -31,21 +33,24 @@ class SendHubspot extends Command
      */
     protected $description = 'Command description';
 
-    //TODO проверка на тест
-
     /**
      * Execute the console command.
      * @throws \Exception
      */
     public function handle()
     {
+        $this->amoApi = (new Client(Account::query()->first()))
+            ->init()
+            ->initCache();
+
         $site = Site::query()->find($this->argument('site'));
 
         $double = Site::query()
-            ->where('created_at', '>', Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s'))
             ->where('id', '!=', $site->id)
+            ->where('created_at', '>', Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s'))
+            ->where('lead_id', '!=', null)
             ->where('email', $site->email)
-            ->orWhere('phone', $site->phone)
+//            ->orWhere('phone', $site->phone)
             ->first();
 
         if ($site->courseid)
@@ -55,113 +60,79 @@ class SendHubspot extends Command
 
         if (!$double) {
 
+            $info = $site->prepareSend();
+
             try {
 
                 $contact = Contacts::search([
-                    'Телефоны' => Contacts::clearPhone($site->phone),
-                    'Почта'    => $site->email,
+                    'Телефон' => $site->phone,
+                    'Почта'   => $site->email,
                 ], $this->amoApi);
 
-                if($site->is_test)
-
-                    $statusId = 53757562;
-                else
-                    $statusId = '';//TODO match status for form id?
-
-                $productType = NoteHelper::getTypeProduct($site);
-
                 if (!$contact) {
-
                     $contact = Contacts::create($this->amoApi, $site->firstname);
                     $contact = Contacts::update($contact, [
-                        'Почта'    => $site->email,
+                        'Почта' => $site->email,
                         'Телефоны' => [$site->phone],
                     ]);
+                }
+
+                $lead = Leads::search($contact, $this->amoApi, [
+                    3342043,
+                    6540894,
+                    7206046,
+                ]);
+
+                if ($lead)
+
+                    $lead->attachTag('В работе');
+
+                else {
 
                     $lead = Leads::create($contact, [
-                        'status_id' => $statusId,
-                        'sale'      => $site->amount,
-                        //resp me
-                    ], $site->name);
+                        'status_id' => $site->is_test ? 53757562 : null,
+                        'sale'      => $course->price ?? null,
+                        //TODO resp
+                    ], $info['product'] ?? 'Новая заявка Hubspot');
 
                     try {
-                        $lead->cf('Название продукта')->setValue($site->coursename);
+                        $lead->cf('Название продукта')->setValue($info['product']);
 
-                    } catch (\Throwable $e) {}
+                    } catch (\Throwable) {}
 
-                    $lead->cf('ID курса')->setValue($site->courseid);
-                    $lead->cf('url')->setValue($site->course_url);
+                    $lead->cf('ID курса')->setValue($info['course_id']);
+                    $lead->cf('url')->setValue($info['url']);
+                    $lead->cf('form_id')->setValue($site->form);
+
+                    $productType = NoteHelper::getTypeProduct($site);
 
                     if ($productType)
                         $lead->cf('Тип продукта')->setValue($productType);
 
-                    $lead->attachTag($productType);
-
-                    $lead = LeadHelper::setUtmsForObject($lead, $site);
-
-//                    $lead->cf('Источник')->setValue('Основной сайт'); TODO match form id
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
-                    $lead->save();
+                    $lead->cf('Источник')->setValue($info['source']);
 
-                } else {
-
-                    $contact = Contacts::update($contact, [
-                        'Почта'    => $site->email,
-                        'Телефоны' => [$site->phone],
-                    ]);
-
-                    $leadActive = Leads::search($contact, $this->amoApi, [
-                        3342043,
-                        6540894,
-                        7206046,
-                    ]);
-
-                    $lead = Leads::create($contact, [
-                        'status_id' => $statusId,
-                        'sale'      => $course->price,//TODO
-                        //TODO resp
-                    ], $site->coursename);
-
-                    if ($leadActive)
-
-                        $lead->attachTag('В работе');
-
-//                    $lead->cf('ID курса')->setValue($site->courseid);
-//                    $lead->cf('Название продукта')->setValue($site->coursename);
-//                    $lead->cf('url')->setValue($site->course_url);
-
-//                    if ($productType)
-//                        $lead->cf('Тип продукта')->setValue($productType);
-
-//                    $lead->cf('Источник')->setValue('Основной сайт');
-//                    $lead->cf('Способ оплаты')->setValue('Сайт');
-
-                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
-                    $lead->attachTag($productType ?? null);
+                    $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? null);
 
                     $lead = LeadHelper::setUtmsForObject($lead, $site);
                     $lead->save();
                 }
-
-//                $lead->attachTag('Основной');
-                $lead->save();
 
                 $site->lead_id = $lead->id;
                 $site->contact_id = $contact->id;
                 $site->status = 1;
                 $site->save();
 
-                Notes::addOne($lead, NoteHelper::createNoteHubspot($site));
+                Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info));
 
             } catch (\Throwable $e) {
 
-                $site->status = 5;
-                $site->save();
-
                 throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
             }
-        } else
+        } else {
             $site->status = 3;
+            $site->is_double = true;
+        }
 
         $site->save();
     }
