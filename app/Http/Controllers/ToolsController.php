@@ -57,14 +57,14 @@ class ToolsController extends Controller
 
         $method = $lead->cf('Способ оплаты')->getValue();
 
-        if ($method == 'Лерна') {
-
-            $chatId = env('TG_CHAT_LERNA');
-            $token  = env('TG_TOKEN_LERNA');
-        } else {
-            $chatId = env('TG_CHAT_CURATOR');
-            $token  = env('TG_TOKEN_CURATOR');
-        }
+//        if ($method == 'Лерна') {
+//
+//            $chatId = env('TG_CHAT_LERNA');
+//            $token  = env('TG_TOKEN_LERNA');
+//        } else {
+        $chatId = env('TG_CHAT_CURATOR');
+        $token  = env('TG_TOKEN_CURATOR');
+//        }
 
         $users = $amoApi->service->account->users;
 
