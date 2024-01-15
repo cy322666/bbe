@@ -122,7 +122,7 @@ class SendHubspot extends Command
                     ], $info['product'] ?? 'Новая заявка Hubspot');
 
                     try {
-                        $lead->cf('Название продукта')->setValue($info['product']);
+                        $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
 
                     } catch (\Throwable) {}
 
