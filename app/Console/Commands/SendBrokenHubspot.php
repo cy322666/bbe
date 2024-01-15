@@ -42,7 +42,8 @@ class SendBrokenHubspot extends Command
 
         $brokens = Broken::query()
 //            ->where('id', 193)
-            ->where('created_at', '<', Carbon::now()->addHour())
+//            ->where('created_at', '<', Carbon::now()->addHour())
+            ->where('created_at', '<', Carbon::now()->subHour())
             ->where('status', 0)
             ->where('is_double', false)
             ->limit(10)
