@@ -74,6 +74,8 @@ Route::get('hubspot/send-broken', [HubspotController::class, 'pushBroken']);
 
 Route::get('hubspot/get-segment-python', [HubspotController::class, 'getSegmentPython']);
 
+Route::get('hubspot/send-segment-python', [HubspotController::class, 'sendSegmentPython']);
+
 Route::get('hubspot/cron1', [HubspotController::class, 'cron1']);
 
 Route::get('hubspot/cron2', [HubspotController::class, 'cron2']);

@@ -111,8 +111,8 @@ class HubspotController extends Controller
         Artisan::call('hubspot:get-segment-python');
     }
 
-    public function sendSegment()
+    public function sendSegmentPython()
     {
-
+        Artisan::call('hubspot:send-segment-python');
     }
 }

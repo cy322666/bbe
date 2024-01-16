@@ -37,8 +37,8 @@ class GetHubspotSegment extends Command
         $response = $hubspot->apiRequest([
             'path' => '/contacts/v1/lists/2370/contacts/all',
             'qs' => [
-                'limit' => 20,
-                'after' => null,
+                'count' => 20,
+                'vidOffset' => Segment::query()->latest('created_at')->first()->vid,
             ]
         ]);
 
