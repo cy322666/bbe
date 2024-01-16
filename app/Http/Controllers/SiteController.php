@@ -45,8 +45,13 @@ class SiteController extends Controller
             $result = SiteSend::send($site);
 
             $site->status = $result;
-        } else
-            $site->status = 3;
+        } else {
+
+            if ($site->action !== 'order-received' && $site->action !== 'order') {
+
+                $site->status = 3;
+            }
+        }
 
         $site->save();
     }
