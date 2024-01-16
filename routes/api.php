@@ -3,7 +3,6 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HubspotController;
 use App\Http\Controllers\OneCController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SlaController;
@@ -49,9 +48,9 @@ Route::post('tools/create', [ToolsController::class, 'createLead']);
 Route::post('tools/country', [ToolsController::class, 'country']);
 
 //tg
-Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
+//Route::get('telegram/proxy', [TelegramController::class, 'proxy']);
 
-Route::post('telegram/create', [TelegramController::class, 'create']);
+//Route::post('telegram/create', [TelegramController::class, 'create']);
 
 //sms
 Route::post('sms/agreement', [SmsController::class, 'agreement']);
