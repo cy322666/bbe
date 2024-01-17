@@ -11,7 +11,7 @@ class HubspotController extends Controller
     {
         $uuids = [
             '4c10b4fa-7fac-4c43-88e7-b074180b43dc',//+
-            '6925f713-ef2f-4d81-a0fa-7b605ac605d1',//+
+//            '6925f713-ef2f-4d81-a0fa-7b605ac605d1',//+
             'eda7bd55-145f-4a27-92c3-e3b992397674',//+
             '24da75d3-e794-47b7-bb45-06c81d8a9597',//+
             'e56687c0-1141-49c7-a706-2fa2941322c8',//+
@@ -80,7 +80,7 @@ class HubspotController extends Controller
             '0af9faf3-c056-4023-8919-e654a384e21f',//+
 
             '4c10b4fa-7fac-4c43-88e7-b074180b43dc',//+
-            '6925f713-ef2f-4d81-a0fa-7b605ac605d1',//+
+//            '6925f713-ef2f-4d81-a0fa-7b605ac605d1',//+
             '7f14eef7-c46b-4051-ad1d-557ce3d280e4',//+
             '9be94507-6b84-441f-9648-9238fe26ff93',//+
         ];
