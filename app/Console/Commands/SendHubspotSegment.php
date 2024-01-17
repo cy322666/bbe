@@ -109,7 +109,7 @@ class SendHubspotSegment extends Command
                         }
                     }
 
-                    $segment->lead_id = $lead->id;
+                    $segment->lead_id = $lead->id ?? null;
                     $segment->contact_id = $contact->id;
                     $segment->status = 1;
                     $segment->save();
