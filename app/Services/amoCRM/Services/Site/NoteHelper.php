@@ -88,7 +88,7 @@ abstract class NoteHelper
         return implode("\n", $text);
     }
 
-    public static function switchCommunication($method): string
+    public static function switchCommunication($method): ?string
     {
         return match ($method) {
             'messenger' => 'Мессенджер',
