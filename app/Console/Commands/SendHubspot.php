@@ -94,55 +94,51 @@ class SendHubspot extends Command
                 ]);
 
                 if ($lead)
-
                     $lead->attachTag('В работе');
 
-                else {
+                if ($site->is_test) {
 
-                    if ($site->is_test) {
+                    $statusId = 53757562;
+                } else {
 
-                        $statusId = 53757562;
-                    } else {
+                    foreach (static::$softForms as $form) {
 
-                        foreach (static::$softForms as $form) {
+                        if ($form == $site->form) {
 
-                            if ($form == $site->form) {
+                            $statusId = 33522700;
 
-                                $statusId = 33522700;
-
-                                break;
-                            }
+                            break;
                         }
                     }
-
-                    $lead = Leads::create($contact, [
-                        'status_id' => $statusId ?? null,
-                        'sale'      => $course->price ?? null,
-                        //TODO resp
-                    ], $info['product'] ?? 'Новая заявка Hubspot');
-
-                    try {
-                        $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
-
-                    } catch (\Throwable) {}
-
-                    $lead->cf('ID курса')->setValue($info['course_id']);
-                    $lead->cf('url')->setValue($info['url']);
-                    $lead->cf('form_id')->setValue($site->form);
-
-                    $productType = NoteHelper::getTypeProduct($site);
-
-                    if ($productType)
-                        $lead->cf('Тип продукта')->setValue($productType ?? $info['type']);
-
-                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
-                    $lead->cf('Источник')->setValue($info['source']);
-
-                    $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
-
-                    $lead = LeadHelper::setUtmsForObject($lead, $site);
-                    $lead->save();
                 }
+
+                $lead = Leads::create($contact, [
+                    'status_id' => $statusId ?? null,
+                    'sale'      => $course->price ?? null,
+                    //TODO resp
+                ], $info['product'] ?? 'Новая заявка Hubspot');
+
+                try {
+                    $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
+
+                } catch (\Throwable) {}
+
+                $lead->cf('ID курса')->setValue($info['course_id']);
+                $lead->cf('url')->setValue($info['url']);
+                $lead->cf('form_id')->setValue($site->form);
+
+                $productType = NoteHelper::getTypeProduct($site);
+
+                if ($productType)
+                    $lead->cf('Тип продукта')->setValue($productType ?? $info['type']);
+
+                $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
+                $lead->cf('Источник')->setValue($info['source']);
+
+                $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
+
+                $lead = LeadHelper::setUtmsForObject($lead, $site);
+                $lead->save();
 
                 $site->lead_id = $lead->id;
                 $site->contact_id = $contact->id;
