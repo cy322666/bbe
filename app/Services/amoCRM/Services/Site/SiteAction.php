@@ -38,7 +38,7 @@ class SiteAction
             ], $this->amoApi);
 
             $statusId = $site->is_test ? 53757562 : 33522700;
-            $statusId = !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : $statusId;
+//            $statusId = !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : $statusId;
 
             $productType = NoteHelper::getTypeProduct($body);
 

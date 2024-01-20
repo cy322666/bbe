@@ -12,6 +12,7 @@ use Exception;
 use HubSpot\Factory;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class Test extends Command
@@ -35,6 +36,8 @@ class Test extends Command
     private static int $pipelineId1 = 3342043; //главная
     private static int $pipelineId2 = 6540894; //теплая
 
+    static string $uri = 'https://api.pachca.com/api/shared/v1';
+
     public int $tries = 1;
 
     /**
@@ -42,21 +45,43 @@ class Test extends Command
      */
     public function handle()
     {
-        $amoApi = (new Client(Account::query()->first()))->init();
+//<<<<<<< HEAD
+//        $response = Http::post(static::$uri.'/clients' , [
+//            'headers' => [
+//                'Authorization' => 'Bearer lICGyFKZMlZSqbGsiEi6-2dC-jg75DzhbMzRRowvyuQ',
+//            ]
+//        ]);
+//
+//        dd($response->body());
+//    }
 
-        $hubspot = Factory::createWithAccessToken(env('HUBSPOT_TOKEN'));
+//    public function backoff(): array
+//    {
+//        return [1, 5, 10];
+//    }
 
-        $response = $hubspot->apiRequest([
-            'path' => '/contacts/v1/lists/2370/contacts/all',
-            'qs' => [
-                'limit' => 20,
-                'after' => null,
-            ]
-        ]);
+    }
 
-        $response = json_decode($response->getBody()->getContents());
+    private static function buildText(array $leadsArray): array
+    {
+//        $sale1 = []; $sale2 = [];
+//=======
+//        $amoApi = (new Client(Account::query()->first()))->init();
+//
+//        $hubspot = Factory::createWithAccessToken(env('HUBSPOT_TOKEN'));
+//>>>>>>> 11ba89008f9d8e159f80152596727362fe46f39e
+//
+//        $response = $hubspot->apiRequest([
+//            'path' => '/contacts/v1/lists/2370/contacts/all',
+//            'qs' => [
+//                'limit' => 20,
+//                'after' => null,
+//            ]
+//        ]);
 
-        dd($response);
+//        $response = json_decode($response->getBody()->getContents());
+//
+//        dd($response);
 
 //        https://app.hubspot.com/contacts/4723027/lists/2370/filters
     }
