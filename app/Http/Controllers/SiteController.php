@@ -42,9 +42,16 @@ class SiteController extends Controller
 
         if (!$double) {
 
-            $result = SiteSend::send($site);
+            if ($site->amount == 0 || $site->amount == 1) {
 
-            $site->status = $result;
+                $site->status = 7;
+
+            } else {
+                $result = SiteSend::send($site);
+
+                $site->status = $result;
+            }
+
         } else {
 
             if ($site->action !== 'order-received' && $site->action !== 'order') {
@@ -58,6 +65,7 @@ class SiteController extends Controller
 
     public function cron()
     {
+        exit;
         $sites = Site::query()
             ->where('created_at', '>', Carbon::now()->subMinutes(60)->format('Y-m-d H:i:s'))
             ->where('status', 0)
