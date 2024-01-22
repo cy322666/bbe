@@ -57,6 +57,7 @@ class SiteAction
             ]);
 
             $lead = Leads::create($contact, [
+                'responsible_user_id' => $contact->responsible_user_id,
                 'status_id' => $statusId,
                 'sale'      => $site->amount,
             ], $body->name);
