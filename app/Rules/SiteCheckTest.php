@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Services\amoCRM\Models\Contacts;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -39,6 +40,7 @@ class SiteCheckTest
     private static array $testPhones = [
         '+643634364',
         '+71111111',
+        '+1111111111',
         '+11111111',
         '81112223344',
         '71112223344',
@@ -64,9 +66,11 @@ class SiteCheckTest
 
         foreach (static::$testPhones as $testPhone) {
 
+            $testPhone = Contacts::clearPhone($testPhone);
+
             if ($testPhone == $value || strripos($value, $testPhone) !== false)
 
-                return true;
+            return true;
         }
 
         return false;
