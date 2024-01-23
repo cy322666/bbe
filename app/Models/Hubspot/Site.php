@@ -98,5 +98,14 @@ class Site extends Model
                 'url'  => 'https://bangbangeducation.ru/program/cinema-editing»',
                 'course_id' => 439,
             ];
+
+        return [
+            'product' => $this->coursename,
+            'source'  => null,
+            'type' => $this->coursetype,
+            'tag'  => null,
+            'url'  => $this->course_url,
+            'course_id' => $this->courseid,
+        ];
     }
 }
