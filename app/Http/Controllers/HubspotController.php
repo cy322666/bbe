@@ -82,6 +82,17 @@ class HubspotController extends Controller
     public function send()
     {
         $uuids = [
+            '9944e7b6-1db4-422b-a839-ed9d020126fc',
+            'b77eff0e-3661-4d48-b2d9-0757b35adb1d',
+            'd08571c8-0c65-473e-ace7-597ad70321f8',
+            'fabc184d-eff7-4d4e-b370-63ce9f5f1b99',
+            '0fa8c3bc-6411-4efb-b21f-a8598ae2096c',
+            '09658544-d246-47f3-bea2-3d9f0bcb266d',
+            '72eb7983-5a90-4061-a92f-19304a9450ca',
+            '7938618a-f89c-49db-83f4-18823db33259',
+            '2821cfc4-d327-4ea4-b3b0-accedbbbc551',
+            'b170c128-18fd-4157-a714-77977f377b70',
+
             '5a21b267-6531-44c3-a476-7cd4aae9260f',//+
             '77c0f622-3bb6-4412-b0b2-c46d424f7171',//+
             'eda7bd55-145f-4a27-92c3-e3b992397674',//+
