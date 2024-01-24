@@ -66,6 +66,17 @@ class Site extends Model
                 'course_id' => $this->courseid,
             ];
 
+        if ($this->form == 'fabc184d-eff7-4d4e-b370-63ce9f5f1b99')
+
+            return [
+                'product' => $this->coursename,
+                'source'  => 'Лендинг вебфлоу',
+                'type' => 'Годовая программа',
+                'tag'  => null,
+                'url'  => $this->course_url,
+                'course_id' => $this->courseid,
+            ];
+
         if ($this->form == '7f14eef7-c46b-4051-ad1d-557ce3d280e4')
 
             return [
