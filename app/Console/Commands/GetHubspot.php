@@ -37,7 +37,7 @@ class GetHubspot extends Command
         $response = $hubspot->apiRequest([
             'path' => '/form-integrations/v1/submissions/forms/'.$this->argument('form'),
             'qs' => [
-                'limit' => 50,
+                'limit' => 20,
                 'after' => null,
             ]
         ]);
