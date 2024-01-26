@@ -29,6 +29,8 @@ class HubspotController extends Controller
     public function cron2()
     {
         $uuids = [
+            'd63fd44c-af4a-4a0e-bb35-63eb79a542ef',
+
             '9944e7b6-1db4-422b-a839-ed9d020126fc',
             'b77eff0e-3661-4d48-b2d9-0757b35adb1d',
             'd08571c8-0c65-473e-ace7-597ad70321f8',
