@@ -68,23 +68,9 @@ class OrderAction
 
                 $lead->cf('url')->setValue($body->url ?? null);
                 $lead->cf('ID курса')->setValue($site->course_id);
-                try {
-                    if (!empty($body->months))
-                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
-                    if (!empty($body->credit_price)) {
+                $lead = LeadHelper::setTariff($lead, $body);
 
-                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
-
-                        $lead->cf('Стоимость в месяц')->setValue();
-                        $lead->sale = $price * $body->months;
-                    }
-                    if (!empty($body->course_tariff) && $body->course_tariff !== null) {
-
-                        $lead->cf('Тариф')->setValue($body->course_tariff);
-                    }
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-                } catch (Throwable $e) {}
                 $lead->save();
 
             } else {
@@ -120,7 +106,6 @@ class OrderAction
                     'responsible_user_id' => 6103456,
                 ], $body->name);
 
-
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
 
@@ -129,20 +114,7 @@ class OrderAction
                 $lead->cf('Способ оплаты')->setValue('Сайт (100%)');
                 $lead->cf('Источник')->setValue('Сайт');
 
-                try {
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-
-                    if (!empty($body->months))
-                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
-
-                    if (!empty($body->credit_price)) {
-
-                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
-
-                        $lead->cf('Стоимость в месяц')->setValue();
-                        $lead->sale = $price * $body->months;
-                    }
-                } catch (Throwable $e) {}
+                $lead = LeadHelper::setTariff($lead, $body);
 
                 $lead->attachTag('Автооплата');
                 $lead->save();

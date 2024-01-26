@@ -62,8 +62,6 @@ class SiteAction
                 'sale'      => $site->amount,
             ], $body->name);
 
-            $lead = $this->amoApi->service->leads()->find($lead->id);
-
             $lead->cf('ID курса')->setValue($site->course_id);
             $lead->cf('url')->setValue($body->url ?? null);
             $lead->cf('Источник')->setValue('Основной сайт');
@@ -83,7 +81,7 @@ class SiteAction
             $leadActive ? $lead->attachTag('В работе') : null;
             $lead->attachTag('Основной');
 
-            $lead = LeadHelper::setTarrif($lead, $site);
+            $lead = LeadHelper::setTariff($lead, $body);
 
             try {
                 $lead->cf('Название продукта')->setValue(trim($site->name));
@@ -97,8 +95,6 @@ class SiteAction
             $site->save();
 
             try {
-                $lead = $this->amoApi->service->leads()->find($lead->id);
-
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
                 $lead->save();
             } catch (Throwable) {
@@ -108,7 +104,7 @@ class SiteAction
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
                 $lead->save();
             }
-
+dd($lead->id);//TODO
             Notes::addOne($lead, NoteHelper::createNoteConsultation($body, $site));
 
         } catch (Throwable $e) {

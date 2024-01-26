@@ -55,23 +55,8 @@ class CreditAction
                 ], $body->name);
 
                 $lead->cf('url')->setValue($body->url ?? null);
-                try {
-                    if (!empty($body->months))
-                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
 
-                    if (!empty($body->credit_price)) {
-
-                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
-
-                        $lead->cf('Стоимость в месяц')->setValue();
-                        $lead->sale = $price * $body->months;
-                    }
-                    if (!empty($body->course_tariff) && $body->course_tariff !== null) {
-
-                        $lead->cf('Тариф')->setValue($body->course_tariff);
-                    }
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-                } catch (Throwable $e) {}
+                $lead = LeadHelper::setTariff($lead, $body);
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
 
@@ -104,19 +89,7 @@ class CreditAction
                 $lead->cf('ID курса')->setValue($site->course_id);
                 $lead->cf('url')->setValue($body->url ?? null);
 
-                try {
-                    if (!empty($body->months))
-                        $lead->cf('Рассрочка Месяцы')->setValue($body->months);
-
-                    if (!empty($body->credit_price)) {
-
-                        $price = preg_replace("/[^0-9]/", '', $body->credit_price);
-
-                        $lead->cf('Стоимость в месяц')->setValue();
-                        $lead->sale = $price * $body->months;
-                    }
-                    $lead->cf('Название продукта')->setValue(trim($site->name));
-                } catch (Throwable $e) {}
+                $lead = LeadHelper::setTariff($lead, $body);
 
                 if ($productType)
                     $lead->cf('Тип продукта')->setValue($productType);
@@ -127,10 +100,9 @@ class CreditAction
                 $lead->attachTag($productType ?? null);
                 $lead->save();
 
-                if ($body->communicationMethod) {
+                if ($body->communicationMethod)
 
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                }
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
             }

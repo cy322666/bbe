@@ -108,9 +108,9 @@ abstract class LeadHelper
         return $lead;
     }
 
-    public static function setTarrif($lead, $site)
+    public static function setTariff($lead, $body)
     {
-        if (!empty($body->course_tariff) && $body->course_tariff !== null)
+        if (!empty($body->course_tariff))
 
             $lead->cf('Тариф')->setValue($body->course_tariff);
 
