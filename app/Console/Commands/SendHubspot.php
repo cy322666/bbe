@@ -80,7 +80,7 @@ class SendHubspot extends Command
                 ], $this->amoApi);
 
                 if (!$contact) {
-                    $contact = Contacts::create($this->amoApi, $site->firstname);
+                    $contact = Contacts::create($this->amoApi, $site->firstname ?? ' ');
                     $contact = Contacts::update($contact, [
                         'Почта' => $site->email,
                         'Телефоны' => [$site->phone],
