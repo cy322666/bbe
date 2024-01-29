@@ -31,11 +31,13 @@ class Test extends Command
      */
     public function handle()
     {
-        $action = new SiteAction((new Client(Account::query()->first()))->init());
+        $client = (new Client(Account::query()->first()))->init();
 
-        $site = Site::find(10644);
+        $lead = $client->service->leads()->find(29055861);
 
-        $action->send($site, json_decode($site->body));
+        $lead->cf('lead_id')->setValue('test');
+        $lead->cf('registration')->setValue(1111);
+        $lead->save();
 
         return Command::SUCCESS;
     }
