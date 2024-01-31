@@ -474,7 +474,7 @@ class ToolsController extends Controller
             ->leads()
             ->find($leadId);
 
-        $country = $lead->contact->cf('Страна')->getValue() ?? null;
+        $country = $lead->contact?->cf('Страна')->getValue() ?? null;
 
         if (in_array($country, [
             'Азербайджан',
