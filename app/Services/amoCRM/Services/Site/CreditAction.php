@@ -73,26 +73,29 @@ class CreditAction
                     7206046,
                 ]);
 
-                $lead = Leads::create($contact, [
-                    'status_id' => $site->is_test ? 53757562 : 33522700,
-                    'sale'      => $site->amount,
-                ], $body->name);
+                if (empty($lead) && empty($leadActive))
 
-                if ($leadActive) {
+                    $lead = Leads::create($contact, [
+                        'status_id' => $site->is_test ? 53757562 : 33522700,
+                        'sale'      => $site->amount,
+                    ], $body->name);
 
-                    $lead->attachTag('В работе');
-                    $lead->save();
+                if (!empty($leadActive))
 
-                } else
-                    $lead->cf('ID курса')->setValue($site->course_id);
+                    $lead = $leadActive;
+            }
+
+            if(!empty($lead)) {
+                $lead->cf('ID курса')->setValue($site->course_id);
 
                 $lead->cf('ID курса')->setValue($site->course_id);
                 $lead->cf('url')->setValue($body->url ?? null);
 
                 $lead = LeadHelper::setTariff($lead, $body);
 
-                if ($productType)
+                if ($productType) {
                     $lead->cf('Тип продукта')->setValue($productType);
+                }
 
                 $lead->cf('Источник')->setValue('Основной сайт');
                 $lead->cf('Способ оплаты')->setValue('Сайт');
@@ -100,27 +103,26 @@ class CreditAction
                 $lead->attachTag($productType ?? null);
                 $lead->save();
 
-                if ($body->communicationMethod)
-
+                if ($body->communicationMethod) {
                     $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+                }
 
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
+
+                if ($course) {
+                    $lead->attachTag('Основной');
+                    $lead->save();
+
+                    $lead->sale = $course->price;
+                    $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
+                }
+
+                Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
             }
 
-            if ($course) {
-
-                $lead->sale = $course->price;
-                $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
-            }
-
-            $lead->attachTag('Основной');
-            $lead->save();
-
-            $site->lead_id = $lead->id;
+            $site->lead_id = $lead->id ?? null;
             $site->contact_id = $contact->id;
             $site->save();
-
-            Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
 
         } catch (Throwable $e) {
 

@@ -56,11 +56,13 @@ class SiteAction
                 'Телефоны' => [$site->phone],
             ]);
 
-            $lead = Leads::create($contact, [
-                'responsible_user_id' => $contact->responsible_user_id,
-                'status_id' => $statusId,
-                'sale'      => $site->amount,
-            ], $body->name);
+            if (empty($lead) && empty($leadActive))
+
+                $lead = Leads::create($contact, [
+                    'responsible_user_id' => $contact->responsible_user_id,
+                    'status_id' => $statusId,
+                    'sale'      => $site->amount,
+                ], $body->name);
 
             $lead->cf('ID курса')->setValue($site->course_id);
             $lead->cf('url')->setValue($body->url ?? null);
@@ -78,7 +80,7 @@ class SiteAction
 
             $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
 
-            $leadActive ? $lead->attachTag('В работе') : null;
+//            $leadActive ? $lead->attachTag('В работе') : null;
             $lead->attachTag('Основной');
 
             $lead = LeadHelper::setTariff($lead, $body);

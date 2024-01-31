@@ -89,6 +89,11 @@ class SendBrokenHubspot extends Command
                             'Телефоны' => [$broken->phone],
                         ]);
                     } else {
+                        $contact = Contacts::update($contact, [
+                            'Почта' => $broken->email,
+                            'Телефоны' => [$broken->phone],
+                        ]);
+
                         //поиск в работе в основной
                         $leadActive = Leads::search($contact, $amoApi, [
                             3342043,
