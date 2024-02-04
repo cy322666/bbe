@@ -5,6 +5,7 @@ namespace App\Services\amoCRM\Services\Site;
 use App\Models\Course;
 use App\Models\Site;
 use App\Services\amoCRM\Client;
+use App\Services\amoCRM\Helpers\ProductHelper;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
@@ -26,11 +27,7 @@ class SiteAction
 
             $leadActive = false;
 
-            $course = $site->course_id ?
-                Course::query()
-                    ->where('course_id', $site->course_id)
-                    ->first()
-                : null;
+            $course = ProductHelper::getProduct($site->course, $site->course_id);
 
             $contact = Contacts::search([
                 'Телефон' => Contacts::clearPhone($site->phone),
@@ -56,6 +53,10 @@ class SiteAction
                 'Телефоны' => [$site->phone],
             ]);
 
+            if ($leadActive)
+
+                $lead = $leadActive;
+
             if (empty($lead) && empty($leadActive))
 
                 $lead = Leads::create($contact, [
@@ -72,7 +73,12 @@ class SiteAction
             if ($course) {
 
                 $lead->sale = $course->price;
-                $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
+
+                try {
+                    $lead->cf('Название продукта')->setValue($course->name);
+                } catch (Throwable) {
+                    throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+                }
             }
 
             $productType ? $lead->cf('Тип продукта')->setValue($productType) : null;

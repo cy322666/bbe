@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Log;
 use App\Models\Site;
 use App\Services\amoCRM\Client;
+use App\Services\amoCRM\Helpers\ProductHelper;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
@@ -34,11 +35,7 @@ class CreditAction
 
             $productType = NoteHelper::getTypeProduct($body);
 
-            $course = $site->course_id ?
-                Course::query()
-                    ->where('course_id', $site->course_id)
-                    ->first()
-                : null;
+            $course = ProductHelper::getProduct($site->course, $site->course_id);
 
             if (!$contact) {
 
@@ -86,6 +83,7 @@ class CreditAction
             }
 
             if(!empty($lead)) {
+
                 $lead->cf('ID курса')->setValue($site->course_id);
 
                 $lead->cf('ID курса')->setValue($site->course_id);
@@ -110,11 +108,14 @@ class CreditAction
                 $lead = LeadHelper::setUtmsForObject($lead, $body);
 
                 if ($course) {
-                    $lead->attachTag('Основной');
-                    $lead->save();
 
                     $lead->sale = $course->price;
-                    $lead->cf('Курсы (основное)')->setValue($course->name); //TODO
+
+                    try {
+                        $lead->cf('Название продукта')->setValue($course->name);
+                    } catch (Throwable) {
+                        throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+                    }
                 }
 
                 Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
