@@ -110,8 +110,8 @@ class SendHubspotSegment extends Command
                     }
 
                     $contact = Contacts::update($contact, [
-                        'Почта' => $site->email,
-                        'Телефоны' => [$site->phone],
+                        'Почта' => $segment->email,
+                        'Телефоны' => [$segment->phone],
                     ]);
 
                     $segment->lead_id = $lead->id ?? null;
