@@ -43,7 +43,8 @@ class GetCourses extends Command
                     'has_date'  => $course['hasDate'],
                     'opened_at' => !empty($course['openedAt']['date']) ? $course['openedAt']['date'] : null,
                     'is_new'    => $course['isNew'],
-                    'price'     => preg_replace('/[^0-9]/', "", $course['priceOrDiscount']['priceFormatted'])
+                    'price'     => preg_replace('/[^0-9]/', "", $course['priceOrDiscount']['priceFormatted']),
+                    'enabled'   => $course['asyncLearning']['enabled']
                 ]);
             } catch (\Throwable $e) {
 

@@ -135,7 +135,7 @@ class SendHubspotSegment extends Command
     {
         try {
             $lead = Leads::create($contact, [
-                'status_id' => $segment->is_test ? 53757562 : 33522700
+                'status_id' => $segment->is_test ? 53757562 : 55684270
             ], 'Новый лид заявка на демо-Python');
 
             if ($productType == null)
