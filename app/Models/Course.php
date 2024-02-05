@@ -20,5 +20,6 @@ class Course extends Model
         'opened_at',
         'is_new',
         'price',
+        'enabled',
     ];
 }

@@ -79,13 +79,13 @@ class SendHubspot extends Command
                     'Почта'   => $site->email,
                 ], $this->amoApi);
 
-                if (!$contact) {
+                if (!$contact)
                     $contact = Contacts::create($this->amoApi, $site->firstname ?? ' ');
-                    $contact = Contacts::update($contact, [
-                        'Почта' => $site->email,
-                        'Телефоны' => [$site->phone],
-                    ]);
-                }
+
+                $contact = Contacts::update($contact, [
+                    'Почта' => $site->email,
+                    'Телефоны' => [$site->phone],
+                ]);
 
                 $lead = Leads::search($contact, $this->amoApi, [
                     3342043,
