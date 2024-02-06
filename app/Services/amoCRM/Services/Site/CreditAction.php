@@ -70,7 +70,7 @@ class CreditAction
                     7206046,
                 ]);
 
-                if (!$lead && !$leadActive)
+                if (!empty($lead) && $lead !== false && !$leadActive)
 
                     $lead = Leads::create($contact, [
                         'status_id' => $site->is_test ? 53757562 : 33522700,
