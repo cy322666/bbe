@@ -143,14 +143,14 @@ class SendHubspotSegment extends Command
             else
                 $lead->attachTag($productType);
 
-            try {
-                $lead->cf('Название продукта')->setValue(trim($course->name));
-
-            } catch (\Throwable $e) {
-                throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
-            }
-
             if ($course) {
+
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($course->name));
+
+                } catch (\Throwable $e) {
+                    throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+                }
 
                 $lead->sale = $course->price;
                 $lead->cf('Курсы (основное)')->setValue($course->name);
