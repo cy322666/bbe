@@ -154,11 +154,11 @@ class SendHubspotSegment extends Command
 
                 $lead->sale = $course->price;
                 $lead->cf('Курсы (основное)')->setValue($course->name);
-            }
 
-            $lead->sale = $course->price;
-            $lead->cf('ID курса')->setValue($course->course_id);
-            $lead->cf('url')->setValue($course->url);
+                $lead->sale = $course->price;
+                $lead->cf('ID курса')->setValue($course->course_id);
+                $lead->cf('url')->setValue($course->url);
+            }
 //            $lead->cf('Источник')->setValue('Брошенные корзины');
             $lead->save();
 
