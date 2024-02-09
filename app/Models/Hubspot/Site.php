@@ -102,12 +102,12 @@ class Site extends Model
         if ($this->form == '9be94507-6b84-441f-9648-9238fe26ff93')
 
             return [
-                'product' => 'Режиссура монтажа',
+                'product' => null,//'Режиссура монтажа',
                 'source'  => 'попап',
                 'type' => 'Годовая программа',
                 'tag'  => 'попап_урок_из курса',
-                'url'  => 'https://bangbangeducation.ru/program/cinema-editing»',
-                'course_id' => 439,
+                'url'  => null,//'https://bangbangeducation.ru/program/cinema-editing»',
+                'course_id' => null,//439,
             ];
 
         return [
