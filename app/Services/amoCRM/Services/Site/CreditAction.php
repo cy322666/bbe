@@ -51,6 +51,8 @@ class CreditAction
                     'responsible_user_id' => 5998951,
                 ], $body->name);
 
+                $lead->cf('registration')->setValue($body->registration ?? null);
+                $lead->cf('lead_id')->setValue($body->lead_id ?? null);
                 $lead->cf('url')->setValue($body->url ?? null);
 
                 $lead = LeadHelper::setTariff($lead, $body);
