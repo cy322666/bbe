@@ -61,7 +61,7 @@ class SiteCheckTest
     {
         foreach (static::$testEmails as $testEmail) {
 
-            if ($testEmail == $value || strripos($value, $testEmail) !== false)
+            if (strripos($value, $testEmail) !== false)
 
                 return true;
         }
@@ -70,7 +70,7 @@ class SiteCheckTest
 
             $testPhone = Contacts::clearPhone($testPhone);
 
-            if ($testPhone == $value || strripos($value, $testPhone) !== false)
+            if (strripos($value, $testPhone) !== false)
 
             return true;
         }
