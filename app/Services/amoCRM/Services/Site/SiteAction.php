@@ -79,9 +79,12 @@ class SiteAction
 
                 try {
                     $lead->cf('Название продукта')->setValue($course->name);
-                } catch (Throwable $e) {
-                    throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
-                }
+                } catch (Throwable $e) {}
+            } else {
+                try {
+                    $lead->cf('Название продукта')->setValue(trim($site->name));
+
+                } catch (Throwable $e) {}
             }
 
             $productType ? $lead->cf('Тип продукта')->setValue($productType) : null;
@@ -93,11 +96,6 @@ class SiteAction
             $lead->attachTag('Основной');
 
             $lead = LeadHelper::setTariff($lead, $body);
-
-            try {
-                $lead->cf('Название продукта')->setValue(trim($site->name));
-
-            } catch (Throwable $e) {}
 
             $lead->save();
 
