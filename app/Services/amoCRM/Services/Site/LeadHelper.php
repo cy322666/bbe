@@ -123,7 +123,11 @@ abstract class LeadHelper
             $price = preg_replace("/[^0-9]/", '', $body->credit_price);
 
             $lead->cf('Стоимость в месяц')->setValue($price);
-            $lead->sale = $price * $body->months;
+
+            if (!empty($body->months))
+                $lead->sale = $price * $body->months;
+            else
+                $lead->sale = $price;
         }
 
         return $lead;
