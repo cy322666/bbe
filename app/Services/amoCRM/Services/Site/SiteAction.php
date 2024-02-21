@@ -80,7 +80,9 @@ class SiteAction
                 try {
                     $lead->cf('Название продукта')->setValue($course->name);
                 } catch (Throwable $e) {}
-            } else {
+            }
+
+            if (!$course) {
                 try {
                     $lead->cf('Название продукта')->setValue(trim($site->name));
 
