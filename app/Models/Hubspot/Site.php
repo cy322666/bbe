@@ -50,6 +50,17 @@ class Site extends Model
                 'course_id' => null,
             ];
 
+        if ($this->form == '0fa8c3bc-6411-4efb-b21f-a8598ae2096c')
+
+            return [
+                'product' => 'Тестировщик',
+                'source'  => 'Попап',
+                'type' => 'Годовая программа',
+                'tag'  => 'шихман',
+                'url'  => null,
+                'course_id' => 456,
+            ];
+
         if ($this->form == '77c0f622-3bb6-4412-b0b2-c46d424f7171' ||
             $this->form == 'eda7bd55-145f-4a27-92c3-e3b992397674' ||
             $this->form == '4c10b4fa-7fac-4c43-88e7-b074180b43dc' ||
