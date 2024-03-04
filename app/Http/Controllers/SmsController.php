@@ -100,6 +100,7 @@ class SmsController extends Controller
 
         $sms = Sms::query()
             ->where('lead_id', $leadId)
+            ->latest('id')
             ->first();
 
         $sms->get_code = $lead->cf('Код подтверждения')->getValue();
