@@ -87,15 +87,6 @@ class SendHubspot extends Command
                     'Телефоны' => [$site->phone],
                 ]);
 
-                $lead = Leads::search($contact, $this->amoApi, [
-                    3342043,
-                    6540894,
-                    7206046,
-                ]);
-
-                if ($lead)
-                    $lead->attachTag('В работе');
-
                 if ($site->is_test) {
 
                     $statusId = 53757562;
@@ -112,11 +103,20 @@ class SendHubspot extends Command
                     }
                 }
 
-                $lead = Leads::create($contact, [
-                    'status_id' => $statusId ?? null,
-                    'sale'      => $course->price ?? null,
-                    'responsible_user_id' => $contact->responsible_user_id,
-                ], $info['product'] ?? 'Новая заявка Hubspot');
+                $lead = Leads::search($contact, $this->amoApi, [
+                    3342043,
+                    6540894,
+                    7206046,
+                ]);
+
+                if ($lead)
+                    $lead->attachTag('В работе');
+                else
+                    $lead = Leads::create($contact, [
+                        'status_id' => $statusId ?? null,
+                        'sale'      => $course->price ?? null,
+                        'responsible_user_id' => $contact->responsible_user_id,
+                    ], $info['product'] ?? 'Новая заявка Hubspot');
 
                 try {
                     $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
