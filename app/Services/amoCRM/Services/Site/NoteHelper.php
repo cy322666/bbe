@@ -100,7 +100,8 @@ abstract class NoteHelper
     public static function getTypeProduct($body): ?string
     {
         if ((!empty($body->discriminator) && $body->discriminator == 'yearly-program') ||
-            (!empty($body->coursetype) && $body->coursetype == 'yearly-program'))
+            (!empty($body->coursetype) && $body->coursetype == 'yearly-program') ||
+            (!empty($body->type) && $body->type == 'Программа'))
 
             return 'Годовая программа';
 
