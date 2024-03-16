@@ -60,7 +60,7 @@ class SiteAction
             if (empty($lead) && empty($leadActive))
 
                 $lead = Leads::create($contact, [
-                    'responsible_user_id' => $contact->responsible_user_id,
+//                    'responsible_user_id' => $contact->responsible_user_id,
                     'status_id' => $statusId,
                     'sale'      => $site->amount,
                 ], $body->name);
