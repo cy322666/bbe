@@ -35,7 +35,7 @@ class ProductHelper
         ]
     ];
 
-    public static function getProduct(?string $name, ?int $courseId) : ?Model
+    public static function getProduct($name, $courseId) : ?Model
     {
         foreach (static::$arrayProducts as $productId => $productName) {
 
