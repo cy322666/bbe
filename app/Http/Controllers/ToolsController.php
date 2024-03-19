@@ -335,6 +335,7 @@ class ToolsController extends Controller
      */
     public function createLead(Request $request)
     {
+        exit;
         Log::info(__METHOD__, $request->toArray());
 
         $leadId = $request->toArray()['leads']['add'][0]['id'] ?? null;// ?? $request->toArray()['status']['add'][0]['id'];
@@ -382,6 +383,8 @@ class ToolsController extends Controller
 
                 $leadBase->attachTag('В работе');
 
+                exit;
+
                 foreach ($leadsActive as $leadActive) {
 
                     if ($leadActive->id != $leadBase->id) {
@@ -406,6 +409,7 @@ class ToolsController extends Controller
                 }
             } else {
                 //поиск задач
+                exit;
                 foreach ($leads as $leadTask) {
 
                     if ($leadTask->closest_task_at > time()) {
