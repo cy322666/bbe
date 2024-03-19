@@ -36,6 +36,7 @@ class SiteCheckTest
         'obidcho@mail.ru',
         'obidcho123@mail.ru',
         'ametov.erfan@mail.ru',
+        '3aebalsyauzhe@gmail.com',
     ];
 
     private static array $testPhones = [
@@ -49,6 +50,7 @@ class SiteCheckTest
 
         '+79269432154',
         '+79855307490',
+        '79218621746',
     ];
 
     /**
