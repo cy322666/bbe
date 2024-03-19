@@ -57,7 +57,7 @@ class SiteAction
 
                 $lead = $leadActive;
 
-            if (empty($lead) && empty($leadActive))
+            if (empty($lead) && empty($leadActive)) {
 
                 $lead = Leads::create($contact, [
 //                    'responsible_user_id' => $contact->responsible_user_id,
@@ -65,12 +65,14 @@ class SiteAction
                     'sale'      => $site->amount,
                 ], $body->name);
 
-            $lead->cf('registration')->setValue($body->registration ?? null);
-            $lead->cf('lead_id')->setValue($body->lead_id ?? null);
+                $lead->cf('registration')->setValue($body->registration ?? null);
+                $lead->cf('lead_id')->setValue($body->lead_id ?? null);
 
-            $lead->cf('ID курса')->setValue($site->course_id);
-            $lead->cf('url')->setValue($body->url ?? null);
-            $lead->cf('Источник')->setValue('Основной сайт');
+                $lead->cf('ID курса')->setValue($site->course_id);
+                $lead->cf('url')->setValue($body->url ?? null);
+                $lead->cf('Источник')->setValue('Основной сайт');
+            }
+
             $lead->cf('Способ оплаты')->setValue('Сайт');
 
             if ($course) {
