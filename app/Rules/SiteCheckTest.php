@@ -29,6 +29,7 @@ class SiteCheckTest
         'test@mIl.ru',
         'v.karelova+test998@bangbangeducation.ru',
         'anna@resonatehq.com',
+        'testadmitad@gmail.com',
 
         'Ck9380795@gmail.com',
         'ck9380795@gmail.com',
