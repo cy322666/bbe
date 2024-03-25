@@ -115,7 +115,7 @@ class SendHubspot extends Command
                     $lead = Leads::create($contact, [
                         'status_id' => $statusId ?? null,
                         'sale'      => $course->price ?? null,
-//                        'responsible_user_id' => $contact->responsible_user_id,
+                        'responsible_user_id' => 6103456,
                     ], $info['product'] ?? 'Новая заявка Hubspot');
 
                 try {

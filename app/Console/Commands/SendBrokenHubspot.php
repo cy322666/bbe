@@ -162,7 +162,8 @@ class SendBrokenHubspot extends Command
     {
         try {
             $lead = Leads::create($contact, [
-                'status_id' => $broken->is_test ? 53757562 : 33522700
+                'status_id' => $broken->is_test ? 53757562 : 33522700,
+                'responsible_user_id' => 6103456,
             ], 'Новый лид брошенная корзина');
 
             $productType ? $lead->cf('Тип продукта')->setValue($productType) : null;
