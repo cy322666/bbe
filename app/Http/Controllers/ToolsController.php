@@ -13,6 +13,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
@@ -307,17 +308,12 @@ class ToolsController extends Controller
 
         if (!$contact->cf('Страна')->getValue()) {
 
-            $dadata = new \Dadata\DadataClient(
-                Env::get('DADATA_TOKEN'),
-                Env::get('DADATA_SECRET'),
-            );
+            $result = Http::get('https://www.kody.su/api/v2.1/search.json?q='.$contact->cf('Телефон')->getValue().'&key=test');
 
-            $response = $dadata->clean("phone", $contact->cf('Телефон')->getValue());
+            Log::info(__METHOD__, [$result]);
 
-            Log::info(__METHOD__, [$response['country'] ?? 'Ошибка в отвте']);
-
-            $contact->cf('Страна')->setValue($response['country']);
-            $contact->save();
+//            $contact->cf('Страна')->setValue($response['country']);
+//            $contact->save();
         }
     }
 
