@@ -79,10 +79,10 @@ class OneCController extends Controller
     public function cron()
     {
         $pays = Pay::query()
-            ->where('datetime', '>', '2023-06-25 16:00:00')
+            ->where('datetime', '>', '2024-04-8 16:00:00')
             ->where('status', 0)
             ->where('contact_id', null)
-            ->limit(30)
+            ->limit(10)
             ->get();
 
         foreach ($pays as $pay) {
