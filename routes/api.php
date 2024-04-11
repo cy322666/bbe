@@ -34,7 +34,7 @@ Route::get('site/cron', [SiteController::class, 'cron']);
 //1c
 Route::post('pays/hook', [OneCController::class, 'pay']);
 
-Route::post('pays/cron', [OneCController::class, 'cron']);
+Route::get('pays/cron', [OneCController::class, 'cron']);
 
 //tools
 Route::post('tools/pay', [ToolsController::class, 'datePay']);
@@ -77,12 +77,12 @@ Route::get('hubspot/get-segment-python', [HubspotController::class, 'getSegmentP
 Route::get('hubspot/send-segment-python', [HubspotController::class, 'sendSegmentPython']);
 
 Route::get('hubspot/cron1', [HubspotController::class, 'cron1']);
-
+//
 Route::get('hubspot/cron2', [HubspotController::class, 'cron2']);
-
-Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
-
-Route::get('hubspot/cron4', [HubspotController::class, 'cron4']);
+//
+//Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
+//
+//Route::get('hubspot/cron4', [HubspotController::class, 'cron4']);
 
 Route::get('hubspot/send', [HubspotController::class, 'send']);
 
