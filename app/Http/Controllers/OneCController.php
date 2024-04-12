@@ -110,6 +110,8 @@ class OneCController extends Controller
                 'course.1.update.1', 'subscription.0.update.1', 'course.0.update.1' => SendReturn::class,
 
                 'course.1.update.0', 'subscription.0.update.0', 'course.0.update.0' => SendUpdate::class,
+
+                default => exit,
             };
 
             $pay->action_name = $actionName;
