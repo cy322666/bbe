@@ -25,7 +25,7 @@ class SendReturn
         }
 
         $pay->contact_id = $contact->id;
-        $pay->lead_id = $lead?->id;
+        $pay->lead_id = !empty($lead) ? $lead->id : null;
         $pay->save();
 
         if (!empty($lead))
