@@ -114,6 +114,25 @@ class SendHubspot extends Command
                     'responsible_user_id' => 6103456,
                 ], $info['product'] ?? 'Новая заявка Hubspot');
 
+                if ($site->type == 'cron3') {
+
+                    $lead->pipeline_id = 6540894;
+
+                    $lead->cf('Источник')->setValue('Форма "Начать бесплатно"');
+
+                    $lead->cf('Тип продукта')->setValue('Годовая программа');
+
+                } else {
+
+                    if ($info['source'])
+                        $lead->cf('Источник')->setValue($info['source']);
+
+                    $productType = NoteHelper::getTypeProduct($site);
+
+                    if ($productType)
+                        $lead->cf('Тип продукта')->setValue(!empty($productType) ? $productType : $info['type']);
+                }
+
                 try {
                     $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
 
@@ -123,15 +142,7 @@ class SendHubspot extends Command
                 $lead->cf('url')->setValue($info['url']);
                 $lead->cf('form_id')->setValue($site->form);
 
-                $productType = NoteHelper::getTypeProduct($site);
-
-                if ($productType)
-                    $lead->cf('Тип продукта')->setValue($productType ?? $info['type']);
-
                 $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($site->connect_method));
-
-                if ($info['source'])
-                    $lead->cf('Источник')->setValue($info['source']);
 
                 $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
 

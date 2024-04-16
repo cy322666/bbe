@@ -60,8 +60,7 @@ class GetHubspot extends Command
             $site->body = json_encode($form);
             $site->submitted_at = $result->submittedAt;
             $site->form = $this->argument('form');
-            $site->save();
-
+            $site->type = $this->argument('type');
             $site->is_test = SiteCheckTest::isTest($site);
             $site->save();
 
