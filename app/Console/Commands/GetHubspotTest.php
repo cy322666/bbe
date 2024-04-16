@@ -61,6 +61,7 @@ class GetHubspotTest extends Command
             $site->form = $this->argument('form');
             $site->type = $this->argument('type');
             $site->is_test = true;
+            $site->status = 3;
             $site->save();
 
             foreach ($form as $item) {
