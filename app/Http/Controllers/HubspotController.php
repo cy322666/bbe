@@ -24,7 +24,10 @@ class HubspotController extends Controller
 
         foreach ($uuids as $uuid) {
 
-            Artisan::call('hubspot:get', ['form' => $uuid]);
+            Artisan::call('hubspot:get', [
+                'form' => $uuid,
+                'type' => 'cron1'
+            ]);
         }
     }
 
@@ -48,7 +51,10 @@ class HubspotController extends Controller
 
         foreach ($uuids as $uuid) {
 
-            Artisan::call('hubspot:get', ['form' => $uuid]);
+            Artisan::call('hubspot:get', [
+                'form' => $uuid,
+                'type' => 'cron2'
+            ]);
         }
     }
 
