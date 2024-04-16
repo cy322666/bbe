@@ -35,6 +35,7 @@ class Site extends Model
         'utm_content',
         'utm_campaign',
         'utm_term',
+        'type',
     ];
 
     public function prepareSend() : array

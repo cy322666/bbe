@@ -54,21 +54,30 @@ class HubspotController extends Controller
 
     public function cron3()
     {
+        //крайние формы от алекса
         $uuids = [
-
+            '3f4cc224-7bd6-4dbe-a52b-7a145c436d9e',
+            'a226fb88-ccbf-49ed-a617-8f7e4fc02412',
+            '36920db7-a258-4f06-bd36-c9385147e956',
+            '6edfaf7d-39ff-4857-941e-e98b30fc3828',
+            '4e034ae3-22e8-4212-9e03-9de547c97ad1',
+            '9bd28df2-7a96-464d-b300-45d8a68d60ce',
+            'bc127ef2-14df-4955-bb8c-900ad1e5dc10',
+            '172fdf59-fdee-4a6f-aed2-9cec7f8bc4e6',
         ];
 
         foreach ($uuids as $uuid) {
 
-            Artisan::call('hubspot:get', ['form' => $uuid]);
+            Artisan::call('hubspot:get-test', [
+                'form' => $uuid,
+                'type' => 'cron3'
+            ]);
         }
     }
 
     public function cron4()
     {
-        $uuids = [
-
-        ];
+        $uuids = [];
 
         foreach ($uuids as $uuid) {
 

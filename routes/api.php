@@ -80,7 +80,7 @@ Route::get('hubspot/cron1', [HubspotController::class, 'cron1']);
 //
 Route::get('hubspot/cron2', [HubspotController::class, 'cron2']);
 //
-//Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
+Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
 //
 //Route::get('hubspot/cron4', [HubspotController::class, 'cron4']);
 
