@@ -9,6 +9,7 @@ use App\Services\amoCRM\Helpers\ProductHelper;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
+use App\Services\amoCRM\Models\Tasks;
 use Exception;
 use Throwable;
 
@@ -35,7 +36,6 @@ class SiteAction
             ], $this->amoApi);
 
             $statusId = $site->is_test ? 53757562 : 33522700;
-//            $statusId = !empty($body->feature) && $body->feature == 'subscription-3' ? 55684270 : $statusId;
 
             $productType = NoteHelper::getTypeProduct($body);
 
@@ -53,26 +53,18 @@ class SiteAction
                 'Телефоны' => [$site->phone],
             ]);
 
-            if ($leadActive)
-
-                $lead = $leadActive;
-
-            if (empty($lead) && empty($leadActive)) {
-
-                $lead = Leads::create($contact, [
+            $lead = Leads::create($contact, [
 //                    'responsible_user_id' => $contact->responsible_user_id,
-                    'status_id' => $statusId,
-                    'sale'      => $site->amount,
-                ], $body->name);
+                'status_id' => $statusId,
+                'sale'      => $site->amount,
+            ], $body->name);
 
-                $lead->cf('registration')->setValue($body->registration ?? null);
-                $lead->cf('lead_id')->setValue($body->lead_id ?? null);
+            $lead->cf('registration')->setValue($body->registration ?? null);
+            $lead->cf('lead_id')->setValue($body->lead_id ?? null);
 
-                $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('url')->setValue($body->url ?? null);
-                $lead->cf('Источник')->setValue('Основной сайт');
-            }
-
+            $lead->cf('ID курса')->setValue($site->course_id);
+            $lead->cf('url')->setValue($body->url ?? null);
+            $lead->cf('Источник')->setValue('Основной сайт');
             $lead->cf('Способ оплаты')->setValue('Сайт');
 
             if ($course) {
@@ -96,12 +88,25 @@ class SiteAction
 
             $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
 
-//            $leadActive ? $lead->attachTag('В работе') : null;
             $lead->attachTag('Основной');
 
             $lead = LeadHelper::setTariff($lead, $body);
 
             $lead->save();
+
+            if ($leadActive) {
+                //закрываем новую, активная - основная
+                $lead->cf('Причина отказа')->setValue('Дубль');
+                $lead->status_id = 143;
+                $lead->save();
+
+                Tasks::create($lead, [
+                    'complete_till_at'    => time() + 60 + 60,
+                    'responsible_user_id' => $lead->responsible_user_id,
+                ], 'Клиент оставил повторную заявку на консультацию');
+
+                Notes::addOne($leadActive, NoteHelper::createNoteConsultation($body, $site));
+            }
 
             $site->lead_id = $lead->id;
             $site->contact_id = $contact->id;

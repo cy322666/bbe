@@ -72,57 +72,60 @@ class CreditAction
                     7206046,
                 ]);
 
-                if (!empty($lead) && $lead !== false && !$leadActive)
-
-                    $lead = Leads::create($contact, [
-                        'status_id' => $site->is_test ? 53757562 : 33522700,
-                        'sale'      => $site->amount,
-                        'responsible_user_id' => $contact->responsible_user_id,
-                    ], $body->name);
-
-                if (!empty($leadActive))
-
-                    $lead = $leadActive;
+                $lead = Leads::create($contact, [
+                    'status_id' => $site->is_test ? 53757562 : 33522700,
+                    'sale'      => $site->amount,
+                    'responsible_user_id' => $contact->responsible_user_id,
+                ], $body->name);
             }
 
-            if(!empty($lead)) {
+            $lead->cf('ID курса')->setValue($site->course_id);
+            $lead->cf('url')->setValue($body->url ?? null);
 
-                $lead->cf('ID курса')->setValue($site->course_id);
+            $lead = LeadHelper::setTariff($lead, $body);
 
-                $lead->cf('ID курса')->setValue($site->course_id);
-                $lead->cf('url')->setValue($body->url ?? null);
+            if ($productType) {
+                $lead->cf('Тип продукта')->setValue($productType);
+            }
 
-                $lead = LeadHelper::setTariff($lead, $body);
+            $lead->cf('Источник')->setValue('Основной сайт');
+            $lead->cf('Способ оплаты')->setValue('Сайт');
 
-                if ($productType) {
-                    $lead->cf('Тип продукта')->setValue($productType);
+            $lead->attachTag($productType ?? null);
+
+            if ($body->communicationMethod) {
+                $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
+            }
+
+            $lead = LeadHelper::setUtmsForObject($lead, $body);
+
+            if ($course) {
+
+                $lead->sale = $course->price;
+
+                try {
+                    $lead->cf('Название продукта')->setValue($course->name);
+                } catch (Throwable) {
+                    throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
                 }
+            }
+            $lead->save();
 
-                $lead->cf('Источник')->setValue('Основной сайт');
-                $lead->cf('Способ оплаты')->setValue('Сайт');
-
-                $lead->attachTag($productType ?? null);
+            if ($leadActive) {
+                //закрываем новую, активная - основная
+                $lead->cf('Причина отказа')->setValue('Дубль');
+                $lead->status_id = 143;
                 $lead->save();
 
-                if ($body->communicationMethod) {
-                    $lead->cf('Способ связи')->setValue(NoteHelper::switchCommunication($body->communicationMethod));
-                }
+                Tasks::create($lead, [
+                    'complete_till_at'    => time() + 60 + 60,
+                    'responsible_user_id' => $lead->responsible_user_id,
+                ], 'Клиент оставил повторную заявку на рассрочку');
 
-                $lead = LeadHelper::setUtmsForObject($lead, $body);
-
-                if ($course) {
-
-                    $lead->sale = $course->price;
-
-                    try {
-                        $lead->cf('Название продукта')->setValue($course->name);
-                    } catch (Throwable) {
-                        throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
-                    }
-                }
-
-                Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
+                Notes::addOne($leadActive, NoteHelper::createNoteCredit($body, $site));
             }
+
+            Notes::addOne($lead, NoteHelper::createNoteCredit($body, $site));
 
             $site->lead_id = $lead->id ?? null;
             $site->contact_id = $contact->id;
