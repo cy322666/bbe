@@ -10,6 +10,7 @@ use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use App\Services\amoCRM\Models\Notes;
+use App\Services\amoCRM\Models\Tasks;
 use App\Services\amoCRM\Services\Site\LeadHelper;
 use App\Services\amoCRM\Services\Site\NoteHelper;
 use App\Services\amoCRM\Services\Site\SiteSend;
@@ -87,11 +88,10 @@ class SendHubspot extends Command
                     'Телефоны' => [$site->phone],
                 ]);
 
-                if ($site->is_test) {
+                if ($site->is_test)
 
                     $statusId = 53757562;
-                } else {
-
+                else
                     foreach (static::$softForms as $form) {
 
                         if ($form == $site->form) {
@@ -101,22 +101,18 @@ class SendHubspot extends Command
                             break;
                         }
                     }
-                }
 
-                $lead = Leads::search($contact, $this->amoApi, [
+                $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
                     6540894,
                     7206046,
                 ]);
 
-                if ($lead)
-                    $lead->attachTag('В работе');
-                else
-                    $lead = Leads::create($contact, [
-                        'status_id' => $statusId ?? null,
-                        'sale'      => $course->price ?? null,
-                        'responsible_user_id' => 6103456,
-                    ], $info['product'] ?? 'Новая заявка Hubspot');
+                $lead = Leads::create($contact, [
+                    'status_id' => $statusId ?? null,
+                    'sale'      => $course->price ?? null,
+                    'responsible_user_id' => 6103456,
+                ], $info['product'] ?? 'Новая заявка Hubspot');
 
                 try {
                     $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
@@ -141,6 +137,20 @@ class SendHubspot extends Command
 
                 $lead = LeadHelper::setUtmsForObject($lead, $site);
                 $lead->save();
+
+                if ($leadActive) {
+                    //закрываем новую, активная - основная
+                    $lead->cf('Причина отказа')->setValue('Дубль');
+                    $lead->status_id = 143;
+                    $lead->save();
+
+                    Tasks::create($lead, [
+                        'complete_till_at'    => time() + 60 + 60,
+                        'responsible_user_id' => $lead->responsible_user_id,
+                    ], 'Клиент оставил повторную заявку (хабспот)');
+
+                    Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info));
+                }
 
                 $site->lead_id = $lead->id;
                 $site->contact_id = $contact->id;
