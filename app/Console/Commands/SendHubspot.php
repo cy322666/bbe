@@ -118,7 +118,7 @@ class SendHubspot extends Command
 
                     $lead->pipeline_id = 6540894;
 
-                    $lead->cf('Источник')->setValue('Форма "Начать бесплатно"');
+                    $lead->cf('Источник')->setValue('Форма Начать бесплатно');
 
                     $lead->cf('Тип продукта')->setValue('Годовая программа');
 
