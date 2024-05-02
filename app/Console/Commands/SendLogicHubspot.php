@@ -112,7 +112,7 @@ class SendLogicHubspot extends Command
 
                     Tasks::create($leadActive, [
                         'complete_till_at'    => time() + 60 + 60,
-                        'responsible_user_id' => $leadActive->responsible_user_id,
+                        'responsible_user_id' => $lead->responsible_user_id,
                     ], 'Прошел профтест, горячий! + результат профтеста. Если не получается связаться с клиентом то запусти бота /Бот для Профтеста_ТЗ Ани');
                 }
 
