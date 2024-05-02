@@ -114,6 +114,7 @@ class SendHubspot extends Command
                     'responsible_user_id' => 6103456,
                 ], $info['product'] ?? 'Новая заявка Hubspot');
 
+                //тип форм одинаковых
                 if ($site->type == 'cron3') {
 
                     $lead->pipeline_id = 6540894;

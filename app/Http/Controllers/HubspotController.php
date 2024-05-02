@@ -94,6 +94,28 @@ class HubspotController extends Controller
         }
     }
 
+    public function sendLogic()
+    {
+        $uuids = [
+            '2f693ff5-0cb2-4ef6-981f-b1ebe544590f',
+            'ec00fc1c-2c9f-4bcb-ad49-7695a786b624',
+        ];
+
+        foreach ($uuids as $uuid) {
+
+            $sites = Site::query()
+                ->where('status', 0)
+                ->where('form', $uuid)
+                ->limit(5)
+                ->get();
+
+            foreach ($sites as $site) {
+
+                Artisan::call('hubspot:send-logic', ['site' => $site->id]);
+            }
+        }
+    }
+
     public function send()
     {
         $uuids = [

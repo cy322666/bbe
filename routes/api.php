@@ -84,6 +84,8 @@ Route::get('hubspot/cron3', [HubspotController::class, 'cron3']);
 //
 //Route::get('hubspot/cron4', [HubspotController::class, 'cron4']);
 
+Route::get('hubspot/cron-logic', [HubspotController::class, 'sendLogic']);
+
 Route::get('hubspot/send', [HubspotController::class, 'send']);
 
 
