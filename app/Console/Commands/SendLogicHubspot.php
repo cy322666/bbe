@@ -86,6 +86,10 @@ class SendLogicHubspot extends Command
                     'responsible_user_id' => 6103456,
                 ], $info['product'] ?? 'Новая заявка Hubspot');
 
+                sleep(1);
+
+                $lead = $this->amoApi->service->leads()->find($lead->id);
+
 //                $lead->cf('ID курса')->setValue($info['course_id']);
                 $lead->cf('url')->setValue($info['url']);
                 $lead->cf('form_id')->setValue($site->form);
