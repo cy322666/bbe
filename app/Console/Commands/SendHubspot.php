@@ -125,6 +125,10 @@ class SendHubspot extends Command
 
                 } else {
 
+                    if (!empty(json_decode($site->body)->url) && str_contains(json_decode($site->body)->url, 'sale.bangbangeducation.ru'))
+
+                        $lead->cf('Источник')->setValue('Лендинг Вебфлоу');
+
                     if ($info['source'])
                         $lead->cf('Источник')->setValue($info['source']);
 
