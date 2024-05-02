@@ -64,7 +64,12 @@ class SiteAction
 
             $lead->cf('ID курса')->setValue($site->course_id);
             $lead->cf('url')->setValue($body->url ?? null);
-            $lead->cf('Источник')->setValue('Основной сайт');
+
+            if (!empty(json_decode($site->body)->url) && str_contains(json_decode($site->body)->url, 'sale.bangbangeducation.ru'))
+                $lead->cf('Источник')->setValue('Лендинг Вебфлоу');
+            else
+                $lead->cf('Источник')->setValue('Основной сайт');
+
             $lead->cf('Способ оплаты')->setValue('Сайт');
 
             if ($course) {
