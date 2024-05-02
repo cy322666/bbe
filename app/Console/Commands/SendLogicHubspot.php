@@ -43,7 +43,7 @@ class SendLogicHubspot extends Command
 
         $site = Site::query()->find($this->argument('site'));
 
-        foreach ($site->body as $item) {
+        foreach (json_decode($site->body) as $item) {
 
             if ($item->name == 'proftest_start_education' && $item->value == 'сейчас') {
 
