@@ -18,18 +18,18 @@ use Illuminate\Console\Command;
 class SendLogicHubspot extends Command
 {
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'hubspot:send-logic {site}';
-
-    /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Command description';
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'hubspot:send-logic {site}';
 
     public function handle()
     {
@@ -68,16 +68,15 @@ class SendLogicHubspot extends Command
                     3342043,
                     6540894,
                     7206046,
+                    6237586,
                 ]);
 
                 if ($leadActive) {
 
                     Tasks::create($leadActive, [
                         'complete_till_at'    => time() + 60 + 60,
-                        'responsible_user_id' => $lead->responsible_user_id,
+                        'responsible_user_id' => $leadActive->responsible_user_id,
                     ], 'Прошел профтест, горячий! + результат профтеста');
-
-                    Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info));
                 }
 
                 $lead = Leads::create($contact, [
@@ -91,18 +90,18 @@ class SendLogicHubspot extends Command
                 $lead = $this->amoApi->service->leads()->find($lead->id);
 
 //                $lead->cf('ID курса')->setValue($info['course_id']);
-                $lead->cf('url')->setValue($info['url']);
+                $lead->cf('url')->setValue($info['url'] ?? null);
                 $lead->cf('form_id')->setValue($site->form);
                 $lead->cf('Источник')->setValue('Сегмент (профтест)');
 
-                $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
+//                $lead->attachTags([$info['tag'], 'hubspot'], $productType ?? $info['type']);
 
                 $lead = LeadHelper::setUtmsForObject($lead, $site);
 
-                try {
-                    $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
-
-                } catch (\Throwable) {}
+//                try {
+//                    $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
+//
+//                } catch (\Throwable) {}
 
                 if (!empty($leadActive)) {
 
@@ -117,8 +116,6 @@ class SendLogicHubspot extends Command
                 $site->contact_id = $contact->id;
                 $site->status = 1;
                 $site->save();
-
-                Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info));
 
             } else {
 

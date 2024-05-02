@@ -51,10 +51,10 @@ abstract class NoteHelper
             ' - Почта : '. $site->email,
             ' - Телефон : '. $site->phone,
             '-----------------------------',
-            ' - Название продукта : '. $info['product'],
-            ' - Тип продукта : '. $info['type'],
-            ' - ID курса : '. $info['course_id'],
-            ' - Источник : '. $info['source'],
+            ' - Название продукта : '. $info['product'] ?? null,
+            ' - Тип продукта : '. $info['type'] ?? null,
+            ' - ID курса : '. $info['course_id'] ?? null,
+            ' - Источник : '. $info['source'] ?? null,
             '-----------------------------'
         ];
 
