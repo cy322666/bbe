@@ -86,7 +86,7 @@ class SendLogicHubspot extends Command
                     'responsible_user_id' => 6103456,
                 ], $info['product'] ?? 'Новая заявка Hubspot');
 
-                $lead->cf('ID курса')->setValue($info['course_id']);
+//                $lead->cf('ID курса')->setValue($info['course_id']);
                 $lead->cf('url')->setValue($info['url']);
                 $lead->cf('form_id')->setValue($site->form);
                 $lead->cf('Источник')->setValue('Сегмент (профтест)');
