@@ -40,16 +40,16 @@ class Site extends Model
 
     public function prepareSend() : array
     {
-        if ($this->form == '9be94507-6b84-441f-9648-9238fe26ff93') //попап режиссура
-
-            return [
-                'product' => 'Режиссер монтажа',
-                'source'  => 'попап',
-                'type' => 'Годовая программа',
-                'tag'  => 'попап',
-                'url'  => null,
-                'course_id' => 439,
-            ];
+//        if ($this->form == '9be94507-6b84-441f-9648-9238fe26ff93') //попап режиссура
+//
+//            return [
+//                'product' => 'Режиссер монтажа',
+//                'source'  => 'попап',
+//                'type' => 'Годовая программа',
+//                'tag'  => 'попап',
+//                'url'  => null,
+//                'course_id' => 439,
+//            ];
 
         if ($this->form == 'c9115ddc-ea74-4428-a9f7-cf41f88fa93a') //попап интерьеры
 
