@@ -115,15 +115,15 @@ class SendHubspot extends Command
                 ], $info['product'] ?? 'Новая заявка Hubspot');
 
                 //тип форм одинаковых
-                if ($site->type == 'cron3') {
-
-                    $lead->pipeline_id = 6540894;
-
-                    $lead->cf('Источник')->setValue('Форма Начать бесплатно');
-
-                    $lead->cf('Тип продукта')->setValue('Годовая программа');
-
-                } else {
+//                if ($site->type == 'cron3') {
+//
+//                    $lead->pipeline_id = 6540894;
+//
+//                    $lead->cf('Источник')->setValue('Форма Начать бесплатно');
+//
+//                    $lead->cf('Тип продукта')->setValue('Годовая программа');
+//
+//                } else {
 
                     if (!empty(json_decode($site->body)->url) && str_contains(json_decode($site->body)->url, 'sale.bangbangeducation.ru'))
 
@@ -136,7 +136,7 @@ class SendHubspot extends Command
 
                     if ($productType)
                         $lead->cf('Тип продукта')->setValue(!empty($productType) ? $productType : $info['type']);
-                }
+//                }
 
                 try {
                     $lead->cf('Название продукта')->setValue($course->name ?? $info['product']);
