@@ -155,6 +155,10 @@ class HubspotController extends Controller
             '9bd28df2-7a96-464d-b300-45d8a68d60ce',
             'bc127ef2-14df-4955-bb8c-900ad1e5dc10',
             '172fdf59-fdee-4a6f-aed2-9cec7f8bc4e6',
+
+            '9be94507-6b84-441f-9648-9238fe26ff93',
+            'c9115ddc-ea74-4428-a9f7-cf41f88fa93a',
+            '8f64151d-f48a-40a7-a262-f2fc7ae27b8d',
         ];
 
         foreach ($uuids as $uuid) {
