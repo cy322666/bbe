@@ -529,7 +529,7 @@ class ToolsController extends Controller
                 throw new Exception($leadId. ' : неопределенный этап продажи');
             }
 
-            $lead->status_id = $statusId;
+            $lead->status_id = $statusId ?? null;
             $lead->cf('СНГ проверка')->enable();
             $lead->save();
 
