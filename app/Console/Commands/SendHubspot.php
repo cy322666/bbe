@@ -160,7 +160,7 @@ class SendHubspot extends Command
                     $lead->status_id = 143;
                     $lead->save();
 
-                    Tasks::create($lead, [
+                    Tasks::create($leadActive, [
                         'complete_till_at'    => time() + 60 + 60,
                         'responsible_user_id' => $lead->responsible_user_id,
                     ], 'Клиент оставил повторную заявку (хабспот)');
