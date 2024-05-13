@@ -94,11 +94,11 @@ class SendBrokenHubspot extends Command
                             'Телефоны' => [$broken->phone],
                         ]);
 
-                        //поиск в работе в основной
+                        //поиск в работе в основной и снг
                         $leadActive = Leads::search($contact, $amoApi, [
                             3342043,
 //                            6540894,
-//                            7206046,
+                            7206046,
                         ]);
 
                         if ($leadActive) {
