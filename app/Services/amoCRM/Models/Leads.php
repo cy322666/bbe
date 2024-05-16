@@ -4,6 +4,7 @@
 namespace App\Services\amoCRM\Models;
 
 
+use App\Models\OneC\Pay;
 use App\Services\amoCRM\Client;
 use Illuminate\Support\Facades\Log;
 use Ufee\Amo\Models\Lead;
@@ -52,6 +53,36 @@ abstract class Leads
         })->sortBy('created_at', 'DESC')?->first();
     }
 
+    public static function searchSuccessPay($contact, $client, int|array $pipelines, Pay $pay) : Lead|false
+    {
+        return $contact->leads->filter(function($lead) use ($client, $pipelines) {
+
+            if ($lead->status_id == 142) {
+
+                if (is_array($pipelines)) {
+
+                    if (in_array($lead->pipeline_id, $pipelines)) {
+
+                        if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                            return $lead;
+                    }
+
+
+                } elseif ($lead->pipeline_id == $pipelines) {
+
+                    if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                        return $lead;
+                }
+
+                if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                    return $lead;
+            }
+        })->sortBy('created_at', 'DESC')?->first();
+    }
+
     public static function search($contact, $client, int|array $pipelines = null)
     {
         return $contact->leads->filter(function($lead) use ($client, $pipelines) {
@@ -72,6 +103,38 @@ abstract class Leads
                         return true;
                 } else
                     return true;
+            }
+        })->sortBy('created_at', 'DESC')?->first();
+    }
+
+    public static function searchPay($contact, $client, int|array $pipelines = null, Pay $pay)
+    {
+        return $contact->leads->filter(function($lead) use ($client, $pipelines) {
+
+            if ($lead->status_id != 143 &&
+                $lead->status_id != 142) {
+
+                if($pipelines != null) {
+
+                    if (is_array($pipelines)) {
+
+                        if (in_array($lead->pipeline_id, $pipelines)) {
+
+                            if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                                return true;
+                        }
+
+                    } elseif ($lead->pipeline_id == $pipelines) {
+
+                        if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                            return true;
+                    }
+                } else
+                    if (!Pay::query()->where('lead_id', $lead->id)->exists())
+
+                        return true;
             }
         })->sortBy('created_at', 'DESC')?->first();
     }

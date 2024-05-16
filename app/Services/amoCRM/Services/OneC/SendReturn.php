@@ -21,7 +21,7 @@ class SendReturn
             $contact = Contacts::update($contact, ['Почта' => $pay->email]);
         } else {
 
-            $lead = Leads::search($contact, $amoApi, 6362138);
+            $lead = Leads::searchPay($contact, $amoApi, 6362138, $pay);
         }
 
         $pay->contact_id = $contact->id;
