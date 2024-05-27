@@ -101,9 +101,9 @@ class SiteAction
 
             if ($leadActive) {
                 //закрываем новую, активная - основная
-                $lead->cf('Причина отказа')->setValue('Дубль');
-                $lead->status_id = 143;
-                $lead->save();
+//                $lead->cf('Причина отказа')->setValue('Дубль');
+//                $lead->status_id = 143;
+//                $lead->save();
 
                 Tasks::create($lead, [
                     'complete_till_at'    => time() + 60 + 60,
