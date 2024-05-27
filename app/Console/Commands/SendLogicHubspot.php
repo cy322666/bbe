@@ -116,6 +116,19 @@ class SendLogicHubspot extends Command
                     ], 'Прошел профтест, горячий! + результат профтеста. Если не получается связаться с клиентом то запусти бота /Бот для Профтеста_ТЗ Ани');
 //                }
 
+                foreach (json_decode($site->body) as $value) {
+
+                    if ($value->name == 'proftest_direction') {
+
+                        ///proftest/it/product
+                        $array = explode($value->value, '/');
+
+                        $tag = 'профтест_сейчас_'.end($array);
+
+                        $lead->attachTag($tag);
+                    }
+                }
+
                 $lead->save();
 
                 $site->lead_id = $lead->id;
