@@ -111,7 +111,7 @@ class CreditAction
             }
             $lead->save();
 
-            if ($leadActive) {
+            if (!empty($leadActive)) {
                 //закрываем новую, активная - основная
                 $lead->cf('Причина отказа')->setValue('Дубль');
                 $lead->status_id = 143;
