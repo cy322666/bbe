@@ -24,6 +24,7 @@ class SiteCheckMiddleware
         if ($request->action !== 'subscribe-course' &&
             $request->action !== 'subscribe-school' &&
             $request->action !== 'order' &&
+            $request->action !== 'order-installment' &&
             $request->action !== 'subscribe-school-api') {
 
             return $next($request);
