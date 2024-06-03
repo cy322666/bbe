@@ -125,7 +125,7 @@ abstract class LeadHelper
             $lead->cf('Стоимость в месяц')->setValue($price);
 
             if (!empty($body->months))
-                $lead->sale = $price * $body->months;
+                $lead->sale = (int)$price * (int)$body->months;
             else
                 $lead->sale = $price;
         }
