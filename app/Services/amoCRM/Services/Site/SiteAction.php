@@ -95,6 +95,9 @@ class SiteAction
 
             $lead->attachTag('Основной');
 
+            $body->isLegal ? $lead->cf('isLegal')->enable() : null;
+            $lead->cf('companyName')->setValue($body->companyName ?? null);
+
             $lead = LeadHelper::setTariff($lead, $body);
 
             $lead->save();
