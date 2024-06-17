@@ -96,15 +96,9 @@ class SendHubspot extends Command
 
                     $statusId = 53757562;
                 else
-                    foreach (static::$softForms as $form) {
+                    if (in_array($site->form, static::$softForms))
 
-                        if ($form == $site->form) {
-
-                            $statusId = 33522700;
-
-                            break;
-                        }
-                    }
+                        $statusId = 55684270;
 
                 $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
