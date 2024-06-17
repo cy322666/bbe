@@ -264,6 +264,7 @@ class ToolsController extends Controller
             'Гросс : '.$lead->sale,
             'Сумма nett : '.$lead->cf('Бюджет nett')->getValue() ?? '-',
             'Способ оплаты : '.$method,
+            'Подарок : '.$lead->cf('Подарок')->getValue() ?? '-',
             '*Клиент* ',
             'Имя : '.$lead->contact->name ?? '-',
             'Телеграм контакта : '.$lead->contact->cf('TelegramUsername_WZ')->getValue() ?? '-',
