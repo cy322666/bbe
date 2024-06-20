@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ReturnLead;
 use App\Models\Account;
+use App\Models\Country;
 use App\Models\Segment;
 use App\Models\TgProxy;
 use App\Services\amoCRM\Client;
+use App\Services\amoCRM\Models\Contacts;
 use App\Services\Telegram;
 use Carbon\Carbon;
 use Exception;
@@ -307,14 +309,35 @@ class ToolsController extends Controller
 
         $contact = $lead->contact;
 
+        $country = false;
+
         if (!$contact->cf('Страна')->getValue()) {
 
-            $result = Http::get('https://www.kody.su/api/v2.1/search.json?q='.$contact->cf('Телефон')->getValue().'&key=test');
+            $phone = Contacts::clearPhone($contact->cf('Телефон')->getValue());
 
-            Log::info(__METHOD__, [$result]);
+            $prefixPhone = substr($phone, 0, 3);
 
-//            $contact->cf('Страна')->setValue($response['country']);
-//            $contact->save();
+            $country = Country::query()->where('key', $prefixPhone)->first();
+
+            if (!$country->exists()) {
+
+                $prefixPhone = substr($phone, 0, 2);
+
+                $country = Country::query()->where('key', $prefixPhone)->first();
+
+                if (!$country->exists()) {
+
+                    $prefixPhone = substr($phone, 0, 1);
+
+                    $country = Country::query()->where('key', $prefixPhone)->first();
+                }
+            }
+        }
+
+        if ($country) {
+
+            $contact->cf('Страна')->setValue($country->country);
+            $contact->save();
         }
     }
 
