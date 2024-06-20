@@ -319,13 +319,13 @@ class ToolsController extends Controller
 
             $country = Country::query()->where('key', $prefixPhone)->first();
 
-            if (!$country->exists()) {
+            if (!$country) {
 
                 $prefixPhone = substr($phone, 0, 2);
 
                 $country = Country::query()->where('key', $prefixPhone)->first();
 
-                if (!$country->exists()) {
+                if (!$country) {
 
                     $prefixPhone = substr($phone, 0, 1);
 
