@@ -41,7 +41,7 @@ class CountryCheck extends Command
 
         $country = false;
 
-        if ($contact->cf('Страна')->getValue()) {
+        if (!$contact->cf('Страна')->getValue()) {
 
             $phone = Contacts::clearPhone($contact->cf('Телефон')->getValue());
 
