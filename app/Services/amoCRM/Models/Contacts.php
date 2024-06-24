@@ -122,7 +122,7 @@ abstract class Contacts extends Client
     {
         if ($phone) {
 
-            return substr(str_replace([',', '(', ')', '-', '+', ' '],'', $phone), -10);
+            return str_replace([',', '(', ')', '-', '+', ' '],'', $phone);
         }
         return null;
     }

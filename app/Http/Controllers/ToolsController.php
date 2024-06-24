@@ -15,6 +15,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -301,44 +302,7 @@ class ToolsController extends Controller
 
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
-        $amoApi = (new Client(Account::query()->first()))
-            ->init()
-            ->initLogs();
-
-        $lead = $amoApi->service->leads()->find($leadId);
-
-        $contact = $lead->contact;
-
-        $country = false;
-
-        if (!$contact->cf('Страна')->getValue()) {
-
-            $phone = Contacts::clearPhone($contact->cf('Телефон')->getValue());
-
-            $prefixPhone = substr($phone, 0, 3);
-
-            $country = Country::query()->where('key', $prefixPhone)->first();
-
-            if (!$country) {
-
-                $prefixPhone = substr($phone, 0, 2);
-
-                $country = Country::query()->where('key', $prefixPhone)->first();
-
-                if (!$country) {
-
-                    $prefixPhone = substr($phone, 0, 1);
-
-                    $country = Country::query()->where('key', $prefixPhone)->first();
-                }
-            }
-        }
-
-        if ($country) {
-
-            $contact->cf('Страна')->setValue($country->country);
-            $contact->save();
-        }
+        Artisan::call('country:check ', ['lead_id' => $leadId]);
     }
 
     public function return(Request $request)
