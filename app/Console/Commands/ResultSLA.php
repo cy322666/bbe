@@ -34,45 +34,39 @@ class ResultSLA extends Command
     {
         $sla = Sla::query()->find($this->argument('sla'));
 
-//        $sla = Sla::query()->updateOrCreate([
-//            'lead_id' => $sla->lead_id,
-//        ], [
-//            'hook_2' => Carbon::now()
-//                ->timezone('Europe/Moscow')
-//                ->format('Y-m-d H:i:s')
-//        ]);
+        //даты 1 и 2 хука
+        $startDate = explode(' ', $sla->hook_1)[0];
+        $endDate   = explode(' ', $sla->hook_2)[0];
 
-        if ($sla->hook_1) {
+        //если произошло не в один день
+        $startDate = $startDate != $endDate ? $endDate : $startDate;
 
-            $hook1 = Carbon::parse($sla->hook_1);
-            $hook2 = Carbon::parse($sla->hook_2);
+        $hook1 = Carbon::parse($sla->hook_1);
+        $hook2 = Carbon::parse($sla->hook_2);
 
-//            dd($hook1->format('Y-m-d H:i:s'));
+        $startWork = $hook1->format('Y-m-d').' 09:00:00';
+        $endWork   = $hook2->format('Y-m-d').' 19:00:00';
+//dd($startWork, $hook1->format('Y-m-d H:i:s'));
+//dd($hook1->diffInHours($startWork));
 
-            //высчитываем разницу от рабочего времени снизу и сверху
-            $start = Carbon::parse($hook1->format('Y-m-d').' 10:00:00');
+        //
+        if ($hook1->diffInHours($startWork) < 0) {
 
-            $end = Carbon::parse(
-                Carbon::now()
-                    ->timezone('Europe/Moscow')
-                    ->format('Y-m-d').' 19:00:00'
-            )->timezone('Europe/Moscow');
+            \Illuminate\Support\Facades\Log::info(__METHOD__,[
+                'lead_id' => $sla->lead_id,
+                'lead created before work'
+            ]);
 
-            if ($hook1->diffInHours($start)) {
+            //лид созданный ночью -> считаем время со старта рабочего дня
+            $sla->fill([
+                'time_minutes' => $hook2->diffInMinutes($startWork),
+                'time_seconds' => $hook1->diffInSeconds($hook2),
+            ]);
+            $sla->save();
 
-                \Illuminate\Support\Facades\Log::info(__METHOD__,[
-                    'lead_id' => $sla->lead_id,
-                    'lead created before work'
-                ]);
-                //лид созданный ночью -> считаем время со старта рабочего дня
-                $sla->fill([
-                    'time_minutes' => $hook2->diffInMinutes($start),
-                    'time_seconds' => $hook1->diffInSeconds($hook2),
-                ]);
-                $sla->save();
+
             } else {
-//dd($hook1->format('Y-m-d H:i:s').' - '.$hook1->diffInHours($start).' - '.$start->format('Y-m-d H:i:s'));
-//dd($hook1->diffInHours($start));
+
                 \Illuminate\Support\Facades\Log::info(__METHOD__,[
                     'lead_id' => $sla->lead_id,
                     'lead created in work'
@@ -84,16 +78,15 @@ class ResultSLA extends Command
                 ]);
                 $sla->save();
             }
-            $amoApi = (new Client(Account::query()->first()))
-                ->init()
-                ->initCache();
+//            $amoApi = (new Client(Account::query()->first()))
+//                ->init()
+//                ->initCache();
 
-            $lead = $amoApi->service->leads()->find($sla->lead_id);
+//            $lead = $amoApi->service->leads()->find($sla->lead_id);
+//
+//            $lead->cf('SLA')->setValue($sla->time_minutes);
+//            $lead->save();
 
-            $lead->cf('SLA')->setValue($sla->time_minutes);
-            $lead->save();
-
-            return Command::SUCCESS;
-        }
+        return Command::SUCCESS;
     }
 }

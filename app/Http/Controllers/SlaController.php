@@ -44,9 +44,8 @@ class SlaController extends Controller
                 ->timezone('Europe/Moscow')
                 ->format('Y-m-d H:i:s');
             $sla->save();
+
+            Artisan::call('sla:result', ['sla' => $sla->id]);
         }
-//            Artisan::call('sla:result', [
-//                'sla' => $sla->id
-//            ]);
     }
 }
