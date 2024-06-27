@@ -38,7 +38,13 @@ class SlaController extends Controller
             ->where('hook_1', '!=', null)
             ->first();
 
-//        if ($sla)
+        if ($sla) {
+
+            $sla->hook_2 = Carbon::now()
+                ->timezone('Europe/Moscow')
+                ->format('Y-m-d H:i:s');
+            $sla->save();
+        }
 //            Artisan::call('sla:result', [
 //                'sla' => $sla->id
 //            ]);
