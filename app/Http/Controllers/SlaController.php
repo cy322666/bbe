@@ -15,7 +15,6 @@ class SlaController extends Controller
 {
     public function hook1(Request $request)
     {
-        exit;
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
         Sla::query()->updateOrCreate([
@@ -32,17 +31,16 @@ class SlaController extends Controller
      */
     public function hook2(Request $request)
     {
-        exit;
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
         $sla = Sla::query()
             ->where('lead_id', $leadId)
-            ->where('hook_2', null)
+            ->where('hook_1', '!=', null)
             ->first();
 
-        if ($sla)
-            Artisan::call('sla:result', [
-                'sla' => $sla->id
-            ]);
+//        if ($sla)
+//            Artisan::call('sla:result', [
+//                'sla' => $sla->id
+//            ]);
     }
 }
