@@ -7,6 +7,8 @@ use App\Models\Site;
 use App\Rules\SiteCheckTest;
 use App\Services\amoCRM\Services\Site\SiteSend;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SiteController extends Controller
 {
@@ -83,5 +85,10 @@ class SiteController extends Controller
 
 //            } catch (\Throwable $e) {}
         }
+    }
+
+    public function flocktory(Request $request)
+    {
+        Log::info(__METHOD__, $request->toArray());
     }
 }

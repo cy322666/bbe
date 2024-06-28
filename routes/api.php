@@ -88,6 +88,8 @@ Route::get('hubspot/cron-logic', [HubspotController::class, 'sendLogic']);
 
 Route::get('hubspot/send', [HubspotController::class, 'send']);
 
+Route::post('site/flocktory', [SiteController::class, 'flocktory']);
+
 
 
 
