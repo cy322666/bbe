@@ -302,7 +302,7 @@ class ToolsController extends Controller
 
         $leadId = $request->leads['add'][0]['id'] ?? $request->leads['status'][0]['id'];
 
-        Artisan::call('country:check ', ['lead_id' => $leadId]);
+        Artisan::call('country:check', ['lead_id' => $leadId]);
     }
 
     public function return(Request $request)
