@@ -22,13 +22,20 @@ class SendInstallment
             $contact = Contacts::update($contact, ['Почта' => $pay->email]);
         } else {
 
-            $lead = Leads::searchSuccessPay($contact, $amoApi, 3342043); //1 pipeline
+            $lead = Leads::searchSuccessPay($contact, $amoApi, OneCService::ONE_PIPELINE_ID, $pay); //1 pipeline
 
             if (!$lead)
-                $lead = Leads::searchSuccessPay($contact, $amoApi, 6540894); //2 pipeline
+                $lead = Leads::searchSuccessPay($contact, $amoApi, OneCService::SOFT_PIPELINE_ID, $pay); //2 pipeline
 
             if (!$lead)
-                $lead  = Leads::searchPay($contact, $amoApi, [3342043, 6540894], $pay);
+                $lead = Leads::searchSuccessPay($contact, $amoApi, OneCService::SNG_PIPELINE_ID, $pay); //3 pipeline
+
+            if (!$lead)
+                $lead  = Leads::searchPay($contact, $amoApi, [
+                    OneCService::ONE_PIPELINE_ID,
+                    OneCService::SOFT_PIPELINE_ID,
+                    OneCService::SNG_PIPELINE_ID,
+                ], $pay);
         }
 
         $pay->contact_id = $contact->id;

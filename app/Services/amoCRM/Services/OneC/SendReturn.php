@@ -21,7 +21,11 @@ class SendReturn
             $contact = Contacts::update($contact, ['Почта' => $pay->email]);
         } else {
 
-            $lead = Leads::searchPay($contact, $amoApi, 6362138, $pay);
+            $lead = Leads::searchPay($contact, $amoApi, [
+                OneCService::ONE_PIPELINE_ID,
+                OneCService::SOFT_PIPELINE_ID,
+                OneCService::SNG_PIPELINE_ID,
+            ], $pay);
         }
 
         $pay->contact_id = $contact->id;

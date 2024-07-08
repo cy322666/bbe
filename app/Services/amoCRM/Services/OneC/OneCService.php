@@ -9,6 +9,12 @@ use Ufee\Amo\Models\Contact;
 
 class OneCService
 {
+    const
+        ONE_PIPELINE_ID  = 3342043,
+        SOFT_PIPELINE_ID = 6540894,
+        SNG_PIPELINE_ID  = 7206046;
+
+
     public static function searchContact(Client $amoApi, Pay $pay): Contact|bool
     {
         if ($pay->email)
