@@ -80,6 +80,7 @@ class OneCController extends Controller
     {
         $pays = Pay::query()
             ->where('datetime', '>', '2024-03-01 16:00:00')
+            ->whereDate('created_at', '>', Carbon::now()->subDay()->format('Y-m-d'))
             ->where('status', 0)
             ->where('contact_id', null)
             ->limit(10)
