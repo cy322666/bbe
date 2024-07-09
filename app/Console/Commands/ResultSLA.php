@@ -97,7 +97,7 @@ class ResultSLA extends Command
                 ]);
 
                 $sla->fill([
-                    'time_minutes' => $hook2->diffInMinutes($startWork),
+                    'time_minutes' => $hook2->diffInMinutes($hook1),
                     'time_seconds' => $hook1->diffInSeconds($hook2),
                 ]);
                 $sla->save();
