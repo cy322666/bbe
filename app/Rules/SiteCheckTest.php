@@ -71,9 +71,9 @@ class SiteCheckTest
 
         foreach (static::$testPhones as $testPhone) {
 
-            $testPhone = Contacts::clearPhone($testPhone);
+            $value = Contacts::clearPhone($value);
 
-            if (strripos($value, $testPhone) !== false)
+            if (strripos($testPhone, $testPhone) !== false)
 
             return true;
         }
