@@ -73,9 +73,9 @@ class SiteCheckTest
 
             $value = Contacts::clearPhone($value);
 
-            if (strripos($testPhone, $value) !== false)
+            if (strripos($value, $testPhone) !== false)
 
-            return true;
+                return true;
         }
 
         return false;
