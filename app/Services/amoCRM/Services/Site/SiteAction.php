@@ -100,7 +100,16 @@ class SiteAction
 
             $lead = LeadHelper::setTariff($lead, $body);
 
-            $lead->save();
+            try {
+
+                $lead->save();
+            } catch (Throwable $e) {
+
+                sleep(5);
+
+                $lead->updated_at = time();
+                $lead->save();
+            }
 
             if ($leadActive) {
                 //закрываем новую, активная - основная
