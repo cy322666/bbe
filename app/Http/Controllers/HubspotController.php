@@ -167,7 +167,7 @@ class HubspotController extends Controller
             $sites = Site::query()
                 ->where('status', 0)
                 ->where('form', $uuid)
-                ->limit(5)
+                ->limit(3)
                 ->get();
 
             foreach ($sites as $site) {
