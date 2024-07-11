@@ -74,7 +74,7 @@ class GetHubspot extends Command
 
             foreach ($form as $item) {
 
-                try {
+//                try {
                     if ($item->name == 'phone_number') {
 
                         $site->phone = $item->value;
@@ -94,10 +94,10 @@ class GetHubspot extends Command
                         $site->save();
                     }
 
-                } catch (\Throwable $e) {
-
-                    Log::alert(__METHOD__, [$e->getMessage()]);
-                }
+//                } catch (\Throwable $e) {
+//
+//                    Log::alert(__METHOD__, [$e->getMessage()]);
+//                }
             }
         }
     }
