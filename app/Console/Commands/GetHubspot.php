@@ -86,7 +86,11 @@ class GetHubspot extends Command
                         $site->save();
                     } else {
 
-                        $site->{$item->name} = $item->value;
+                        try {
+                            $site->{$item->name} = $item->value;
+
+                        } catch (\Throwable) {}
+
                         $site->save();
                     }
 
