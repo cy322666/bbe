@@ -80,7 +80,7 @@ class SendLogicHubspot extends Command
                 }
 
                 $lead = Leads::create($contact, [
-                    'status_id' => $statusId ?? 55684270,
+                    'status_id' => !empty($statusId) ? $statusId : 55684270,
                     'sale' => $course->price ?? null,
                     'responsible_user_id' => 6103456,
                 ], $info['product'] ?? 'Новая заявка Hubspot');
