@@ -86,14 +86,10 @@ class GetHubspot extends Command
                         $site->save();
                     } else {
 
-//                        try {
-                            $site->{$item->name} = $item->value;
-
-//                        } catch (\Throwable|\PDOException) {}
-
                         try {
-
+                            $site->{$item->name} = $item->value;
                             $site->save();
+
                         } catch (\Throwable|\PDOException) {}
                     }
 
