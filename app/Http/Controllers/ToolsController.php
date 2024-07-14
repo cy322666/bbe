@@ -88,160 +88,49 @@ class ToolsController extends Controller
 
         $arrayMatch = [
             [
-                'user'      => ' ',
-                'dateStart' => '2023-11-06',
-                'course'    => 'Типографика: о форме и содержании',
-            ],
-
-            [
-                'user'      => '@nabrodova',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Графический дизайн',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-10-31',
-                'course'    => 'Дизайн жилых интерьеров',
-            ],
-            [
-                'user'      => '@shiningmithra',
-                'dateStart' => '2023-10-31',
-                'course'    => 'Режиссура монтажа',
-            ],
-            [
-                'user'      => '@lisovix',
-                'dateStart' => '2023-11-10',
-                'course'    => 'Режиссура монтажа',
-            ],
-            [
-                'user'      => '@AdelinaBarykina',
-                'dateStart' => '2023-11-13',
-                'course'    => '3D-художник',
-            ],
-            [
-                'user'      => '@nastyashalygina',
-                'dateStart' => '2023-11-20',
-                'course'    => 'Моушн-дизайнер',
-            ],
-            [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-11-06',
-                'course'    => 'Типографика: о форме и содержании',
-            ],
-            [
-                'user'      => '@Garm_k',
-                'dateStart' => '2023-11-13',
-                'course'    => 'Смелый креатив: как легко придумывать прорывные идеи',
-            ],
-            [
-                'user'      => ' ',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Графический дизайнер Plus',
-            ],
-            [
-                'user'      => ' ',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Графический дизайнер',
-            ],
-            [
-                'user'      => ' ',
-                'dateStart' => '2023-10-24',
-                'course'    => 'UX/UI-дизайнер',
-            ],
-            [
                 'user'      => '@janevetl',
-                'dateStart' => '2023-10-30',
+                'dateStart' => '2020-11-06',
                 'course'    => 'Иллюстратор',
             ],
             [
-                'user'      => '@janevetl',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Иллюстрация',
-            ],
-            [
-                'user'      => ' ',
-                'dateStart' => '2023-10-24',
-                'course'    => 'UX/UI-дизайнер Plus',
-            ],
-            [
-                'user'      => '@Garm_k',
-                'dateStart' => '2023-10-16',
-                'course'    => 'Моушн-дизайнер',
-            ],
-            [
-                'user'      => '@nastyashalygina',
-                'dateStart' => '2023-10-16',
-                'course'    => 'Моушн-дизайнер Plus',
-            ],
-            [
-                'user'      => '@protsenko_mur',
-                'dateStart' => '2023-10-02',
-                'course'    => 'Продакт-менеджер',
-            ],
-            [
-                'user'      => '@vickylich',
-                'dateStart' => '2023-10-16',
+                'user'      => '@ktbksr',
+                'dateStart' => '2020-11-06',
                 'course'    => '2d-анимация',
             ],
             [
-                'user'      => '@nbelows',
-                'dateStart' => '2023-10-23',
-                'course'    => '3D-художник',
+                'user'      => '@vicadimanche @asyamarchenko @tswetochek @nastya_hlopa',
+                'dateStart' => '2020-11-06',
+                'course'    => 'Графический дизайнер',
             ],
             [
-                'user'      => ' ',
-                'dateStart' => '2023-10-30',
-                'course'    => 'Иллюстратор',
+                'user'      => '@black_hydroxide @nastyashalygina',
+                'dateStart' => '2020-11-06',
+                'course'    => 'Моушн-дизайн',
             ],
             [
-                'user'      => ' ',
-                'dateStart' => '2023-11-10',
+                'user'      => '@tswetochek @alicedrukker @daria_kozlovskaya0',
+                'dateStart' => '2020-11-06',
+                'course'    => 'UX/UI',
+            ],
+            [
+                'user'      => '@dtxnv @alininiv',
+                'dateStart' => '2020-11-06',
                 'course'    => 'Режиссер монтажа',
             ],
             [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-10-01',
-                'course'    => 'Основы Blender: создаем персонажа',
+                'user'      => '@AdelinaBarykina @vicadimanche',
+                'dateStart' => '2020-11-06',
+                'course'    => 'Дизайн жилых интерьеров',
             ],
             [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-10-02',
-                'course'    => 'Моушн-дизайн: от простого к сложному',
+                'user'      => '@AdelinaBarykina',
+                'dateStart' => '2020-11-06',
+                'course'    => '3d-художник',
             ],
             [
-                'user'      => ' ',
-                'dateStart' => '2023-10-09',
-                'course'    => 'Иллюстрация: ищем стиль',
-            ],
-            [
-                'user'      => '@afflaty',
-                'dateStart' => '2023-10-09',
-                'course'    => 'Фотореалистичный рендер',
-            ],
-            [
-                'user'      => '@anasyrova',
-                'dateStart' => '2023-10-09',
-                'course'    => 'Сторителлинг в иллюстрации',
-            ],
-            [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-10-11',
-                'course'    => 'Текст: от статей до интерейса',
-            ],
-            [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-10-12',
-                'course'    => 'Дизайн упаковки для реального мира',
-            ],
-            [
-                'user'      => '@grewawewa',
-                'dateStart' => '2023-10-16',
-                'course'    => 'Айдентика: пошаговая инструкция',
-            ],
-            [
-                'user'      => '@Garm_k',
-                'dateStart' => '2023-10-24',
-                'course'    => 'Дизайн мобильных приложений',
+                'user'      => '@protsenko_mur @AdelinaBarykina',
+                'dateStart' => '2020-11-06',
+                'course'    => 'Продакт-менеджер',
             ],
         ];
 
@@ -249,10 +138,10 @@ class ToolsController extends Controller
 
             if (strripos($lead->cf('Название продукта')->getValue(), $data['course']) !== false) {
 
-                if ($start == $data['dateStart']) {
+//                if ($start == $data['dateStart']) {
 
                     $curator = $data['user'];
-                }
+//                }
             }
         }
 
