@@ -88,6 +88,20 @@ abstract class NoteHelper
         return implode("\n", $text);
     }
 
+    public static function createNoteFlocktory($data, $site): string
+    {
+        $text = [
+            'Новая заявка на консультацию!',
+            '-----------------------------',
+            ' - Имя : '. $data->name ?? '-',
+            ' - Почта : '. $data->email ?? '-',
+            ' - Телефон : '. $data->phone ?? '-',
+            '-----------------------------',
+        ];
+
+        return implode("\n", $text);
+    }
+
     public static function switchCommunication($method): ?string
     {
         return match ($method) {

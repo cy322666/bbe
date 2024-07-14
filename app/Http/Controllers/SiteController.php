@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SiteRequest;
 use App\Models\Site;
 use App\Rules\SiteCheckTest;
+use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Services\Site\SiteSend;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class SiteController extends Controller
@@ -90,5 +92,15 @@ class SiteController extends Controller
     public function flocktory(Request $request)
     {
         Log::info(__METHOD__, $request->toArray());
+
+        $site = Site::query()->create([
+            'name'  => $request->name,
+            'email' => $request->email,
+            'phone' => Contacts::clearPhone($request->phone),
+            'body'  => json_encode($request->toArray()),
+            'is_test' => SiteCheckTest::isTest($request),
+        ]);
+
+        Artisan::call('flocktory:send', ['site' => $site->id]);
     }
 }
