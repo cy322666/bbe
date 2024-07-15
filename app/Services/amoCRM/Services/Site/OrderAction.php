@@ -45,6 +45,17 @@ class OrderAction
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 
+            foreach (json_decode($body) as $key => $value) {
+
+                if ($key == 'fact-amount')
+
+                    $amount = $value;
+            }
+
+            if (empty($amount))
+
+                $amount = $site->amount;
+
             if (!$contact) {
 
                 $contact = Contacts::create($this->amoApi, $body->firstname);
@@ -55,7 +66,7 @@ class OrderAction
 
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 142,
-                    'sale'      => $site->amount,
+                    'sale'      => $amount,
                     'responsible_user_id' => 5998951,
                 ], $body->name);
 
@@ -102,7 +113,7 @@ class OrderAction
 
                 $lead = Leads::create($contact, [
                     'status_id' => $site->is_test ? 53757562 : 142,
-                    'sale'      => $site->amount,
+                    'sale'      => $amount,
                     'responsible_user_id' => 6103456,
                 ], $body->name);
 
