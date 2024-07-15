@@ -142,7 +142,7 @@ class SendFlocktory extends Command
                     'responsible_user_id' => $lead->responsible_user_id,
                 ], 'Клиент оставил повторную заявку на Флоктори');
 
-                Notes::addOne($leadActive, NoteHelper::createNoteFlocktory($body, $site));
+                Notes::addOne($leadActive, NoteHelper::createNoteFlocktory($site->body, $site));
             }
 
             $site->lead_id = $lead->id;
@@ -160,7 +160,7 @@ class SendFlocktory extends Command
 //                $lead->save();
 //            }
 
-            Notes::addOne($lead, NoteHelper::createNoteConsultation($body, $site));
+            Notes::addOne($lead, NoteHelper::createNoteConsultation($site->body, $site));
 
         } catch (\Throwable $e) {
 
