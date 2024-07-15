@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Account;
 use App\Models\Site;
+use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Helpers\ProductHelper;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
@@ -37,6 +39,9 @@ class SendFlocktory extends Command
     public function handle()
     {
         try {
+            $this->amoApi = (new Client(Account::query()->first()))
+                ->init()
+                ->initCache();
 
             $site = Site::query()->find($this->argument('site'));
 
