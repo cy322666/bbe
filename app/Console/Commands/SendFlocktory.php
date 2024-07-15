@@ -59,7 +59,7 @@ class SendFlocktory extends Command
 //            $productType = NoteHelper::getTypeProduct($body);
 
             if (!$contact)
-                $contact = Contacts::create($this->amoApi, $site->body);
+                $contact = Contacts::create($this->amoApi, $site->body->name);
             else
                 $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
@@ -86,7 +86,8 @@ class SendFlocktory extends Command
 //            if (!empty(json_decode($site->body)->url) && str_contains(json_decode($site->body)->url, 'sale.bangbangeducation.ru'))
 //                $lead->cf('Источник')->setValue('Лендинг Вебфлоу');
 //            else
-//                $lead->cf('Источник')->setValue('Основной сайт');
+
+            $lead->cf('Источник')->setValue('Flocktory');
 //
 //            $lead->cf('Способ оплаты')->setValue('Сайт');
 
