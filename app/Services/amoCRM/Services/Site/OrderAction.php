@@ -45,7 +45,7 @@ class OrderAction
                 'Почта'    => $site->email ?? null,
             ], $this->amoApi);
 
-            foreach (json_decode($body) as $key => $value) {
+            foreach ($body as $key => $value) {
 
                 if ($key == 'fact-amount')
 
