@@ -105,7 +105,7 @@ class CreditAction
 
                 try {
                     $lead->cf('Название продукта')->setValue($course->name);
-                } catch (Throwable) {
+                } catch (Throwable $e) {
                     throw new Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
                 }
             }
