@@ -160,8 +160,6 @@ class SendFlocktory extends Command
 //                $lead->save();
 //            }
 
-            Notes::addOne($lead, NoteHelper::createNoteConsultation($site->body, $site));
-
         } catch (\Throwable $e) {
 
             $site->error = $e->getMessage().' '.$e->getFile().' '.$e->getLine();
