@@ -38,7 +38,7 @@ class SlaController extends Controller
             ->where('hook_1', '!=', null)
             ->first();
 
-        if ($sla && $sla->hook2 == null) {
+        if ($sla && $sla->hook2 == null && $sla->time_minutes == null) {
 
             $sla->hook_2 = Carbon::now()
                 ->timezone('Europe/Moscow')
