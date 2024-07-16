@@ -165,7 +165,7 @@ class SendFlocktory extends Command
             $site->error = $e->getMessage().' '.$e->getFile().' '.$e->getLine();
             $site->save();
 
-            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+//            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
 
         return Command::SUCCESS;
