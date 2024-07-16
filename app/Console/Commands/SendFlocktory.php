@@ -59,7 +59,7 @@ class SendFlocktory extends Command
 //            $productType = NoteHelper::getTypeProduct($body);
 
             if (!$contact)
-                $contact = Contacts::create($this->amoApi, $site->body->name);
+                $contact = Contacts::create($this->amoApi, json_decode($site->body)->name);
             else
                 $leadActive = Leads::search($contact, $this->amoApi, [
                     3342043,
