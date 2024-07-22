@@ -100,6 +100,7 @@ class Site extends Model
             $this->form == '4c10b4fa-7fac-4c43-88e7-b074180b43dc' ||
             $this->form == '24da75d3-e794-47b7-bb45-06c81d8a9597' ||
             $this->form == 'e56687c0-1141-49c7-a706-2fa2941322c8' ||
+            $this->form == '5a21b267-6531-44c3-a476-7cd4aae9260f' ||
             $this->form == '0af9faf3-c056-4023-8919-e654a384e21f')
 
             return [
@@ -111,7 +112,9 @@ class Site extends Model
                 'course_id' => $this->courseid,
             ];
 
-        if ($this->form == 'fabc184d-eff7-4d4e-b370-63ce9f5f1b99')
+        if ($this->form == 'fabc184d-eff7-4d4e-b370-63ce9f5f1b99' ||
+            $this->form == 'd63fd44c-af4a-4a0e-bb35-63eb79a542ef' ||
+            $this->form == 'd08571c8-0c65-473e-ace7-597ad70321f8')
 
             return [
                 'product' => $this->coursename,
@@ -133,17 +136,6 @@ class Site extends Model
                 'course_id' => $this->courseid,
             ];
 
-        if ($this->form == '5a21b267-6531-44c3-a476-7cd4aae9260f')
-
-            return [
-                'product' => $this->coursename,
-                'source'  => 'Лендинг Казахстан',
-                'type' => 'Годовая программа',
-                'tag'  => null,
-                'url'  => $this->course_url,
-                'course_id' => $this->courseid,
-            ];
-
         if ($this->form == '9be94507-6b84-441f-9648-9238fe26ff93')
 
             return [
@@ -151,6 +143,17 @@ class Site extends Model
                 'source'  => 'попап',
                 'type' => 'Годовая программа',
                 'tag'  => 'попап_урок_из курса',
+                'url'  => null,//'https://bangbangeducation.ru/program/cinema-editing»',
+                'course_id' => null,//439,
+            ];
+
+        if ($this->form == 'c8970cb9-5052-437e-939b-94f388a92312')
+
+            return [
+                'product' => null,//'Режиссура монтажа',
+                'source'  => 'Брошенные корзины',
+                'type' => null,
+                'tag'  => 'БрошеннаяКорзина',
                 'url'  => null,//'https://bangbangeducation.ru/program/cinema-editing»',
                 'course_id' => null,//439,
             ];
