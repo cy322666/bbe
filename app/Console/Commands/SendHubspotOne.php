@@ -41,7 +41,7 @@ class SendHubspotOne extends Command
         $site->is_double = Site::query()
             ->where('id', '!=', $site->id)
             ->where('email', $site->email)
-            ->whereDate('created_at', '>', Carbon::now()->subDay()->format('Y-m-d'))
+            ->whereDate('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d'))
             ->exists();
 
         $site->save();

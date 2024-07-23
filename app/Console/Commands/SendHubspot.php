@@ -62,7 +62,7 @@ class SendHubspot extends Command
 
         $double = Site::query()
             ->where('id', '!=', $site->id)
-            ->where('created_at', '>', Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s'))
+            ->where('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d H:i:s'))
             ->where('lead_id', '!=', null)
             ->where('email', $site->email)
 //            ->orWhere('phone', $site->phone)

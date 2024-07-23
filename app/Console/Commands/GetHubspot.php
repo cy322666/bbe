@@ -68,7 +68,7 @@ class GetHubspot extends Command
                 ->where('id', '!=', $site->id)
                 ->where('form', $this->argument('form'))
                 ->where('email', $site->email)
-                ->whereDate('created_at', '>', Carbon::now()->subDay()->format('Y-m-d'))
+                ->whereDate('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d'))
                 ->exists();
 
             $site->save();
