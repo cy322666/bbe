@@ -40,6 +40,18 @@ class Site extends Model
 
     public function prepareSend() : array
     {
+        if ($this->form == 'a226fb88-ccbf-49ed-a617-8f7e4fc02412') {
+
+            return [
+                'product' => $this->coursename,
+                'source'  => 'Форма Начать бесплатно',
+                'type' => $this->coursetype,
+                'tag'  => null,
+                'url'  => null,
+                'course_id' => $this->course_url,
+            ];
+        }
+
         if ($this->form == '9be94507-6b84-441f-9648-9238fe26ff93') //попап режиссура
 
             return [
