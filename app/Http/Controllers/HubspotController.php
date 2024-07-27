@@ -69,6 +69,7 @@ class HubspotController extends Controller
     {
         //крайние формы от алекса
         $uuids = [
+            'f9d36ace-016c-48a4-add8-1d383bd16d71',
             '3f4cc224-7bd6-4dbe-a52b-7a145c436d9e',
             'a226fb88-ccbf-49ed-a617-8f7e4fc02412',
             '36920db7-a258-4f06-bd36-c9385147e956',
