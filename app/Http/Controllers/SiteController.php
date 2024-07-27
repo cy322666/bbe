@@ -46,7 +46,10 @@ class SiteController extends Controller
 
         if (!$double) {
 
-            if (($site->amount == 0 || $site->amount == 1) && $site->name !== 'Консультация по каталогу') {
+            if ($site->amount == 0 ||
+                $site->amount == 1 &&
+                $site->name !== 'Консультация по каталогу' &&
+                $site->name !== 'Webflow: веб-дизайн без кода и границ. Демо') {
 
                 $site->status = 7;
 
