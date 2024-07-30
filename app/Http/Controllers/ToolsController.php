@@ -396,15 +396,15 @@ class ToolsController extends Controller
                 $statusId = 61978382;
             }
 
-            if ($lead->pipeline_id == 7206046 || $lead->pipeline_id == 7468118)
+            if ($lead->pipeline_id == 7206046)
 
-            if (empty($statusId)) {
+                if (empty($statusId)) {
 
-                $lead->cf('СНГ проверка')->enable();
-                $lead->save();
+                    $lead->cf('СНГ проверка')->enable();
+                    $lead->save();
 
-                throw new Exception($leadId. ' : неопределенный этап продажи');
-            }
+                    throw new Exception($leadId. ' : неопределенный этап продажи');
+                }
 
             $lead->status_id = $statusId ?? null;
             $lead->cf('СНГ проверка')->enable();
