@@ -53,13 +53,10 @@ class SendBrokenHubspot extends Command
 
             $createLead = false;
 
-            if (Broken::query()
-                ->where('id', '!=', $broken->id)
-                ->where('email', $broken->email)
-                ->where('created_at', '>', Carbon::parse($broken->created_at)->subHour())//->format('Y-m-d H:i:s'))
-                ->exists()) {
+            $broken->is_double = $broken->isDouble();
 
-                $broken->is_double = true;
+            if ($broken->is_double) {
+
                 $broken->status = 9;
                 $broken->save();
 

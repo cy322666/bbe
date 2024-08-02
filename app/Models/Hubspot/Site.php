@@ -2,6 +2,7 @@
 
 namespace App\Models\Hubspot;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -178,5 +179,19 @@ class Site extends Model
             'url'  => $this->course_url,
             'course_id' => $this->courseid,
         ];
+    }
+
+    public function isDouble()
+    {
+        if ($this->is_test == 1)
+
+            return false;
+
+        return Site::query()
+            ->where('id', '!=', $this->id)
+            ->where('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d H:i:s'))
+            ->where('lead_id', '!=', null)
+            ->where('email', $this->email)
+            ->exists();
     }
 }

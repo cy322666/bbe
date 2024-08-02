@@ -38,12 +38,7 @@ class SendHubspotOne extends Command
 
         $site = Site::query()->find($this->argument('site'));
 
-        $site->is_double = Site::query()
-            ->where('id', '!=', $site->id)
-            ->where('email', $site->email)
-            ->whereDate('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d'))
-            ->exists();
-
+        $site->is_double = $site->isDouble();
         $site->save();
 
 //        Artisan::call('hubspot:send', ['site' => $site->id]);

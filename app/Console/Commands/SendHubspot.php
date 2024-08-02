@@ -60,20 +60,14 @@ class SendHubspot extends Command
 
         $site = Site::query()->find($this->argument('site'));
 
-        $double = Site::query()
-            ->where('id', '!=', $site->id)
-            ->where('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d H:i:s'))
-            ->where('lead_id', '!=', null)
-            ->where('email', $site->email)
-//            ->orWhere('phone', $site->phone)
-            ->first();
+        $site->is_double = $site->isDouble();
 
         if ($site->courseid)
             $course = Course::query()
                 ->where('course_id', $site->courseid)
                 ->first();
 
-        if (!$double) {
+        if (!$site->is_double) {
 
             $info = $site->prepareSend();
 
@@ -177,10 +171,8 @@ class SendHubspot extends Command
 
                 throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
             }
-        } else {
+        } else
             $site->status = 3;
-            $site->is_double = true;
-        }
 
         $site->save();
     }

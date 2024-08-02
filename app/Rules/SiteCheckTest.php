@@ -58,6 +58,13 @@ class SiteCheckTest
         '7053916006',
     ];
 
+    private static array $testNames = [
+        'тест',
+        'Тест',
+        'test',
+        'Test',
+    ];
+
     /**
      * Determine if the validation rule passes.
      *
@@ -82,6 +89,13 @@ class SiteCheckTest
                 return true;
         }
 
+        foreach (static::$testNames as $testName) {
+
+            if (strripos($value, $testName) !== false)
+
+                return true;
+        }
+
         return false;
     }
 
@@ -89,9 +103,10 @@ class SiteCheckTest
     {
         $isTest = [
             'phone' => static::validate($request->phone),
-            'email' => static::validate($request->email)
+            'email' => static::validate($request->email),
+            'name'  => static::validate($request->firstname),
         ];
 
-        return $isTest['phone'] || $isTest['email'];
+        return $isTest['phone'] || $isTest['email'] || $isTest['name'];
     }
 }

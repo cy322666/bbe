@@ -62,15 +62,7 @@ class GetHubspot extends Command
             $site->form = $this->argument('form');
             $site->type = $this->argument('type');
             $site->is_test = SiteCheckTest::isTest($site);
-            $site->save();
-
-            $site->is_double = Site::query()
-                ->where('id', '!=', $site->id)
-                ->where('form', $this->argument('form'))
-                ->where('email', $site->email)
-                ->whereDate('created_at', '>', Carbon::now()->subMinutes(15)->format('Y-m-d'))
-                ->exists();
-
+            $site->is_double = false;
             $site->save();
 
             foreach ($form as $item) {

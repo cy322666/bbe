@@ -52,13 +52,10 @@ class SendHubspotSegment extends Command
 
             $createLead = false;
 
-            if (Broken::query()
-                ->where('id', '!=', $segment->id)
-                ->where('email', $segment->email)
-                ->where('created_at', '>', Carbon::parse($segment->created_at)->subDays(3))//->format('Y-m-d H:i:s'))
-                ->exists()) {
+            $segment->is_double = $segment->isDouble();
 
-                $segment->is_double = true;
+            if ($segment->is_double) {
+
                 $segment->status = 9;
                 $segment->save();
 
