@@ -170,7 +170,7 @@ class SendBrokenHubspot extends Command
                 $lead->cf('Название продукта')->setValue(trim($broken->coursename));
 
             } catch (\Throwable $e) {
-                throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+                Log::warning(__METHOD__.' : '.$e->getMessage().' '.$e->getFile().' '.$e->getLine());
             }
 
             if ($course) {
@@ -200,7 +200,7 @@ class SendBrokenHubspot extends Command
 
         } catch (\Throwable $e) {
 
-            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            Log::warning(__METHOD__.' : '.$e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
     }
 }
