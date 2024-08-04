@@ -41,6 +41,8 @@ class SiteCheckTest
         '15798i96@gmail.com',
         'mumu@mail.ru',
         'mumka@mail.ru',
+        '15798i@gmail.com',
+        '15961@gmail.com',
     ];
 
     private static array $testPhones = [
