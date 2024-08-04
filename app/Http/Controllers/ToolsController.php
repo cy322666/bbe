@@ -88,7 +88,7 @@ class ToolsController extends Controller
 
         $arrayMatch = [
             [
-                'user'      => '@janevetl',
+                'user'      => '@ktbksr',
                 'dateStart' => '2020-11-06',
                 'course'    => 'Иллюстратор',
             ],
@@ -98,12 +98,12 @@ class ToolsController extends Controller
                 'course'    => '2d-анимация',
             ],
             [
-                'user'      => '@vicadimanche @asyamarchenko @tswetochek @nastya_hlopa',
+                'user'      => '@tswetochek',
                 'dateStart' => '2020-11-06',
                 'course'    => 'Графический дизайнер',
             ],
             [
-                'user'      => '@black_hydroxide @nastyashalygina',
+                'user'      => '@black_hydroxide',
                 'dateStart' => '2020-11-06',
                 'course'    => 'Моушн-дизайн',
             ],
