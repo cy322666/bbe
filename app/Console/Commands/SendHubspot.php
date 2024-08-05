@@ -168,7 +168,7 @@ class SendHubspot extends Command
                 Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info));
 
                 if (!empty($info['note']))
-                    Notes::addOne($lead, NoteHelper::createNoteHubspot($site, $info['note']));
+                    Notes::addOne($lead, Notes::addOne($site, $info['note']));
 
             } catch (\Throwable $e) {
 
