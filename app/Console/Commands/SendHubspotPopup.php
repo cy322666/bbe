@@ -34,7 +34,7 @@ class SendHubspotPopup extends Command
         '72eb7983-5a90-4061-a92f-19304a9450ca' => [
             'name' => 'Заявка по спецофферу',
             'status_id' => 33522700,
-            'source' => 'Попап',
+            'source' => 'попап',
             'product' => null,
             'product_type' => 'Годовая программа',
             'note' => null,//Спецоффер
