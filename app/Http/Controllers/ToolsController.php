@@ -108,7 +108,7 @@ class ToolsController extends Controller
                 'course'    => 'Моушн-дизайн',
             ],
             [
-                'user'      => '@tswetochek @alicedrukker @daria_kozlovskaya0',
+                'user'      => '@alicedrukker @daria_kozlovskaya0',
                 'dateStart' => '2020-11-06',
                 'course'    => 'UX/UI',
             ],
