@@ -165,6 +165,10 @@ class HubspotController extends Controller
             '9be94507-6b84-441f-9648-9238fe26ff93',
             'c9115ddc-ea74-4428-a9f7-cf41f88fa93a',
             '8f64151d-f48a-40a7-a262-f2fc7ae27b8d',
+
+            '72eb7983-5a90-4061-a92f-19304a9450ca',
+            'f9d36ace-016c-48a4-add8-1d383bd16d71',
+            '6a3bc6a0-a87f-4d0e-af8a-0695973d9b78',
         ];
 
         foreach ($uuids as $uuid) {
@@ -177,7 +181,14 @@ class HubspotController extends Controller
 
             foreach ($sites as $site) {
 
-                Artisan::call('hubspot:send', ['site' => $site->id]);
+                if (!in_array($uuid, [
+                    '72eb7983-5a90-4061-a92f-19304a9450ca',
+                    'f9d36ace-016c-48a4-add8-1d383bd16d71',
+                    '6a3bc6a0-a87f-4d0e-af8a-0695973d9b78',
+                ]))
+                    Artisan::call('hubspot:send', ['site' => $site->id]);
+                else
+                    Artisan::call('hubspot:send-popup', ['site' => $site->id]);
             }
         }
     }
